@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+typedef struct liste liste;
+struct liste{
+    struct liste *suiv;
+    void *data;
+};
+
 /* swap */
 extern void echangeGenerique(void* , void* , size_t );
 
@@ -34,9 +40,19 @@ extern void** allocTab2D(int , int , int );
 extern void liberationTab2D(void**, int );
 
 /* TAB */
-/*extern void visuTab(unsigned int* , unsigned int , void (*)(void *e), char* );
+extern void visuTab(unsigned int* , unsigned int , void (*)(void *e), char* );
 extern int searchInd(void *, int , size_t, void * , int (*)(void*, void*));
-*/
+
+
+/* LISTE */
+liste* creerListe();
+bool listeEmpty(liste *l);
+void addElementFirst(liste** l, void *e);
+void addElementLast(liste *l, void* e);
+void visuListe(liste *l, void (*visuElement)(void *data), char* s);
+void removeFirstElement(liste **l);
+void freeListe(liste **l);
+
 #endif
 
 

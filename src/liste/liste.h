@@ -13,19 +13,29 @@
 #include "../mem/alloc.h"
 
 typedef struct liste liste;
-struct liste{
-    struct liste *suiv;
+typedef struct element element;
+
+struct element{
+    struct element *prec, *suiv;
     void *data;
 };
 
-liste* creerListe();
-bool listeEmpty(liste *l);
-void addElementFirst(liste** l, void *e);
+struct liste{
+    struct element *first, *end;
+    int nbreElement;
+
+    void (*visuElement)(void *data);
+    void (*removeData)(void *data);
+};
+
+liste creerListe(void (*visuElement)(void *data), void (*removeData)(void *data));
+bool listeEmpty(element *e);
+void addElementFirst(liste* l, void *e);
 void addElementLast(liste *l, void* e);
-void visuListe(liste *l, void (*visuElement)(void *data), char* s);
-void removeFirstElement(liste **l);
+void visuListe(liste l, char *s);
+void removeFirstElement(liste *l);
 void removeLastElement(liste *l);
-void removeElementN(liste **l, int n);
-void freeListe(liste **l);
+//void removeElementN(liste *l, int n);
+void freeListe(liste *l);
 
 #endif
