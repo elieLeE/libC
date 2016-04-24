@@ -1,106 +1,75 @@
 #include "test.h"
 
-void test1(liste *l){
-    int *a = my_calloc(sizeof(int));
-    int *b = my_calloc(sizeof(int));
-    int *c = my_calloc(sizeof(int));
+void testMyCalloc(){
+    printf("testMyCalloc : \n");
+    int *a = my_calloc(sizeof(*a));
+    *a = 3;
+    printf("a : %d\n", *a);
+    free(a);
+    a = NULL;
 
-    *a = 1;
-    *b = 2;
-    *c = 3;
-
-    addElementFirst(l, a);
-    addElementFirst(l, b);
-    addElementFirst(l, c);
-
-    printf("test1 : attendu => 3, 2, 1 || obtenu => ");
-
-    visuListe(*l, "\b\b \n");
-
-    freeListe(l);
+    a = my_calloc(sizeof(*a));
+    *a = 10;
+    printf("a : %d\n", *a);
+    free(a);
+    a = NULL;
 }
 
-void test2(liste *l){
-    int *a = my_calloc(sizeof(int));
-    int *b = my_calloc(sizeof(int));
-    int *c = my_calloc(sizeof(int));
+void testMyRealloc(){
+    printf("\ntestMyRealloc : \n");
+    unsigned int i;
+    unsigned int max = 100;
+    unsigned int min = 10;
+    int *a = my_calloc(sizeof(*a));
+    *a = 3;
+    printf("a : %d\n", *a);
 
-    *a = 1;
-    *b = 2;
-    *c = 3;
-
-    addElementLast(l, a);
-    addElementLast(l, b);
-    addElementLast(l, c);
-
-    printf("test1 : attendu => 1, 2, 3 || obtenu => ");
-    visuListe(*l, "\b\b \n");
-
-    freeListe(l);
-}
-
-void test3(liste *l){
-    int *a = my_calloc(sizeof(int));
-    int *b = my_calloc(sizeof(int));
-    int *c = my_calloc(sizeof(int));
-    int *d = my_calloc(sizeof(int));
-    int *e = my_calloc(sizeof(int));
-    int *f = my_calloc(sizeof(int));
-
-    *a = 1;
-    *b = 2;
-    *c = 3;
-    *d = 4;
-    *e = 5;
-    *f = 6;
-
-    addElementLast(l, a);
-    addElementFirst(l, b);
-    addElementLast(l, c);
-    visuListe(*l, "\b\b \n");
-    removeFirstElement(l);
-    addElementLast(l, d);
-    visuListe(*l, "\b\b \n");
-    addElementFirst(l, e);
-    removeLastElement(l);
-    visuListe(*l, "\b\b \n");
-    removeFirstElement(l);
-    addElementFirst(l, f);
-
-
-    printf("test1 : attendu => 6, 1, 3 || obtenu => ");
-    visuListe(*l, "\b\b \n");
-
-    freeListe(l);
-}
-
-void test4(liste *l){
-    int *a = my_calloc(sizeof(int));
-    int *b = my_calloc(sizeof(int));
-
-    *a = 1;
-    *b = 2;
-
-    addElementLast(l, a);
-    addElementFirst(l, b);
-    visuListe(*l, "\b\b \n");
-
-    removeFirstElement(l);
-    //removeLastElement(l);
-    visuListe(*l, "\b\b \n");
-
-    if(l->first->prec == NULL){
-	printf("ok\n");
+    unsigned int taille = rand()%(max - min) + min;
+    a = my_realloc(a, taille*sizeof(*a));
+    for(i=0; i<taille; i++){
+	a[i] = rand()%(taille*max - min) + min;
     }
-    else{
-	printf("not ok\n");
+    for(i=0; i<taille; i++){
+	printf("%d, ", a[i]);
     }
-    printf("%d\n", *(int *)(l->first->prec));
+    printf("\n");
 
-    printf("test1 : attendu => 2 || obtenu => ");
-    visuListe(*l, "\b\b \n");
+    taille = rand()%(100 - 1) + 1;
+    a = my_realloc(a, taille*sizeof(*a));
+    for(i=0; i<taille; i++){
+	a[i] = rand()%(taille*max - min) + min;
+    }
+    for(i=0; i<taille; i++){
+	printf("%d, ", a[i]);
+    }
+    printf("\n");
+    free(a);
+}
 
-    freeListe(l);
+void testAllocTab2D(){
+    printf("\ntestAllocTab2D : \n");
+    unsigned int max = 100;
+    unsigned int min = 10;
+    unsigned int nbreL = rand()%(max - min) + min;
+    unsigned int nbreC = rand()%(max - min) + min;
+    unsigned int i, j;
+
+    int **tab = (int **)allocTab2D(nbreL, nbreC, sizeof(**tab));
+    for(i=0; i<nbreL; i++){
+	for(j=0; j<nbreC; j++){
+	    tab[i][j] = rand()%((nbreL + nbreC)*max - min) + min;
+	}
+    }
+
+    for(i=0; i<nbreL; i++){
+	for(j=0; j<nbreC; j++){
+	    printf("%d, ", tab[i][j]);
+	}
+	printf("\n");
+    }
+
+    free(tab);
 }
 
 
+    

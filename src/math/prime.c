@@ -2,6 +2,13 @@
 
 bool isPrime(unsigned long n){
     unsigned long i;
+    if(n<=1){
+	fprintf(stderr, "n <= 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
+	return false;
+    }
+    if(n==2){
+	return true;
+    }
     if(n%2==0){
 	return false;
     }
@@ -32,8 +39,8 @@ void remplissageTabPrimeBool(bool *tab, unsigned int lim){
 
 void remplissageTabPrime(unsigned int* tabPrime, unsigned int lim){
     unsigned int i, j;
-    //bool *tabBool = my_calloc(lim*sizeof(bool));
-    bool *tabBool = calloc(lim, sizeof(bool));
+    bool *tabBool = my_calloc(lim*sizeof(bool));
+    //bool *tabBool = calloc(lim, sizeof(bool));
 
     remplissageTabPrimeBool(tabBool, lim);
 

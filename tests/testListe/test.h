@@ -4,10 +4,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../src/liste/liste.h"
+#include "../../src/liste/addElement.h"
+#include "../../src/liste/removeElement.h"
+#include "../../src/liste/trieListe.h"
+#include "verif.h"
 
-void test1(liste *l);
-void test2(liste *l);
-void test3(liste *l);
-void test4(liste *l);
+void testAddAndRemoveElement(liste *l);
+void testAddElementTrieC(liste *l);
+void testAddElementTrieD(liste *l);
+void testRemoveElement(liste *l);
+void testTriageListe(liste *l);
 
 #endif

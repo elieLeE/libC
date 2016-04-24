@@ -11,10 +11,9 @@ CC=gcc
 CFLAGS=-std=c99 -Wextra -Wall# -ansi -pedantic
 LDFLAGS=
 EXEC=prog 
-SHARED=../..
-SRC= $(wildcard *.c $(SHARED)/tab.c) 
+SRC= $(wildcard *.c ../../src/tab/*.c ../../src/mem/alloc.c)
 OBJ= $(SRC:.c=.o)
-INCLUDE=-I. -I$(SHARED)
+INCLUDE=-I. -I../../src/tab
 
 all: $(EXEC)
 

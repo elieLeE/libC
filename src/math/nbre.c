@@ -1,19 +1,5 @@
 #include "nbre.h"
 
-unsigned long min(unsigned long a, unsigned long b){
-    if(a < b){
-	return a;
-    }
-    return b;
-}
-
-unsigned long max(unsigned long a, unsigned long b){
-    if(a > b){
-	return a;
-    }
-    return b;
-}
-
 int nbreDigits(int n){
     int i = 1;
     int compt = 0;

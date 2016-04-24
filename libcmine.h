@@ -22,8 +22,8 @@ extern void lireMatrice(FILE *, unsigned int** , int, int);
 /* MATH */
 /* NBRE */
 extern void nbreToDigits(unsigned int , unsigned int *);
-extern unsigned long min(unsigned long , unsigned long );
-extern unsigned long max(unsigned long , unsigned long );
+/*extern unsigned long min(unsigned long , unsigned long );
+extern unsigned long max(unsigned long , unsigned long );*/
 extern int nbreDigits(int );
 /* PRIME */
 extern bool isPrime(unsigned long );

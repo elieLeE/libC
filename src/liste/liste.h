@@ -3,39 +3,26 @@
 
 /*
  * liste generique
+ * liste doublement chainée, avec toutes les fonctions de base sur les listes.
+ * la structure de base contient des pointeurs sur le début et la fin de la liste, 
+ * le nombre d'element dans le liste ainsi que des pointeurs sur les fonctions de visualisation des données,
+ * de comparaison entre deux données et de liberation d'une donnée.
  * */
-
-#define DEBUG 0
 
 #include <stdbool.h>
 #include <string.h>
+#include <stdio.h>
 #include <stdarg.h>
 #include "../mem/alloc.h"
+#include "type.h"
+#include "removeElement.h"
 
-typedef struct liste liste;
-typedef struct element element;
+liste creerListe(void (*visuElement)(void const *data), int (*comparElement)(void const*, void const*), void (*removeData)(void *data));
+bool listeEmpty(liste *l);
+bool elemEmpty(element *e);
 
-struct element{
-    struct element *prec, *suiv;
-    void *data;
-};
+void visuListe(liste l, char const *s);
 
-struct liste{
-    struct element *first, *end;
-    int nbreElement;
-
-    void (*visuElement)(void *data);
-    void (*removeData)(void *data);
-};
-
-liste creerListe(void (*visuElement)(void *data), void (*removeData)(void *data));
-bool listeEmpty(element *e);
-void addElementFirst(liste* l, void *e);
-void addElementLast(liste *l, void* e);
-void visuListe(liste l, char *s);
-void removeFirstElement(liste *l);
-void removeLastElement(liste *l);
-//void removeElementN(liste *l, int n);
 void freeListe(liste *l);
 
 #endif

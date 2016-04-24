@@ -1,32 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../../tab.h"
+#include "fonctionTest.h"
+#include "../../src/tab/tab.h"
+#include "test.h"
 
 #define TAILLE_TAB 10
 
-void visuElem(void *e){
+void visuElem(void const *e){
     printf("%d, ", *((unsigned int*)e));
 }
 
-void randomTabRemplissage(unsigned int* tab){
-    unsigned int min = 0;
-    unsigned int max = TAILLE_TAB;
-    unsigned int i;
+int comparElement(void const *d1, void const *d2){
+    const int *a = d1;
+    const int *b = d2;
 
-    for(i=0; i<TAILLE_TAB; i++){
-	tab[i] = rand()%(max - min)+min;
-    }
+    return (*a - *b);
 }
 
-
 int main(){
-    unsigned int tab[TAILLE_TAB];
+    clock_t deb, fin;
+
     srand(time(NULL));
 
-    randomTabRemplissage(tab);
+    deb = clock();
+    affResultatTest("testTrieFusion", testTrieFusion(comparElement));
+    fin = clock();
+    printf("trieFusion1\t : %lf\n", ((double)(fin-deb))/CLOCKS_PER_SEC);
 
-    visuTab(tab, 10, visuElem, "\b\b \n");
+    deb = clock();
+    testQSort(comparElement);
+    fin = clock();
+    printf("qsort\t\t : %lf\n", ((double)(fin-deb))/CLOCKS_PER_SEC);
+
+    testSearch(comparElement, visuElem);
 
     return 0;
 }

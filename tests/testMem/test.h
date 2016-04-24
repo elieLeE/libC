@@ -5,9 +5,8 @@
 #include <stdlib.h>
 #include "../../src/liste/liste.h"
 
-void test1(liste *l);
-void test2(liste *l);
-void test3(liste *l);
-void test4(liste *l);
+void testMyCalloc();
+void testMyRealloc();
+void testAllocTab2D();
 
 #endif
