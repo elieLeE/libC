@@ -1,6 +1,6 @@
 #include "trieTab.h"
 
-void trieFusion(void *tab, int tailleTab, size_t tailleType, int (*comparElement)(void const *d1, void const *d2)){
+void trieFusion(void *tab, unsigned int const tailleTab, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2)){
     if(tab == NULL){
 	fprintf(stderr, "tab NULL fichier %s\n", __FILE__);
 	return;
@@ -14,13 +14,15 @@ void trieFusion(void *tab, int tailleTab, size_t tailleType, int (*comparElement
 	return;
     }
 
-    division(tab, 0, tailleTab/2-1, tailleTab-1, tailleType, comparElement);
+    //division(tab, 0, tailleTab/2-1, tailleTab-1, tailleType, comparElement);
+    division(tab, 0, tailleTab-1, tailleType, comparElement);
 }
 
-void division(void *tab, int deb, int mil, int fin, size_t tailleType, int (*comparElement)(void const *d1, void const *d2)){
+void division(void *tab, unsigned int const deb, unsigned int const fin, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2)){
     if(deb<fin){
-	division(tab, deb, (deb+mil)/2, mil, tailleType, comparElement);
-	division(tab, mil+1, (mil+1+fin)/2, fin, tailleType, comparElement);
+	unsigned int mil = (deb+fin)/2;
+	division(tab, deb, mil, tailleType, comparElement);
+	division(tab, mil+1, fin, tailleType, comparElement);
 	fusion(tab, deb, mil, fin, tailleType, comparElement);
     }
 }
@@ -28,7 +30,7 @@ void division(void *tab, int deb, int mil, int fin, size_t tailleType, int (*com
 /*
  * on travaille sur les addresses car les tests ont montre que c'etait legerement plus rapide qu'avec des variabes normales => moins de calcul
  * */
-void fusion(void *tab, int deb, int mil, int fin, size_t tailleType, int (*comparElement)(void const *d1, void const *d2)){
+void fusion(void *tab, unsigned int const deb, unsigned int const mil, unsigned int const fin, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2)){
     void *tab1, *tab2;
     unsigned int tailleTab1 = mil-deb+1;
     unsigned int tailleTab2 = fin-mil;

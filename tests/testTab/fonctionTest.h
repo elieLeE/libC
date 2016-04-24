@@ -9,6 +9,6 @@ void randomTabRemplissage(unsigned int* tab, unsigned int taille);
 void constantTabRemplissage(unsigned int* tab, unsigned int taille);
 bool verifTriageTab(unsigned int* tab, unsigned int tailleTab);
 
-void affResultatTest(char *s, bool result);
+//void affResultatTest(char *s, bool result);
 
 #endif

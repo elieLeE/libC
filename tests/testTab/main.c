@@ -4,6 +4,7 @@
 #include "fonctionTest.h"
 #include "../../src/tab/tab.h"
 #include "test.h"
+#include "../shared/ftest.h"
 
 #define TAILLE_TAB 10
 
@@ -24,7 +25,7 @@ int main(){
     srand(time(NULL));
 
     deb = clock();
-    affResultatTest("testTrieFusion", testTrieFusion(comparElement));
+    affResultTest("testTrieFusion", testTrieFusion(comparElement));
     fin = clock();
     printf("trieFusion1\t : %lf\n", ((double)(fin-deb))/CLOCKS_PER_SEC);
 
@@ -33,7 +34,7 @@ int main(){
     fin = clock();
     printf("qsort\t\t : %lf\n", ((double)(fin-deb))/CLOCKS_PER_SEC);
 
-    testSearch(comparElement, visuElem);
+    affResultTest("testSearchDichotomie", testSearch(comparElement, visuElem));
 
     return 0;
 }

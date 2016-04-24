@@ -47,7 +47,7 @@ bool verifTriageTab(unsigned int* tab, unsigned int tailleTab){
     return true;
 }
 
-void affResultatTest(char *s, bool result){
+/*void affResultatTest(char *s, bool result){
     printf("%s %s\n", s, result?"ok":"not ok");
-}
+}*/
 

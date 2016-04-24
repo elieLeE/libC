@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void* my_calloc(size_t taille);
-void* my_realloc(void *p, size_t taille);
+void* my_calloc(size_t const taille);
+void* my_realloc(void *p, size_t const taille);
 
-void** allocTab2D(int lig, int col, size_t tailleType);
+void** allocTab2D(int const lig, int const col, size_t const tailleType);
 
-void liberationTab2D(void** matrice, int lig);
+void liberationTab2D(void** matrice, int const lig);
 
 #endif

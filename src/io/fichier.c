@@ -1,6 +1,6 @@
 #include "fichier.h"
 
-FILE* ouvFichier(char* name, char* mode){
+FILE* ouvFichier(char const *name, char const *mode){
     FILE* f = fopen(name, mode);
     if(f == NULL){
 	fprintf(stderr, "impossible d'ouvrir le fichier %s\n", name);
@@ -13,7 +13,7 @@ void fermerFichier(FILE **f){
     fclose(*f);
 }
 
-void lireMatrice(FILE* fichier, unsigned int* matrice[], int tailleLig, int tailleCol){
+void lireMatrice(FILE* fichier, unsigned int* matrice[], int const tailleLig, int const tailleCol){
     int i, j;
     for(i=0; i<tailleLig; i++){
 	for(j=0; j<tailleCol; j++){

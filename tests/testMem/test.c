@@ -29,20 +29,12 @@ void testMyRealloc(){
     for(i=0; i<taille; i++){
 	a[i] = rand()%(taille*max - min) + min;
     }
-    for(i=0; i<taille; i++){
-	printf("%d, ", a[i]);
-    }
-    printf("\n");
 
     taille = rand()%(100 - 1) + 1;
     a = my_realloc(a, taille*sizeof(*a));
     for(i=0; i<taille; i++){
 	a[i] = rand()%(taille*max - min) + min;
     }
-    for(i=0; i<taille; i++){
-	printf("%d, ", a[i]);
-    }
-    printf("\n");
     free(a);
 }
 
@@ -59,13 +51,6 @@ void testAllocTab2D(){
 	for(j=0; j<nbreC; j++){
 	    tab[i][j] = rand()%((nbreL + nbreC)*max - min) + min;
 	}
-    }
-
-    for(i=0; i<nbreL; i++){
-	for(j=0; j<nbreC; j++){
-	    printf("%d, ", tab[i][j]);
-	}
-	printf("\n");
     }
 
     free(tab);

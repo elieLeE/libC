@@ -8,12 +8,12 @@
 #$* : nom du fichier sans le suffixe
 
 CC=gcc
-CFLAGS=-std=c99 -Wextra -Wall# -ansi -pedantic
+CFLAGS=-std=c99 -Wextra -Wall -g# -ansi -pedantic
 LDFLAGS=
 EXEC=prog 
-SRC= $(wildcard *.c ../../src/tab/*.c ../../src/mem/alloc.c ../shared/ftest.c)
+SRC= $(wildcard *.c ../../src/io/fichier.c ../../src/mem/alloc.c ../shared/ftest.c)
 OBJ= $(SRC:.c=.o)
-INCLUDE=-I. -I../../src/tab
+INCLUDE=-I. -I../../src/io -I../../src/mem -I../shared
 
 all: $(EXEC)
 

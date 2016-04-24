@@ -11,8 +11,8 @@
 #include <string.h>
 #include "../mem/alloc.h"
 
-void trieFusion(void *tab, int tailleTab, size_t tailleType, int (*comparElement)(void const *d1, void const *d2));
-void division(void *tab, int deb, int mil, int fin, size_t tailleType, int (*comparElement)(void const *d1, void const *d2));
-void fusion(void *tab, int deb, int mil, int fin, size_t tailleType, int (*comparElement)(void const *d1, void const *d2));
+void trieFusion(void *tab, unsigned int const tailleTab, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2));
+void division(void *tab, unsigned int const deb, unsigned int const fin, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2));
+void fusion(void *tab, unsigned int const deb, unsigned int const mil, unsigned int const fin, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2));
 
 #endif
