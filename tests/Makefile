@@ -39,12 +39,12 @@ TEST_SRC := $(wildcard *.c)
 SRC := $(LIB_SRC) $(TEST_SRC)
 
 # Files sources become: toto.c -> build/test/toto.o
-TEST_OBJ := $(patsubst %.c,$(BUILD_DIR)/test/%.o,$(TEST_SRC))
+TEST_OBJ := $(patsubst %.c, $(BUILD_DIR)/test/%.o, $(TEST_SRC))
 
-# Library ssources ../src/* become:
+# Library sources ../src/* become:
 #   ../src/containers/utils.c -> build/containers/utils.o
 #   ../src/utils.c            -> build/utils.o
-LIB_OBJ := $(patsubst $(LIB_C_DIR)/%.c,$(BUILD_DIR)/%.o,$(LIB_SRC))
+LIB_OBJ := $(patsubst $(LIB_C_DIR)/%.c, $(BUILD_DIR)/%.o, $(LIB_SRC))
 
 OBJ := $(TEST_OBJ) $(LIB_OBJ)
 
