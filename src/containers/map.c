@@ -87,3 +87,37 @@ void __gm_init_size(__map_void_t *map, int32_t size, size_t size_elem_key,
 }
 
 /* }}} */
+
+void __gm_wipe(__map_void_t *map,
+               void (*free_keys_cb)(void **),
+               void (*free_values_cb)(void **))
+{
+    for (int32_t i = 0; i < map->size; i++) {
+        int32_t len = map->tabs_len[i];
+
+        if (len > 0) {
+            if (free_keys_cb != NULL) {
+                for (int32_t j = 0; j < len; j++) {
+                    free_keys_cb(map->keys[i]);
+                }
+            }
+
+            if (free_values_cb != NULL) {
+                for (int32_t j = 0; j < len; j++) {
+                    free_values_cb(map->values[i]);
+                }
+            }
+
+            p_free((void **)&(map->keys[i]));
+            p_free((void **)&(map->values[i]));
+        }
+    }
+
+    map->size = 0;
+    map->count = 0;
+
+    p_free((void **)&(map->keys));
+    p_free((void **)&(map->values));
+    p_free((void **)&(map->tabs_len));
+    p_free((void **)&(map->tabs_size));
+}

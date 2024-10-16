@@ -61,4 +61,12 @@ void __gm_init_size(__map_void_t *map, int32_t size, size_t size_elem_key,
 
 /* }}} */
 
+
+void __gm_wipe(__map_void_t *map,
+               void (*free_keys_cb)(void **),
+               void (*free_values_cb)(void **));
+
+#define gm_wipe(_gmap, free_keys_cb, free_values_cb)                          \
+    __gm_wipe(&(_gmap)->__map, free_keys_cb, free_values_cb)
+
 #endif
