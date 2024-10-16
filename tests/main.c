@@ -17,7 +17,7 @@
 #include "test_big_numbers.h"
 #include "test_utils.h"
 #include "test_nber_helper.h"
-
+#include "test_map.h"
 
 static int get_all_tests(generic_liste_t *modules_tests)
 {
@@ -36,6 +36,7 @@ static int get_all_tests(generic_liste_t *modules_tests)
     ADD_TEST_MODULE(big_numbers);
     ADD_TEST_MODULE(io);
     ADD_TEST_MODULE(nber_helper);
+    ADD_TEST_MODULE(map);
 
     return 0;
 
