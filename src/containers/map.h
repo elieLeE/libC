@@ -6,6 +6,8 @@
 
 #include "../macros.h"
 
+#include "utils.h"
+
 #define DEFAULT_SIZE 1031
 
 #define generic_map_data_t(_keys_type, _values_type)                          \
@@ -60,7 +62,19 @@ void __gm_init_size(__map_void_t *map, int32_t size, size_t size_elem_key,
     })
 
 /* }}} */
+/* {{{ Pos methods */
 
+static inline int32_t
+__get_pos1_from_key(const __map_void_t *map, const void *k,
+                    gm_hash_cb_t hash_cb)
+{
+    return (int32_t)(hash_cb(k) % map->size);
+}
+
+int32_t __get_pos2_from_key(const __map_void_t *map, const void *k,
+                            g_cmp_cb_t cmp_cb, int32_t first_pos);
+
+/* }}} */
 
 void __gm_wipe(__map_void_t *map,
                void (*free_keys_cb)(void **),

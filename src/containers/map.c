@@ -87,6 +87,24 @@ void __gm_init_size(__map_void_t *map, int32_t size, size_t size_elem_key,
 }
 
 /* }}} */
+/* {{{ Pos methods */
+
+int32_t __get_pos2_from_key(const __map_void_t *map, const void *k,
+                            g_cmp_cb_t cmp_cb, int32_t pos1)
+{
+    const void *possible_equal_keys = map->keys[pos1];
+
+    for (int32_t i = 0; i < map->tabs_len[pos1]; i++) {
+        if (cmp_cb(k, possible_equal_keys + (i * map->__size_elem_key)) == 0) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+/* }}} */
+
 
 void __gm_wipe(__map_void_t *map,
                void (*free_keys_cb)(void **),
