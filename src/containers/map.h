@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "../macros.h"
+
+#define DEFAULT_SIZE 1031
+
 #define generic_map_data_t(_keys_type, _values_type)                          \
     struct {                                                                  \
         _keys_type keys;                                                      \
@@ -24,5 +28,35 @@ typedef generic_map_data_t(void **, void **) __map_void_t;
         generic_map_data_t(_keys_type **, _values_type **);                   \
         __map_void_t __map;                                                   \
     } gm_t(_name);
+
+#define __gm_keys_size(_map) sizeof(*_map->keys[0])
+#define __gm_values_size(_map) sizeof(*_map->values[0])
+
+/* {{{ Inits */
+
+void __gm_init(__map_void_t *map, int32_t size, size_t size_elem_key,
+               size_t size_elem_val);
+#define gm_init(_gmap)                                                        \
+    ({  __auto_type __gmap = (_gmap);                                         \
+        __gm_init(&__gmap->__map, DEFAULT_SIZE, __gm_keys_size(__gmap),       \
+                  __gm_values_size(__gmap));                                  \
+        __gmap;                                                               \
+    })
+
+void __gm_init_size(__map_void_t *map, int32_t size, size_t size_elem_key,
+                    size_t size_elem_val);
+#define gm_init_size(_gmap, _size)                                            \
+    ({                                                                        \
+        int64_t __size = (_size);                                             \
+        if (__size < 0) {                                                     \
+            logger_fatal("_size is below 0: %ld", __size);                    \
+        }                                                                     \
+        __auto_type __gmap = (_gmap);                                         \
+        __gm_init_size(&__gmap->__map, __size, __gm_keys_size(__gmap),        \
+                  __gm_values_size(__gmap));                                  \
+        __gmap;                                                               \
+    })
+
+/* }}} */
 
 #endif
