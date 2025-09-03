@@ -1,23 +1,24 @@
 #include "prime.h"
+#include "../mem/alloc.h"
 
 bool isPrime(unsigned long n){
     unsigned long i;
     if(n<=1){
-	fprintf(stderr, "n <= 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
-	return false;
+        fprintf(stderr, "n <= 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
+        return false;
     }
     if(n==2){
-	return true;
+        return true;
     }
     if(n%2==0){
-	return false;
+        return false;
     }
     i = 3;
     while(i*i<=n){
-	if(n%i == 0){
-	    return false;
-	}
-	i = i+2;
+        if(n%i == 0){
+            return false;
+        }
+        i = i+2;
     }
     return true;
 }
@@ -25,15 +26,15 @@ bool isPrime(unsigned long n){
 void remplissageTabPrimeBool(bool *tab, unsigned int lim){
     unsigned int i = 2, j;
     while(i<lim){
-	while(tab[i]){
-	    i++;
-	}
-	j = i+i;
-	while(j<lim){
-	    tab[j] = true;
-	    j = j + i;
-	}
-	i++;
+        while(tab[i]){
+            i++;
+        }
+        j = i+i;
+        while(j<lim){
+            tab[j] = true;
+            j = j + i;
+        }
+        i++;
     }
 }
 
@@ -47,10 +48,10 @@ void remplissageTabPrime(unsigned int* tabPrime, unsigned int lim){
     j = 1;
     tabPrime[0] = 2;
     for(i=3; i<=lim; i=i+2){
-	if(!tabBool[i]){
-	    tabPrime[j] = i;
-	    j++;
-	}
+        if(!tabBool[i]){
+            tabPrime[j] = i;
+            j++;
+        }
     }
     free(tabBool);
 }
