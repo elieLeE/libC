@@ -2,24 +2,24 @@
 
 int searchInd(void const *tab, unsigned int const tailleTab, size_t const tailleType, void const *n, int (*compar)(void const*, void const*)){
     if(tab==NULL){
-	fprintf(stderr, "tab NULL, fichier %s, ligne %d\n", __FILE__, __LINE__);
-	return -1;
+        fprintf(stderr, "tab NULL, fichier %s, ligne %d\n", __FILE__, __LINE__);
+        return -1;
     }
     else if(tailleTab<=1){
-	fprintf(stderr, "tailleTab <= 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
-	return -1;
+        fprintf(stderr, "tailleTab <= 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
+        return -1;
     }
     else if(tailleType<1){
-	fprintf(stderr, "tailleType < 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
-	return -1;
+        fprintf(stderr, "tailleType < 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
+        return -1;
     }
     else if(n==NULL){
-	fprintf(stderr, "n NULL, fichier %s, ligne %d\n", __FILE__, __LINE__);
-	return -1;
+        fprintf(stderr, "n NULL, fichier %s, ligne %d\n", __FILE__, __LINE__);
+        return -1;
     }
     else if(compar==NULL){
-	fprintf(stderr, "compar NULL, fichier %s, ligne %d\n", __FILE__, __LINE__);
-	return -1;
+        fprintf(stderr, "compar NULL, fichier %s, ligne %d\n", __FILE__, __LINE__);
+        return -1;
     }
 
     structDichoSearch s;
@@ -40,12 +40,12 @@ int searchInd(void const *tab, unsigned int const tailleTab, size_t const taille
 int searchBasique(structDichoSearch *s){
     unsigned int i;
     for(i=0; i<s->tailleTab; i++){
-	if((*(s->compar))(s->tab + i*s->tailleType, s->valSearched) > 0){
-	    break;
-	}
+        if((*(s->compar))(s->tab + i*s->tailleType, s->valSearched) > 0){
+            break;
+        }
     }
     if((*(s->compar))(s->tab + i*s->tailleType, s->valSearched) == 0){
-	return i;
+        return i;
     }
     return i-1;
 }
@@ -53,13 +53,13 @@ int searchBasique(structDichoSearch *s){
 int searchDicho(structDichoSearch *s){
     void const *addr = s->tab + (s->pos)*(s->tailleType);
     if((*(s->compar))(addr, s->valSearched) == 0){
-	return s->pos;
+        return s->pos;
     }
     else if((*(s->compar))(addr, s->valSearched)<0){
-	s->pos = ((s->pos) * (s->fin))/2;
+        s->pos = ((s->pos) * (s->fin))/2;
     }
     else{
-	s->pos = ((s->deb) * (s->pos))/2;
+        s->pos = ((s->deb) * (s->pos))/2;
     }
 
     return searchDicho(s);
@@ -67,9 +67,9 @@ int searchDicho(structDichoSearch *s){
 
 void visuTab(void const *tab, unsigned int const tailleTab, size_t const tailleType, void (*visuElem)(void const *e), char const* s){
     unsigned int i;
-    
+
     for(i=0; i<tailleTab; i++){
-	(*visuElem)(tab + i*tailleType);
+        (*visuElem)(tab + i*tailleType);
     }
     printf("%s", s);
 }
