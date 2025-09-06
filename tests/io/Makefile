@@ -10,12 +10,16 @@
 CC=gcc
 CFLAGS=-std=c99 -Wextra -Wall -g# -ansi -pedantic
 LDFLAGS=
-EXEC=prog 
+EXEC=test
 SRC= $(wildcard *.c ../../src/io/fichier.c ../../src/mem/alloc.c ../shared/ftest.c)
 OBJ= $(SRC:.c=.o)
 INCLUDE=-I. -I../../src/io -I../../src/mem -I../shared
 
-all: $(EXEC)
+all: $(EXEC) cleanSimple
+
+debug: CFLAGS += -DDDebug -g
+debug: LDFLAGS += -DDDebug -g
+debug: $(EXEC) cleanSimple
 
 $(EXEC): $(OBJ)
 	$(CC) $(INCLUDE) -o $@ $^ $(LDFLAGS)
@@ -23,7 +27,7 @@ $(EXEC): $(OBJ)
 %.o: %.c
 	$(CC) $(INCLUDE) -o $@ -c $< $(CFLAGS)
 
-.PHONY: cleanSimple clean 
+.PHONY: cleanSimple clean
 
 cleanSimple:
 	rm -rf $(OBJ)

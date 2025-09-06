@@ -8,14 +8,18 @@
 #$* : nom du fichier sans le suffixe
 
 CC=gcc
-CFLAGS=-std=c99 -Wextra -Wall# -ansi -pedantic
+CFLAGS=-std=c99 -Wextra -Wall -g# -ansi -pedantic
 LDFLAGS=
-EXEC=prog 
+EXEC=test
 SRC= $(wildcard *.c ../../src/tab/*.c ../../src/mem/alloc.c ../shared/ftest.c)
 OBJ= $(SRC:.c=.o)
-INCLUDE=-I. -I../../src/tab
+INCLUDE=-I. -I../../src/tab/
 
-all: $(EXEC)
+all: $(EXEC) cleanSimple
+
+debug: CFLAGS += -DDDebug -g
+debug: LDFLAGS += -DDDebug -g
+debug: $(EXEC) cleanSimple
 
 $(EXEC): $(OBJ)
 	$(CC) $(INCLUDE) -o $@ $^ $(LDFLAGS)
@@ -23,7 +27,7 @@ $(EXEC): $(OBJ)
 %.o: %.c
 	$(CC) $(INCLUDE) -o $@ -c $< $(CFLAGS)
 
-.PHONY: cleanSimple clean 
+.PHONY: cleanSimple clean
 
 cleanSimple:
 	rm -rf $(OBJ)
