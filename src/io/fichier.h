@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-FILE* ouvFichier(char const *name, char const *mode);
-void fermerFichier(FILE **f);
-void lireMatrice(FILE* fichier, unsigned int* matrice[], int const tailleLig, int const tailleCol);
+FILE* ouv_fichier(char const *name, char const *mode);
+void fermer_fichier(FILE **f);
+void lire_matrice(FILE* fichier, unsigned int* matrice[],
+                  int const tailleLig, int const tailleCol);
 
 #endif

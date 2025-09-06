@@ -2,13 +2,13 @@
 
 bool testLectureSimple()
 {
-    FILE* f = ouvFichier("fichierTest", "r");
+    FILE* f = ouv_fichier("fichierTest", "r");
     char *s = my_calloc(50*sizeof(*s));
     char temoin[] = "test de lecture";
 
     fgets(s, 50, f);
-    fermerFichier(&f);
-    
+    fermer_fichier(&f);
+
     return !strncmp(s, temoin, strlen(temoin));
 }
 
@@ -45,10 +45,12 @@ bool testLectureMatrice(){
         {19, 18, 27, 28, 68, 54, 4},
         {48, 65, 0, 11, 10, 8, 41},
         {31, 8, 21, 39, 27, 5, 12}};
+    unsigned int **tab =
+        (unsigned int**)allocTab2D(lig, col, sizeof(unsigned int));
+    FILE* f = ouv_fichier("fichierTestLectureMatrice", "r");
 
-    unsigned int**tab = (unsigned int**)allocTab2D(lig, col, sizeof(unsigned int));
-    FILE* f = fopen("fichierTestLectureMatrice", "r");
-    lireMatrice(f, tab, lig, col);
+    lire_matrice(f, tab, lig, col);
+
     for(i=0; i<lig; i++){
         if(!comparTab(mat[i], tab[i], 7)){
             printf("i : %d\n", i);
