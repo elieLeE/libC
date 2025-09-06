@@ -12,25 +12,27 @@
 #include <stdbool.h>
 #include "type.h"
 
-liste creer_liste(void (*visu_element)(void const *data),
-                  int (*compar_element)(void const*, void const*),
-                  void (*remove_data)(void *data));
+liste creer_liste(void);
 
 bool is_liste_empty(liste *l);
 bool is_elem_empty(element *e);
 
 void add_element_first(liste* l, void *e);
 void add_element_last(liste *l, void *e);
-void add_element_trie(liste *l, void *e, bool sens_croissant);
-void add_element_trie_c(liste *l, void *e);
-void add_element_trie_d(liste *l, void *e);
+void add_element_trie(liste *l, void *e,
+                      int (*compar_element)(void const *d1, void const *d2),
+                      bool sens_croissant);
+void add_element_trie_c(liste *l, void *e,
+                        int (*compar_element)(void const *d1, void const *d2));
+void add_element_trie_d(liste *l, void *e,
+                        int (*compar_element)(void const *d1, void const *d2));
 void add_element_next(element *e, void *data);
 
-void remove_data(liste const *l, void *data);
-void remove_first_element(liste *l);
-void remove_last_element(liste *l);
-void remove_next_element(liste *l, element *e);
-void remove_element_n(liste *l, unsigned int const n);
+void remove_first_element(liste *l, void (*remove_data)(void *data));
+void remove_last_element(liste *l, void (*remove_data)(void *data));
+void remove_next_element(element *e, void (*remove_data)(void *data));
+void remove_element_n(liste *l, unsigned int const n,
+                      void (*remove_data)(void *data));
 //void remove_element_adrr_data(liste *l, void *d);
 //void remove_element_doublons(liste *l);
 //void remove_element_val_data(liste *l, void *data);
@@ -39,8 +41,8 @@ void trie_liste_fusion(liste *l, bool sens_croissant);
 void division(liste *l);
 void fusion(liste *l, bool sens_croissant);
 
-void visu_liste(liste l, char const *s);
+void visu_liste(liste l, void (*visuElement)(void const *data), char const *s);
 
-void free_liste(liste *l);
+void free_liste(liste *l, void (*remove_data)(void *data));
 
 #endif

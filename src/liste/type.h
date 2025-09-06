@@ -10,7 +10,6 @@ typedef struct liste{
     struct element *first, *end;
     unsigned int nbreElement;
 
-    void (*visuElement)(void const *data);
     /*
      * renvoie :
      * - < 0 si d1 < d2

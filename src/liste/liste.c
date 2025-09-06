@@ -39,35 +39,38 @@ void add_element_last(liste *l, void *data)
     (l->nbreElement)++;
 }
 
-void add_element_trie(liste *l, void *data, bool sens_croissant)
+void add_element_trie(liste *l, void *data,
+                      int (*compar_element)(void const *d1, void const *d2),
+                      bool sens_croissant)
 {
-    if(!(l->comparElement == NULL)) {
+    if(!(compar_element == NULL)) {
         if(is_liste_empty(l)) {
             add_element_first(l, data);
         } else {
             if(sens_croissant) {
-                add_element_trie_c(l, data);
+                add_element_trie_c(l, data, compar_element);
             } else {
-                add_element_trie_d(l, data);
+                add_element_trie_d(l, data, compar_element);
             }
         }
     } else {
-        fprintf(stderr, "comparElement NULL\n");
+        fprintf(stderr, "compar_element NULL\n");
     }
 }
 
-void add_element_trie_c(liste *l, void *data)
+void add_element_trie_c(liste *l, void *data,
+                        int (*compar_element)(void const *d1, void const *d2))
 {
-    if((*(l->comparElement))(l->first->data, data) >= 0) {
+    if((*(compar_element))(l->first->data, data) >= 0) {
         add_element_first(l, data);
-    } else if((*(l->comparElement))(l->end->data, data) <= 0) {
+    } else if((*(compar_element))(l->end->data, data) <= 0) {
         add_element_last(l, data);
     } else {
         element *p = l->first;
 
-        if((*(l->comparElement))(data, l->first->data) > 0) {
+        if((*(compar_element))(data, l->first->data) > 0) {
             while((!is_elem_empty(p->suiv)) &&
-                  ((*(l->comparElement))(p->suiv->data, data) < 0))
+                  ((*(compar_element))(p->suiv->data, data) < 0))
             {
                 p = p->suiv;
             }
@@ -88,18 +91,19 @@ void add_element_next(element *e, void *data)
     e->suiv = new;
 }
 
-void add_element_trie_d(liste *l, void *data)
+void add_element_trie_d(liste *l, void *data,
+                        int (*compar_element)(void const *d1, void const *d2))
 {
-    if((*(l->comparElement))(l->first->data, data) <= 0) {
+    if((*(compar_element))(l->first->data, data) <= 0) {
         add_element_first(l, data);
-    } else if((*(l->comparElement))(l->end->data, data) >= 0) {
+    } else if((*(compar_element))(l->end->data, data) >= 0) {
         add_element_last(l, data);
     } else {
         element *p = l->first;
 
-        if((*(l->comparElement))(data, l->first->data) < 0) {
+        if((*(compar_element))(data, l->first->data) < 0) {
             while((!is_elem_empty(p->suiv)) &&
-                  ((*(l->comparElement))(p->suiv->data, data) > 0))
+                  ((*(compar_element))(p->suiv->data, data) > 0))
             {
                 p = p->suiv;
             }
@@ -112,21 +116,18 @@ void add_element_trie_d(liste *l, void *data)
 /* }}} */
 /* {{{ Removing methods */
 
-void remove_data(liste const *l, void *data)
-{
-    if(l->removeData != NULL) {
-        (*(l->removeData))(data);
-    }
-}
-
-void remove_first_element(liste *l)
+void remove_first_element(liste *l, void (*remove_data)(void *data))
 {
     if(!is_liste_empty(l)) {
         element *p = l->first;
 
         l->first = l->first->suiv;
         (l->nbreElement)--;
-        remove_data(l, p->data);
+        /* remove_data can be NULL as data can contain a data detained by
+         * someone else */
+        if (remove_data != NULL) {
+            (*remove_data)(p->data);
+        }
         free(p);
 
         if(!is_liste_empty(l)) {
@@ -135,14 +136,18 @@ void remove_first_element(liste *l)
     }
 }
 
-void remove_last_element(liste* l)
+void remove_last_element(liste* l, void (*remove_data)(void *data))
 {
     if(!is_liste_empty(l)) {
         element *p = l->end;
 
         l->end = l->end->prec;
         (l->nbreElement)--;
-        remove_data(l, p->data);
+        /* remove_data can be NULL as data can contain a data detained by
+         * someone else */
+        if (remove_data != NULL) {
+            (*remove_data)(p->data);
+        }
         free(p);
 
         if(!is_liste_empty(l)) {
@@ -151,16 +156,17 @@ void remove_last_element(liste* l)
     }
 }
 
-void remove_element_n(liste *l, unsigned int const n)
+void remove_element_n(liste *l, unsigned int const n,
+                      void (*remove_data)(void *data))
 {
     printf("removeElementN NOT YET FONCTIONNAL\n");
     return;
 
     if(((int)n > 0) && (n <= l->nbreElement)) {
         if(n == 1) {
-            remove_first_element(l);
+            remove_first_element(l, remove_data);
         } else if(n == l->nbreElement) {
-            remove_last_element(l);
+            remove_last_element(l, remove_data);
         } else {
             element *p = NULL;
             unsigned int compt = 1;
@@ -171,13 +177,14 @@ void remove_element_n(liste *l, unsigned int const n)
             while(compt<n-1) {
                 p = p->suiv;
             }
-            remove_next_element(l, p);
+            remove_next_element(p, remove_data);
         }
     }
     printf("\n");
 }
 
-void remove_next_element(liste *l, element *e)
+void
+remove_next_element(element *e, void (*remove_data)(void *data))
 {
     printf("remove_next_element NOT YET FONCTIONNAL\n");
     return;
@@ -185,7 +192,11 @@ void remove_next_element(liste *l, element *e)
     element *p = e->suiv;
     e->suiv = e->suiv->suiv;
     e->suiv->prec = e;
-    remove_data(l, e->data);
+    /* remove_data can be NULL as data can contain a data detained by
+     * someone else */
+    if (remove_data != NULL) {
+        (*remove_data)(p->data);
+    }
     free(p);
 }
 
@@ -204,18 +215,13 @@ void fusion(liste *l, bool sensCroissant)
 
 /* }}} */
 
-liste creer_liste(void (*visu_element)(void const *data),
-                  int (*compar_element)(void const *, void const *),
-                  void (*remove_data)(void *data))
+liste creer_liste(void)
 {
     liste l;
 
     l.first = NULL;
     l.end = NULL;
     l.nbreElement = 0;
-    l.visuElement = visu_element;
-    l.comparElement = compar_element;
-    l.removeData = remove_data;
 
     return l;
 }
@@ -230,14 +236,15 @@ bool is_elem_empty(element *e)
     return (e == NULL);
 }
 
-void visu_liste(liste l, char const *s)
+void
+visu_liste(liste l, void (*visuElement)(void const *data), char const *s)
 {
-    if(l.visuElement != NULL)
+    if(visuElement != NULL)
     {
         element *p = l.first;
 
         while(!is_elem_empty(p)) {
-            (*(l.visuElement))(p->data);
+            (*(visuElement))(p->data);
             p = p->suiv;
         }
         printf("%s", s);
@@ -247,10 +254,10 @@ void visu_liste(liste l, char const *s)
     }
 }
 
-void free_liste(liste* l)
+void free_liste(liste* l, void (*remove_data)(void *data))
 {
     while(!is_liste_empty(l)) {
-        remove_first_element(l);
+        remove_first_element(l, remove_data);
     }
     l->first = NULL;
     l->end = NULL;
