@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "tab.h"
 
 int searchInd(void const *tab, unsigned int const tailleTab, size_t const tailleType, void const *n, int (*compar)(void const*, void const*)){

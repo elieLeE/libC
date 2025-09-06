@@ -1,9 +1,7 @@
 #ifndef _SHARED_SEARCH_H_
 #define _SHARED_SEARCH_H_
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
 
 typedef struct structDichoSearch structDichoSearch;
 struct structDichoSearch{
