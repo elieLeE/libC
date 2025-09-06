@@ -12,7 +12,7 @@ bool verifPointeur(liste l){
     element *p = l.first;
 
     i = 0;
-    while(!elemEmpty(p)){
+    while(!is_elem_empty(p)){
         tab[i] = *((int *)p->data);
         i++;
         p = p->suiv;
@@ -20,7 +20,7 @@ bool verifPointeur(liste l){
 
     p = l.end;
     i = n-1;
-    while(!elemEmpty(p)){
+    while(!is_elem_empty(p)){
         tab2[i] = *((int*)p->data);
         i--;
         p = p->prec;

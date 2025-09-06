@@ -12,35 +12,35 @@
 #include <stdbool.h>
 #include "type.h"
 
-liste creerListe(void (*visuElement)(void const *data),
-                 int (*comparElement)(void const*, void const*),
-                 void (*removeData)(void *data));
+liste creer_liste(void (*visu_element)(void const *data),
+                  int (*compar_element)(void const*, void const*),
+                  void (*remove_data)(void *data));
 
-bool listeEmpty(liste *l);
-bool elemEmpty(element *e);
+bool is_liste_empty(liste *l);
+bool is_elem_empty(element *e);
 
-void addElementFirst(liste* l, void *e);
-void addElementLast(liste *l, void *e);
-void addElementTrie(liste *l, void *e, bool sensCroissant);
-void addElementTrieC(liste *l, void *e);
-void addElementTrieD(liste *l, void *e);
-void addElementNext(element *e, void *data);
+void add_element_first(liste* l, void *e);
+void add_element_last(liste *l, void *e);
+void add_element_trie(liste *l, void *e, bool sens_croissant);
+void add_element_trie_c(liste *l, void *e);
+void add_element_trie_d(liste *l, void *e);
+void add_element_next(element *e, void *data);
 
-void removeData(liste const *l, void *data);
-void removeFirstElement(liste *l);
-void removeLastElement(liste *l);
-void removeNextElement(liste *l, element *e);
-void removeElementN(liste *l, unsigned int const n);
-//void removeElementAdrrData(liste *l, void *d);
-//void removeElementDoublons(liste *l);
-//void removeElementValData(liste *l, void *data);
+void remove_data(liste const *l, void *data);
+void remove_first_element(liste *l);
+void remove_last_element(liste *l);
+void remove_next_element(liste *l, element *e);
+void remove_element_n(liste *l, unsigned int const n);
+//void remove_element_adrr_data(liste *l, void *d);
+//void remove_element_doublons(liste *l);
+//void remove_element_val_data(liste *l, void *data);
 
-void trieListeFusion(liste *l, bool sensCroissant);
+void trie_liste_fusion(liste *l, bool sens_croissant);
 void division(liste *l);
-void fusion(liste *l, bool sensCroissant);
+void fusion(liste *l, bool sens_croissant);
 
-void visuListe(liste l, char const *s);
+void visu_liste(liste l, char const *s);
 
-void freeListe(liste *l);
+void free_liste(liste *l);
 
 #endif

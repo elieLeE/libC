@@ -19,7 +19,7 @@ int comparElement(void const *d1, void const *d2){
 }
 
 int main(){
-    liste l = creerListe((void(*)(void const*))visuElement,
+    liste l = creer_liste((void(*)(void const*))visuElement,
                          (int(*)(void const*, void const*))comparElement,
                          (void(*)(void *))removeElement);
 
@@ -29,7 +29,7 @@ int main(){
      * simplie l'initilisation de la liste
      * et permet de tester avec et sans liberation explicaites des datas
      * */
-    l = creerListe((void(*)(void const*))visuElement, (int(*)(void const*, void const*))comparElement, NULL);
+    l = creer_liste((void(*)(void const*))visuElement, (int(*)(void const*, void const*))comparElement, NULL);
 
     testAddElementTrieC(&l);
     testAddElementTrieD(&l);

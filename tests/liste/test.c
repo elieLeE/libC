@@ -17,34 +17,34 @@ void testAddAndRemoveElement(liste *l){
     *e = 5;
     *f = 6;
 
-    addElementLast(l, a);
-    addElementFirst(l, b);
-    addElementLast(l, c);
-    removeFirstElement(l);
-    addElementLast(l, d);
-    addElementFirst(l, e);
-    removeLastElement(l);
-    removeFirstElement(l);
-    addElementFirst(l, f);
+    add_element_last(l, a);
+    add_element_first(l, b);
+    add_element_last(l, c);
+    remove_first_element(l);
+    add_element_last(l, d);
+    add_element_first(l, e);
+    remove_last_element(l);
+    remove_first_element(l);
+    add_element_first(l, f);
 
     printf("testAddAndRemoveElement\t : attendu => 6, 1, 3 || obtenu => ");
-    visuListe(*l, "\b\b \n");
+    visu_liste(*l, "\b\b \n");
 
-    freeListe(l);
+    free_liste(l);
 }
 
 void testAddElementTrieC(liste *l){
     int tab[6] = {1, 2, 3, 4, 5, 6};
 
-    addElementTrie(l, &tab[2], true);
-    addElementTrie(l, &tab[4], true);
-    addElementTrie(l, &tab[5], true);
-    addElementTrie(l, &tab[1], true);
-    addElementTrie(l, &tab[3], true);
-    addElementTrie(l, &tab[0], true);
+    add_element_trie(l, &tab[2], true);
+    add_element_trie(l, &tab[4], true);
+    add_element_trie(l, &tab[5], true);
+    add_element_trie(l, &tab[1], true);
+    add_element_trie(l, &tab[3], true);
+    add_element_trie(l, &tab[0], true);
 
     printf("testAddElementTrieC\t : attendu => 1, 2, 3, 4, 5, 6 || obtenu => ");
-    visuListe(*l, "\b\b ");
+    visu_liste(*l, "\b\b ");
 
     if(verifPointeur(*l)){
         printf("|| verifPointeur ok\n");
@@ -53,21 +53,21 @@ void testAddElementTrieC(liste *l){
         printf("|| verifPointeur not ok\n");
     }
 
-    freeListe(l);
+    free_liste(l);
 }
 
 void testAddElementTrieD(liste *l){
     int tab[6] = {1, 2, 3, 4, 5, 6};
 
-    addElementTrie(l, &tab[1], false);
-    addElementTrie(l, &tab[3], false);
-    addElementTrie(l, &tab[0], false);
-    addElementTrie(l, &tab[5], false);
-    addElementTrie(l, &tab[2], false);
-    addElementTrie(l, &tab[4], false);
+    add_element_trie(l, &tab[1], false);
+    add_element_trie(l, &tab[3], false);
+    add_element_trie(l, &tab[0], false);
+    add_element_trie(l, &tab[5], false);
+    add_element_trie(l, &tab[2], false);
+    add_element_trie(l, &tab[4], false);
 
     printf("testAddElementTrieD\t : attendu => 6, 5, 4, 3, 2, 1 || obtenu => ");
-    visuListe(*l, "\b\b ");
+    visu_liste(*l, "\b\b ");
 
     if(verifPointeur(*l)){
         printf("|| verifPointeur ok\n");
@@ -76,18 +76,18 @@ void testAddElementTrieD(liste *l){
         printf("|| verifPointeur not ok\n");
     }
 
-    freeListe(l);
+    free_liste(l);
 }
 
 void testRemoveElement(liste *l){
     /*int tab[6] = {1, 2, 3, 4, 5, 6};
 
-      addElementTrie(l, &tab[0], true);
-      addElementTrie(l, &tab[1], true);
-      addElementTrie(l, &tab[2], true);
-      addElementTrie(l, &tab[3], true);
-      addElementTrie(l, &tab[4], true);
-      addElementTrie(l, &tab[5], true);*/
+      add_element_trie(l, &tab[0], true);
+      add_element_trie(l, &tab[1], true);
+      add_element_trie(l, &tab[2], true);
+      add_element_trie(l, &tab[3], true);
+      add_element_trie(l, &tab[4], true);
+      add_element_trie(l, &tab[5], true);*/
 
     int *a = my_calloc(sizeof(int));
     int *b = my_calloc(sizeof(int));
@@ -103,38 +103,38 @@ void testRemoveElement(liste *l){
     *e = 5;
     *f = 6;
 
-    addElementTrie(l, a, true);
-    addElementTrie(l, b, true);
-    addElementTrie(l, c, true);
-    addElementTrie(l, d, true);
-    addElementTrie(l, e, true);
-    addElementTrie(l, f, true);
+    add_element_trie(l, a, true);
+    add_element_trie(l, b, true);
+    add_element_trie(l, c, true);
+    add_element_trie(l, d, true);
+    add_element_trie(l, e, true);
+    add_element_trie(l, f, true);
 
-    removeElementN(l, 2);
-    //removeElementN(l, 3);
+    remove_element_n(l, 2);
+    //remove_element_n(l, 3);
 
     printf("test1 : attendu => 1, 3, 5, 6  || obtenu => ");
-    visuListe(*l, "\b\b \n");
+    visu_liste(*l, "\b\b \n");
 
-    freeListe(l);
+    free_liste(l);
 }
 void testTriageListe(liste *l){
     int tab[6] = {1, 2, 3, 4, 5, 6};
 
-    addElementTrie(l, &tab[4], true);
-    addElementTrie(l, &tab[0], true);
-    addElementTrie(l, &tab[1], true);
-    addElementTrie(l, &tab[5], true);
-    addElementTrie(l, &tab[3], true);
-    addElementTrie(l, &tab[2], true);
+    add_element_trie(l, &tab[4], true);
+    add_element_trie(l, &tab[0], true);
+    add_element_trie(l, &tab[1], true);
+    add_element_trie(l, &tab[5], true);
+    add_element_trie(l, &tab[3], true);
+    add_element_trie(l, &tab[2], true);
 
     printf("testTriage : avant triage => ");
-    visuListe(*l, "\b\b ");
+    visu_liste(*l, "\b\b ");
 
     //trieListeFusion(l, true);
 
     printf("|| apres triage => ");
-    visuListe(*l, "\b\b \n");
+    visu_liste(*l, "\b\b \n");
 
-    freeListe(l);
+    free_liste(l);
 }
