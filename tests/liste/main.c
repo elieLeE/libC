@@ -19,8 +19,10 @@ int comparElement(void const *d1, void const *d2){
 }
 
 int main(){
-    liste l = creerListe((void(*)(void const*))visuElement, (int(*)(void const*, void const*))comparElement, (void(*)(void *))removeElement);
-    
+    liste l = creerListe((void(*)(void const*))visuElement,
+                         (int(*)(void const*, void const*))comparElement,
+                         (void(*)(void *))removeElement);
+
     testAddAndRemoveElement(&l);
 
     /*
@@ -33,7 +35,7 @@ int main(){
     testAddElementTrieD(&l);
 
     /*l = creerListe((void(*)(void *))visuElement, (int(*)(void*, void*))comparElement, (void(*)(void *))removeElement);
-    testRemoveElement(&l);*/
+      testRemoveElement(&l);*/
 
     return 0;
 }

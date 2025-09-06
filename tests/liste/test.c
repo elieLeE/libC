@@ -45,10 +45,10 @@ void testAddElementTrieC(liste *l){
     visuListe(*l, "\b\b ");
 
     if(verifPointeur(*l)){
-	printf("|| verifPointeur ok\n");
+        printf("|| verifPointeur ok\n");
     }
     else{
-	printf("|| verifPointeur not ok\n");
+        printf("|| verifPointeur not ok\n");
     }
 
     freeListe(l);
@@ -68,10 +68,10 @@ void testAddElementTrieD(liste *l){
     visuListe(*l, "\b\b ");
 
     if(verifPointeur(*l)){
-	printf("|| verifPointeur ok\n");
+        printf("|| verifPointeur ok\n");
     }
     else{
-	printf("|| verifPointeur not ok\n");
+        printf("|| verifPointeur not ok\n");
     }
 
     freeListe(l);
@@ -80,12 +80,12 @@ void testAddElementTrieD(liste *l){
 void testRemoveElement(liste *l){
     /*int tab[6] = {1, 2, 3, 4, 5, 6};
 
-    addElementTrie(l, &tab[0], true);
-    addElementTrie(l, &tab[1], true);
-    addElementTrie(l, &tab[2], true);
-    addElementTrie(l, &tab[3], true);
-    addElementTrie(l, &tab[4], true);
-    addElementTrie(l, &tab[5], true);*/
+      addElementTrie(l, &tab[0], true);
+      addElementTrie(l, &tab[1], true);
+      addElementTrie(l, &tab[2], true);
+      addElementTrie(l, &tab[3], true);
+      addElementTrie(l, &tab[4], true);
+      addElementTrie(l, &tab[5], true);*/
 
     int *a = my_calloc(sizeof(int));
     int *b = my_calloc(sizeof(int));
