@@ -10,6 +10,6 @@ int main(){
     echangeGenerique(&a, &b, sizeof(a)); 
 
     affResultTest("testEchangeGenerique", ((a==13) && (b = 5)));
-    
+
     return 0;
 }
