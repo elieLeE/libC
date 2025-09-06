@@ -10,12 +10,7 @@
  * */
 
 #include <stdbool.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include "../mem/alloc.h"
 #include "type.h"
-#include "removeElement.h"
 
 liste creerListe(void (*visuElement)(void const *data), int (*comparElement)(void const*, void const*), void (*removeData)(void *data));
 bool listeEmpty(liste *l);

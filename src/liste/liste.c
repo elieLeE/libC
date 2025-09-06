@@ -1,4 +1,6 @@
 #include "liste.h"
+#include "../mem/alloc.h"
+#include "removeElement.h"
 
 liste creerListe(void (*visuElement)(void const *data), int (*comparElement)(void const *, void const *), void (*removeData)(void *data)){
     liste l;

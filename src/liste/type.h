@@ -1,15 +1,12 @@
 #ifndef _TYPE_H_
 #define _TYPE_H_
 
-typedef struct liste liste;
-typedef struct element element;
-
-struct element{
+typedef struct element{
     struct element *prec, *suiv;
     void *data;
-};
+} element;
 
-struct liste{
+typedef struct liste{
     struct element *first, *end;
     unsigned int nbreElement;
 
@@ -22,6 +19,6 @@ struct liste{
      *   */
     int (*comparElement)(void const *d1, void const *d2);
     void (*removeData)(void *data);
-};
+} liste;
 
 #endif
