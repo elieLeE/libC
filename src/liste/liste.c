@@ -1,6 +1,5 @@
 #include "liste.h"
 #include "../mem/alloc.h"
-#include "removeElement.h"
 
 /* {{{ Adding methods */
 

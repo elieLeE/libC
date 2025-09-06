@@ -1,4 +1,6 @@
 #include "test.h"
+#include "../../src/mem/alloc.h"
+#include "verif.h"
 
 void testAddAndRemoveElement(liste *l){
     int *a = my_calloc(sizeof(int));
