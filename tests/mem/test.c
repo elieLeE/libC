@@ -1,4 +1,8 @@
+#include <stdio.h>
+
 #include "test.h"
+#include "../../src/mem/alloc.h"
+
 
 void testMyCalloc(){
     printf("testMyCalloc : \n");
@@ -27,13 +31,13 @@ void testMyRealloc(){
     unsigned int taille = rand()%(max - min) + min;
     a = my_realloc(a, taille*sizeof(*a));
     for(i=0; i<taille; i++){
-	a[i] = rand()%(taille*max - min) + min;
+        a[i] = rand()%(taille*max - min) + min;
     }
 
     taille = rand()%(100 - 1) + 1;
     a = my_realloc(a, taille*sizeof(*a));
     for(i=0; i<taille; i++){
-	a[i] = rand()%(taille*max - min) + min;
+        a[i] = rand()%(taille*max - min) + min;
     }
     free(a);
 }
@@ -48,13 +52,13 @@ void testAllocTab2D(){
 
     int **tab = (int **)allocTab2D(nbreL, nbreC, sizeof(**tab));
     for(i=0; i<nbreL; i++){
-	for(j=0; j<nbreC; j++){
-	    tab[i][j] = rand()%((nbreL + nbreC)*max - min) + min;
-	}
+        for(j=0; j<nbreC; j++){
+            tab[i][j] = rand()%((nbreL + nbreC)*max - min) + min;
+        }
     }
 
     free(tab);
 }
 
 
-    
+
