@@ -9,13 +9,5 @@
 #include "type.h"
 #include "liste.h"
 
-void removeData(liste const *l, void *data);
-void removeFirstElement(liste *l);
-void removeLastElement(liste *l);
-void removeNextElement(liste *l, element *e);
-void removeElementN(liste *l, unsigned int const n);
-//void removeElementAdrrData(liste *l, void *d);
-//void removeElementDoublons(liste *l);
-//void removeElementValData(liste *l, void *data);
 
 #endif

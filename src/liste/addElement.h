@@ -9,11 +9,5 @@
 #include "type.h"
 #include "liste.h"
 
-void addElementFirst(liste* l, void *e);
-void addElementLast(liste *l, void *e);
-void addElementTrie(liste *l, void *e, bool sensCroissant);
-void addElementTrieC(liste *l, void *e);
-void addElementTrieD(liste *l, void *e);
-void addElementNext(element *e, void *data);
 
 #endif
