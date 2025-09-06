@@ -6,6 +6,6 @@
 #include <stdbool.h>
 #include "../../src/liste/liste.h"
 
-bool verifPointeur(liste l);
+bool verif_pointeur(liste l);
 
 #endif

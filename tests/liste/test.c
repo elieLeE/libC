@@ -2,7 +2,8 @@
 #include "../../src/mem/alloc.h"
 #include "verif.h"
 
-void testAddAndRemoveElement(liste *l){
+void test_add_and_remove_element(liste *l)
+{
     int *a = my_calloc(sizeof(int));
     int *b = my_calloc(sizeof(int));
     int *c = my_calloc(sizeof(int));
@@ -27,13 +28,14 @@ void testAddAndRemoveElement(liste *l){
     remove_first_element(l);
     add_element_first(l, f);
 
-    printf("testAddAndRemoveElement\t : attendu => 6, 1, 3 || obtenu => ");
+    printf("test_add_and_remove_element\t : attendu => 6, 1, 3 || obtenu => ");
     visu_liste(*l, "\b\b \n");
 
     free_liste(l);
 }
 
-void testAddElementTrieC(liste *l){
+void test_add_element_trie_c(liste *l)
+{
     int tab[6] = {1, 2, 3, 4, 5, 6};
 
     add_element_trie(l, &tab[2], true);
@@ -43,20 +45,21 @@ void testAddElementTrieC(liste *l){
     add_element_trie(l, &tab[3], true);
     add_element_trie(l, &tab[0], true);
 
-    printf("testAddElementTrieC\t : attendu => 1, 2, 3, 4, 5, 6 || obtenu => ");
+    printf("test_add_element_trie_c\t : attendu => 1, 2, 3, 4, 5, 6 || "
+           "obtenu => ");
     visu_liste(*l, "\b\b ");
 
-    if(verifPointeur(*l)){
-        printf("|| verifPointeur ok\n");
+    if(verif_pointeur(*l)){
+        printf("|| verif_pointeur ok\n");
     }
     else{
-        printf("|| verifPointeur not ok\n");
+        printf("|| verif_pointeur not ok\n");
     }
 
     free_liste(l);
 }
 
-void testAddElementTrieD(liste *l){
+void test_add_element_trie_d(liste *l){
     int tab[6] = {1, 2, 3, 4, 5, 6};
 
     add_element_trie(l, &tab[1], false);
@@ -69,17 +72,18 @@ void testAddElementTrieD(liste *l){
     printf("testAddElementTrieD\t : attendu => 6, 5, 4, 3, 2, 1 || obtenu => ");
     visu_liste(*l, "\b\b ");
 
-    if(verifPointeur(*l)){
-        printf("|| verifPointeur ok\n");
+    if(verif_pointeur(*l)){
+        printf("|| verif_pointeur ok\n");
     }
     else{
-        printf("|| verifPointeur not ok\n");
+        printf("|| verif_pointeur not ok\n");
     }
 
     free_liste(l);
 }
 
-void testRemoveElement(liste *l){
+void test_remove_element(liste *l)
+{
     /*int tab[6] = {1, 2, 3, 4, 5, 6};
 
       add_element_trie(l, &tab[0], true);
@@ -118,7 +122,8 @@ void testRemoveElement(liste *l){
 
     free_liste(l);
 }
-void testTriageListe(liste *l){
+void test_triage_liste(liste *l)
+{
     int tab[6] = {1, 2, 3, 4, 5, 6};
 
     add_element_trie(l, &tab[4], true);

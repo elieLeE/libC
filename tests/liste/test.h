@@ -3,10 +3,10 @@
 
 #include "../../src/liste/liste.h"
 
-void testAddAndRemoveElement(liste *l);
-void testAddElementTrieC(liste *l);
-void testAddElementTrieD(liste *l);
-void testRemoveElement(liste *l);
-void testTriageListe(liste *l);
+void test_add_and_remove_element(liste *l);
+void test_add_element_trie_c(liste *l);
+void test_add_element_trie_d(liste *l);
+void test_remove_element(liste *l);
+void test_triage_liste(liste *l);
 
 #endif

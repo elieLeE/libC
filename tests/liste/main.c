@@ -23,18 +23,20 @@ int main(){
                          (int(*)(void const*, void const*))comparElement,
                          (void(*)(void *))removeElement);
 
-    testAddAndRemoveElement(&l);
+    test_add_and_remove_element(&l);
 
     /*
      * simplie l'initilisation de la liste
      * et permet de tester avec et sans liberation explicaites des datas
      * */
-    l = creer_liste((void(*)(void const*))visuElement, (int(*)(void const*, void const*))comparElement, NULL);
+    l = creer_liste((void(*)(void const*))visuElement,
+                    (int(*)(void const*, void const*))comparElement, NULL);
 
-    testAddElementTrieC(&l);
-    testAddElementTrieD(&l);
+    test_add_element_trie_c(&l);
+    test_add_element_trie_d(&l);
 
-    /*l = creerListe((void(*)(void *))visuElement, (int(*)(void*, void*))comparElement, (void(*)(void *))removeElement);
+    /*l = creerListe((void(*)(void *))visuElement,
+     * (int(*)(void*, void*))comparElement, (void(*)(void *))removeElement);
       testRemoveElement(&l);*/
 
     return 0;
