@@ -1,4 +1,5 @@
 #include "test.h"
+#include "../../src/mem/mem.h"
 
 bool test_lecture_simple()
 {

@@ -1,5 +1,5 @@
 #include "prime.h"
-#include "../mem/alloc.h"
+#include "../mem/mem.h"
 
 bool isPrime(unsigned long n){
     unsigned long i;

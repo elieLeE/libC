@@ -1,5 +1,5 @@
 #include "test.h"
-#include "../../src/mem/alloc.h"
+#include "../../src/mem/mem.h"
 #include "verif.h"
 
 void visu_element(void const *data)

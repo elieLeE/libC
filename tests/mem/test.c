@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "test.h"
-#include "../../src/mem/alloc.h"
+#include "../../src/mem/mem.h"
 
 
 void testMyCalloc(){

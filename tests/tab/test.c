@@ -1,4 +1,5 @@
 #include "test.h"
+#include "../../src/mem/mem.h"
 
 bool testTrieFusion(int (*comparElement)(void const*, void const*)){
     //unsigned int tab[TAILLE_TEST];

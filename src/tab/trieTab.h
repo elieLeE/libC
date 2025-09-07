@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../mem/alloc.h"
 
 void trieFusion(void *tab, unsigned int const tailleTab, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2));
 void division(void *tab, unsigned int const deb, unsigned int const fin, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2));

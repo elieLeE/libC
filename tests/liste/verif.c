@@ -1,5 +1,5 @@
 #include "verif.h"
-#include "../../src/mem/alloc.h"
+#include "../../src/mem/mem.h"
 
 bool verif_pointeur(liste l){
     int n = l.nbreElement;

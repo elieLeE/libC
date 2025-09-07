@@ -1,5 +1,5 @@
 #include "swap.h"
-#include "mem/alloc.h"
+#include "mem/mem.h"
 
 void echangeGenerique(void* a, void* b, size_t taille){
     void *c = p_calloc(taille);

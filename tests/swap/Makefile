@@ -11,7 +11,7 @@ CC=gcc
 CFLAGS=-std=c99 -Wextra -Wall -g# -ansi -pedantic
 LDFLAGS=
 EXEC=test
-SRC= $(wildcard *.c ../../src/swap.c ../shared/ftest.c ../../src/mem/alloc.c)
+SRC= $(wildcard *.c ../../src/swap.c ../shared/ftest.c ../../src/mem/mem.c)
 OBJ= $(SRC:.c=.o)
 
 all: $(EXEC) cleanSimple

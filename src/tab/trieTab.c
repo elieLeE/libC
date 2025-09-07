@@ -1,4 +1,5 @@
 #include "trieTab.h"
+#include "../mem/mem.h"
 
 void trieFusion(void *tab, unsigned int const tailleTab, size_t const tailleType, int (*comparElement)(void const *d1, void const *d2)){
     if(tab == NULL){
