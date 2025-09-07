@@ -11,4 +11,6 @@ void** allocTab2D(int const lig, int const col, size_t const tailleType);
 
 void liberationTab2D(void** matrice, int const lig);
 
+void p_free(void **p);
+
 #endif

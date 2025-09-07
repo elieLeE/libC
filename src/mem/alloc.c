@@ -64,10 +64,15 @@ void liberationTab2D(void** matrice, int const lig)
                 __FILE__, __LINE__);
         exit(0);
     }
+
     for(i=0; i<lig; i++) {
-        free(matrice[i]);
-        matrice[i] = NULL;
+        p_free(&matrice[i]);
     }
-    free(matrice);
-    matrice = NULL;
+    p_free(matrice);
+}
+
+void p_free(void **p)
+{
+    free(*p);
+    *p = NULL;
 }
