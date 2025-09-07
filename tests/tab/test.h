@@ -1,12 +1,7 @@
 #ifndef _TEST_H_
 #define _TEST_H_
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
-#include "../../src/tab/tab.h"
-#include "../../src/tab/trieTab.h"
-#include "fonctionTest.h"
 
 #define TAILLE_TEST 1000000
 

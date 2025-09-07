@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "fonctionTest.h"
-#include "../../src/tab/tab.h"
 #include "test.h"
 #include "../shared/ftest.h"
 
