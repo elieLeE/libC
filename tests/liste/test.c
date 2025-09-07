@@ -2,15 +2,18 @@
 #include "../../src/mem/alloc.h"
 #include "verif.h"
 
-void visu_element(void const *data){
+void visu_element(void const *data)
+{
     printf("%d, ", *((int *)data));
 }
 
-void remove_element(void *data){
+void remove_element(void *data)
+{
     p_free(&data);
 }
 
-int compar_element(void const *d1, void const *d2){
+int compar_element(void const *d1, void const *d2)
+{
     int const *a = d1;
     int const *b = d2;
 
