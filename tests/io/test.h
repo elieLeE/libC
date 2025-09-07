@@ -8,9 +8,8 @@
 #include "../../src/io/fichier.h"
 #include "../../src/mem/alloc.h"
 
-bool comparTab(unsigned int const *tab1, unsigned int const *tab2, unsigned int const col);
 bool test_lecture_simple();
-bool testLectureMatrice();
+bool test_lecture_matrice();
 
 #endif
 

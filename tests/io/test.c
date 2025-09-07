@@ -12,6 +12,19 @@ bool test_lecture_simple()
     return !strncmp(s, temoin, strlen(temoin));
 }
 
+static bool compar_tab(unsigned int const *tab1,
+                       unsigned int const *tab2,
+                       unsigned int const taille)
+{
+    unsigned int i;
+
+    for(i=0; i<taille; i++){
+        if(tab1[i] != tab2[i]){
+            return false;
+        }
+    }
+    return true;
+}
 void visu(unsigned int *tab, unsigned int taille)
 {
     unsigned int i;
@@ -21,7 +34,7 @@ void visu(unsigned int *tab, unsigned int taille)
     printf("\n");
 }
 
-bool testLectureMatrice(){
+bool test_lecture_matrice(){
     unsigned int i;
     unsigned int lig = 20;
     unsigned int col = 7;
@@ -52,7 +65,7 @@ bool testLectureMatrice(){
     lire_matrice(f, tab, lig, col);
 
     for(i=0; i<lig; i++){
-        if(!comparTab(mat[i], tab[i], 7)){
+        if(!compar_tab(mat[i], tab[i], 7)){
             printf("i : %d\n", i);
             visu(tab[i], col);
             return false;
@@ -61,12 +74,3 @@ bool testLectureMatrice(){
     return true;
 }
 
-bool comparTab(unsigned int const *tab1, unsigned int const *tab2, unsigned int const taille){
-    unsigned int i;
-    for(i=0; i<taille; i++){
-        if(tab1[i] != tab2[i]){
-            return false;
-        }
-    }
-    return true;
-}
