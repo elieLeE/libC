@@ -7,7 +7,7 @@ void visu_element(void const *data){
 }
 
 void remove_element(void *data){
-    free(data);
+    p_free(&data);
 }
 
 int compar_element(void const *d1, void const *d2){

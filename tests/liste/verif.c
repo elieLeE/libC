@@ -38,8 +38,8 @@ bool verif_pointeur(liste l){
         }
     }
 
-    free(tab);
-    free(tab2);
+    p_free((void **)&tab);
+    p_free((void **)&tab2);
 
     return b;
 }

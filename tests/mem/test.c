@@ -9,13 +9,13 @@ void testMyCalloc(){
     int *a = p_calloc(sizeof(*a));
     *a = 3;
     printf("a : %d\n", *a);
-    free(a);
+    p_free((void **)&a);
     a = NULL;
 
     a = p_calloc(sizeof(*a));
     *a = 10;
     printf("a : %d\n", *a);
-    free(a);
+    p_free((void **)&a);
     a = NULL;
 }
 
@@ -39,11 +39,11 @@ void testMyRealloc(){
     for(i=0; i<taille; i++){
         a[i] = rand()%(taille*max - min) + min;
     }
-    free(a);
+    p_free((void **)&a);
 }
 
 void testAllocTab2D(){
-    printf("\ntestAllocTab2D : \n");
+    printf("\ntestAllocTab2D : ");
     unsigned int max = 100;
     unsigned int min = 10;
     unsigned int nbreL = rand()%(max - min) + min;
@@ -57,7 +57,9 @@ void testAllocTab2D(){
         }
     }
 
-    free(tab);
+    p_free((void **)&tab);
+
+    printf("OK\n");
 }
 
 

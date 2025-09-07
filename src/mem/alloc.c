@@ -71,7 +71,7 @@ void free_tab_2d(void** matrice, int const lig)
     p_free(matrice);
 }
 
-void p_free(void **p)
+void _p_free(void **p)
 {
     free(*p);
     *p = NULL;

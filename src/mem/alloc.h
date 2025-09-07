@@ -11,6 +11,10 @@ void** alloc_tab_2d(int const lig, int const col, size_t const tailleType);
 
 void free_tab_2d(void** matrice, int const lig);
 
-void p_free(void **p);
+void _p_free(void **p);
+#define p_free(_p)                                                            \
+    do {                                                                      \
+        _p_free(_p);                                                          \
+    } while (0)
 
 #endif

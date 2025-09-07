@@ -128,7 +128,7 @@ void remove_first_element(liste *l, void (*remove_data)(void *data))
         if (remove_data != NULL) {
             (*remove_data)(p->data);
         }
-        free(p);
+        p_free((void **)&p);
 
         if(!is_liste_empty(l)) {
             l->first->prec = NULL;
@@ -148,7 +148,7 @@ void remove_last_element(liste* l, void (*remove_data)(void *data))
         if (remove_data != NULL) {
             (*remove_data)(p->data);
         }
-        free(p);
+        p_free((void **)&p);
 
         if(!is_liste_empty(l)) {
             l->end->suiv = NULL;
@@ -197,7 +197,7 @@ remove_next_element(element *e, void (*remove_data)(void *data))
     if (remove_data != NULL) {
         (*remove_data)(p->data);
     }
-    free(p);
+    p_free((void **)&p);
 }
 
 /* }}} */
