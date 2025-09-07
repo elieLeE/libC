@@ -40,8 +40,7 @@ void remplissageTabPrimeBool(bool *tab, unsigned int lim){
 
 void remplissageTabPrime(unsigned int* tabPrime, unsigned int lim){
     unsigned int i, j;
-    bool *tabBool = my_calloc(lim*sizeof(bool));
-    //bool *tabBool = calloc(lim, sizeof(bool));
+    bool *tabBool = p_calloc(lim*sizeof(bool));
 
     remplissageTabPrimeBool(tabBool, lim);
 

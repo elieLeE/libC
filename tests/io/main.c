@@ -5,7 +5,7 @@
 #include "test.h"
 
 int main(){
-    affResultTest("testLecture\t\t", testLectureSimple());
+    affResultTest("testLecture\t\t", test_lecture_simple());
     affResultTest("testLectureMatrice\t",testLectureMatrice());
     return 0;
 }

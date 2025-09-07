@@ -2,7 +2,7 @@
 
 bool testTrieFusion(int (*comparElement)(void const*, void const*)){
     //unsigned int tab[TAILLE_TEST];
-    unsigned int *tab = my_calloc(TAILLE_TEST*sizeof(*tab));
+    unsigned int *tab = p_calloc(TAILLE_TEST*sizeof(*tab));
 
     randomTabRemplissage(tab, TAILLE_TEST);
     trieFusion(tab, TAILLE_TEST, sizeof(*tab), comparElement);
@@ -12,7 +12,7 @@ bool testTrieFusion(int (*comparElement)(void const*, void const*)){
 
 void testQSort(int (*comparElement)(void const*, void const*)){
     //unsigned int tab[TAILLE_TEST];
-    unsigned int *tab = my_calloc(TAILLE_TEST*sizeof(*tab));
+    unsigned int *tab = p_calloc(TAILLE_TEST*sizeof(*tab));
 
     randomTabRemplissage(tab, TAILLE_TEST);
     qsort(tab, TAILLE_TEST, sizeof(unsigned int), comparElement);

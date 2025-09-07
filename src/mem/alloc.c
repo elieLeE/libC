@@ -1,6 +1,6 @@
 #include "alloc.h"
 
-void* my_calloc(size_t const taille)
+void* p_calloc(size_t const taille)
 {
     void *p;
 
@@ -19,7 +19,7 @@ void* my_calloc(size_t const taille)
     return p;
 }
 
-void* my_realloc(void *p, size_t const taille)
+void* p_realloc(void *p, size_t const taille)
 {
     if(taille<=0) {
         fprintf(stderr, "taille <= 0, fichier %s, ligne %d\n",
@@ -36,7 +36,7 @@ void* my_realloc(void *p, size_t const taille)
     return p;
 }
 
-void** allocTab2D(int const lig, int const col, size_t const tailleType)
+void** alloc_tab_2d(int const lig, int const col, size_t const tailleType)
 {
     int i, t;
     void **tab;
@@ -47,15 +47,15 @@ void** allocTab2D(int const lig, int const col, size_t const tailleType)
         exit(0);
     }
 
-    tab = my_calloc(lig * sizeof(void*));
+    tab = p_calloc(lig * sizeof(void*));
     t = col * tailleType;
     for(i=0; i<lig; i++) {
-        tab[i] = my_calloc(t);
+        tab[i] = p_calloc(t);
     }
     return tab;
 }
 
-void liberationTab2D(void** matrice, int const lig)
+void free_tab_2d(void** matrice, int const lig)
 {
     int i;
 

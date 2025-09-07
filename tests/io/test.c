@@ -1,9 +1,9 @@
 #include "test.h"
 
-bool testLectureSimple()
+bool test_lecture_simple()
 {
     FILE* f = ouv_fichier("fichierTest", "r");
-    char *s = my_calloc(50*sizeof(*s));
+    char *s = p_calloc(50*sizeof(*s));
     char temoin[] = "test de lecture";
 
     fgets(s, 50, f);
@@ -46,7 +46,7 @@ bool testLectureMatrice(){
         {48, 65, 0, 11, 10, 8, 41},
         {31, 8, 21, 39, 27, 5, 12}};
     unsigned int **tab =
-        (unsigned int**)allocTab2D(lig, col, sizeof(unsigned int));
+        (unsigned int**)alloc_tab_2d(lig, col, sizeof(unsigned int));
     FILE* f = ouv_fichier("fichierTestLectureMatrice", "r");
 
     lire_matrice(f, tab, lig, col);

@@ -15,9 +15,9 @@ struct liste{
 extern void echangeGenerique(void* , void* , size_t );
 
 /* IO */
-extern FILE* ouvFichier(char* , char* );
-extern void fermerFichier(FILE **);
-extern void lireMatrice(FILE *, unsigned int** , int, int);
+extern FILE* ouv_fichier(char* , char* );
+extern void fermer_fichier(FILE **);
+extern void lire_matrice(FILE *, unsigned int** , int, int);
 
 /* MATH */
 /* NBRE */
@@ -34,10 +34,10 @@ extern unsigned long sum1ToN(unsigned long );
 extern unsigned long sunCarre(unsigned long );
 
 /* MEM */
-extern void* my_calloc(size_t );
-extern void* my_realloc(void *, size_t );
-extern void** allocTab2D(int , int , int );
-extern void liberationTab2D(void**, int );
+extern void* p_calloc(size_t );
+extern void* p_realloc(void *, size_t );
+extern void** alloc_tab_2d(int , int , int );
+extern void free_tab_2d(void**, int );
 
 /* TAB */
 extern void visuTab(unsigned int* , unsigned int , void (*)(void *e), char* );

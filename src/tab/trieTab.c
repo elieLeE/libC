@@ -37,8 +37,8 @@ void fusion(void *tab, unsigned int const deb, unsigned int const mil, unsigned 
     void *addr1, *addr2, *addr3;
     void *maxAddr1, *maxAddr2;
 
-    tab1 = my_calloc(tailleTab1*tailleType);
-    tab2 = my_calloc(tailleTab2*tailleType);
+    tab1 = p_calloc(tailleTab1*tailleType);
+    tab2 = p_calloc(tailleTab2*tailleType);
 
     memcpy(tab1, tab+deb*tailleType, tailleTab1*tailleType);
     memcpy(tab2, tab+(mil+1)*tailleType, tailleTab2*tailleType);

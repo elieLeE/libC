@@ -9,7 +9,7 @@
 #include "../../src/mem/alloc.h"
 
 bool comparTab(unsigned int const *tab1, unsigned int const *tab2, unsigned int const col);
-bool testLectureSimple();
+bool test_lecture_simple();
 bool testLectureMatrice();
 
 #endif

@@ -6,8 +6,8 @@ bool verif_pointeur(liste l){
     int i;
     bool b = true;
 
-    int *tab = my_calloc(n * sizeof(*tab));
-    int *tab2 = my_calloc(n * sizeof(*tab2));
+    int *tab = p_calloc(n * sizeof(*tab));
+    int *tab2 = p_calloc(n * sizeof(*tab2));
 
     element *p = l.first;
 

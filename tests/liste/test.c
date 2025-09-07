@@ -19,12 +19,12 @@ int compar_element(void const *d1, void const *d2){
 
 void test_add_and_remove_element(liste *l)
 {
-    int *a = my_calloc(sizeof(int));
-    int *b = my_calloc(sizeof(int));
-    int *c = my_calloc(sizeof(int));
-    int *d = my_calloc(sizeof(int));
-    int *e = my_calloc(sizeof(int));
-    int *f = my_calloc(sizeof(int));
+    int *a = p_calloc(sizeof(int));
+    int *b = p_calloc(sizeof(int));
+    int *c = p_calloc(sizeof(int));
+    int *d = p_calloc(sizeof(int));
+    int *e = p_calloc(sizeof(int));
+    int *f = p_calloc(sizeof(int));
 
     *a = 1;
     *b = 2;
@@ -108,12 +108,12 @@ void test_remove_element(liste *l)
       add_element_trie(l, &tab[4], true);
       add_element_trie(l, &tab[5], true);*/
 
-    int *a = my_calloc(sizeof(int));
-    int *b = my_calloc(sizeof(int));
-    int *c = my_calloc(sizeof(int));
-    int *d = my_calloc(sizeof(int));
-    int *e = my_calloc(sizeof(int));
-    int *f = my_calloc(sizeof(int));
+    int *a = p_calloc(sizeof(int));
+    int *b = p_calloc(sizeof(int));
+    int *c = p_calloc(sizeof(int));
+    int *d = p_calloc(sizeof(int));
+    int *e = p_calloc(sizeof(int));
+    int *f = p_calloc(sizeof(int));
 
     *a = 1;
     *b = 2;

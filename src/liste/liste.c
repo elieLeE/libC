@@ -5,7 +5,7 @@
 
 void add_element_first(liste* l, void *data)
 {
-    element* new = my_calloc(sizeof(*new));
+    element* new = p_calloc(sizeof(*new));
 
     new->data = data;
     new->suiv = l->first;
@@ -23,7 +23,7 @@ void add_element_first(liste* l, void *data)
 
 void add_element_last(liste *l, void *data)
 {
-    element* new = my_calloc(sizeof(*new));
+    element* new = p_calloc(sizeof(*new));
 
     new->data = data;
     new->suiv = NULL;
@@ -82,7 +82,7 @@ void add_element_trie_c(liste *l, void *data,
 
 void add_element_next(element *e, void *data)
 {
-    element *new = my_calloc(sizeof(*new));
+    element *new = p_calloc(sizeof(*new));
 
     new->data = data;
     new->suiv = e->suiv;

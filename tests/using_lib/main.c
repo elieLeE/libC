@@ -3,7 +3,7 @@
 #include <libcmine.h>
 
 void testCalloc(){
-    int *a = my_calloc(sizeof(int));
+    int *a = p_calloc(sizeof(int));
     if(a != NULL){
 	printf("allocation done\n");
     }
