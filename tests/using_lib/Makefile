@@ -10,12 +10,12 @@
 CC=gcc
 CFLAGS=-std=c99 -Wextra -Wall -g# -ansi -pedantic
 LDFLAGS=-lcmine
-EXEC=prog 
+EXEC=test
 SRC= $(wildcard *.c)
 OBJ= $(SRC:.c=.o)
 INCLUDE=-I include -L lib 
 
-all: $(EXEC)
+all: $(EXEC) cleanSimple
 
 $(EXEC): $(OBJ)
 	$(CC) $(INCLUDE) -o $@ $^ $(LDFLAGS)
@@ -23,7 +23,7 @@ $(EXEC): $(OBJ)
 %.o: %.c
 	$(CC) $(INCLUDE) -o $@ -c $< $(CFLAGS)
 
-.PHONY: cleanSimple clean 
+.PHONY: cleanSimple clean
 
 cleanSimple:
 	rm -rf $(OBJ)
