@@ -2,7 +2,7 @@
 #include "test.h"
 
 int main(){
-    liste l = creer_liste();
+    generic_liste_t l = creer_liste();
 
     test_add_and_remove_element(&l);
 

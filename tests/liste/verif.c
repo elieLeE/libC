@@ -1,7 +1,7 @@
 #include "verif.h"
 #include "../../src/mem/mem.h"
 
-bool verif_pointeur(liste l){
+bool verif_pointeur(generic_liste_t l){
     int n = l.nbreElement;
     int i;
     bool b = true;
@@ -9,7 +9,7 @@ bool verif_pointeur(liste l){
     int *tab = p_calloc(n * sizeof(*tab));
     int *tab2 = p_calloc(n * sizeof(*tab2));
 
-    element *p = l.first;
+    generic_elem_liste_t *p = l.first;
 
     i = 0;
     while(!is_elem_empty(p)){

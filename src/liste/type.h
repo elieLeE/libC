@@ -1,23 +1,14 @@
 #ifndef _TYPE_H_
 #define _TYPE_H_
 
-typedef struct element{
-    struct element *prec, *suiv;
+typedef struct generic_elem_liste_t {
+    struct generic_elem_liste_t *prec, *suiv;
     void *data;
-} element;
+} generic_elem_liste_t;
 
-typedef struct liste{
-    struct element *first, *end;
+typedef struct generic_liste_t {
     unsigned int nbreElement;
-
-    /*
-     * renvoie :
-     * - < 0 si d1 < d2
-     * - 0 si d1 == d2
-     * - > 0 si d1 > d2
-     *   */
-    int (*comparElement)(void const *d1, void const *d2);
-    void (*removeData)(void *data);
-} liste;
+    generic_elem_liste_t *first, *end;
+} generic_liste_t;
 
 #endif
