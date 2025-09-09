@@ -1,7 +1,8 @@
 #include "../../src/liste/liste.h"
 #include "test.h"
 
-int main(){
+int main()
+{
     generic_liste_t l = gl_init();
 
     test_add_and_remove_element(&l);

@@ -18,7 +18,7 @@ void gl_add_elem_first(generic_liste_t* l, void *data)
     }
 
     l->first = new;
-    (l->nbreElement)++;
+    (l->nbre_elem)++;
 }
 
 void gl_add_elem_last(generic_liste_t *l, void *data)
@@ -36,7 +36,7 @@ void gl_add_elem_last(generic_liste_t *l, void *data)
     }
 
     l->end = new;
-    (l->nbreElement)++;
+    (l->nbre_elem)++;
 }
 
 void gl_add_elem_trie(generic_liste_t *l, void *data,
@@ -76,7 +76,7 @@ void gl_add_elem_trie_c(generic_liste_t *l, void *data,
             }
         }
         gl_add_elem_next(p, data);
-        (l->nbreElement)++;
+        (l->nbre_elem)++;
     }
 }
 
@@ -109,7 +109,7 @@ void gl_add_elem_trie_d(generic_liste_t *l, void *data,
             }
         }
         gl_add_elem_next(p, data);
-        (l->nbreElement)++;
+        (l->nbre_elem)++;
     }
 }
 
@@ -122,7 +122,7 @@ void gl_remove_first_elem(generic_liste_t *l, void (*remove_data)(void *data))
         generic_elem_liste_t *p = l->first;
 
         l->first = l->first->suiv;
-        (l->nbreElement)--;
+        (l->nbre_elem)--;
         /* remove_data can be NULL as data can contain a data detained by
          * someone else */
         if (remove_data != NULL) {
@@ -142,7 +142,7 @@ void gl_remove_last_elem(generic_liste_t* l, void (*remove_data)(void *data))
         generic_elem_liste_t *p = l->end;
 
         l->end = l->end->prec;
-        (l->nbreElement)--;
+        (l->nbre_elem)--;
         /* remove_data can be NULL as data can contain a data detained by
          * someone else */
         if (remove_data != NULL) {
@@ -162,10 +162,10 @@ void gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
     printf("removeElementN NOT YET FONCTIONNAL\n");
     return;
 
-    if(((int)n > 0) && (n <= l->nbreElement)) {
+    if(((int)n > 0) && (n <= l->nbre_elem)) {
         if(n == 1) {
             gl_remove_first_elem(l, remove_data);
-        } else if(n == l->nbreElement) {
+        } else if(n == l->nbre_elem) {
             gl_remove_last_elem(l, remove_data);
         } else {
             generic_elem_liste_t *p = NULL;
@@ -221,7 +221,7 @@ generic_liste_t gl_init(void)
 
     l.first = NULL;
     l.end = NULL;
-    l.nbreElement = 0;
+    l.nbre_elem = 0;
 
     return l;
 }

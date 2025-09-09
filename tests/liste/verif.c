@@ -1,11 +1,11 @@
 #include "verif.h"
 #include "../../src/mem/mem.h"
 
-bool verif_pointeur(generic_liste_t l){
-    int n = l.nbreElement;
+bool verif_pointeur(generic_liste_t l)
+{
+    int n = l.nbre_elem;
     int i;
     bool b = true;
-
     int *tab = p_calloc(n * sizeof(*tab));
     int *tab2 = p_calloc(n * sizeof(*tab2));
 
