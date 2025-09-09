@@ -2,7 +2,7 @@
 #include "test.h"
 
 int main(){
-    generic_liste_t l = creer_liste();
+    generic_liste_t l = gl_init();
 
     test_add_and_remove_element(&l);
 
@@ -10,7 +10,7 @@ int main(){
      * simplie l'initilisation de la liste
      * et permet de tester avec et sans liberation explicaites des datas
      * */
-    l = creer_liste();
+    l = gl_init();
 
     test_add_element_trie_c(&l);
     test_add_element_trie_d(&l);

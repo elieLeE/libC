@@ -12,7 +12,7 @@ bool verif_pointeur(generic_liste_t l){
     generic_elem_liste_t *p = l.first;
 
     i = 0;
-    while(!is_elem_empty(p)){
+    while(!gl_is_elem_empty(p)){
         tab[i] = *((int *)p->data);
         i++;
         p = p->suiv;
@@ -20,7 +20,7 @@ bool verif_pointeur(generic_liste_t l){
 
     p = l.end;
     i = n-1;
-    while(!is_elem_empty(p)){
+    while(!gl_is_elem_empty(p)){
         tab2[i] = *((int*)p->data);
         i--;
         p = p->prec;

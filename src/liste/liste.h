@@ -11,39 +11,43 @@
 #include <stdbool.h>
 #include "type.h"
 
-generic_liste_t creer_liste(void);
+generic_liste_t gl_init(void);
 
-bool is_liste_empty(generic_liste_t *l);
-bool is_elem_empty(generic_elem_liste_t *e);
+bool gl_is_empty(generic_liste_t *l);
+bool gl_is_elem_empty(generic_elem_liste_t *e);
 
-void add_element_first(generic_liste_t* l, void *e);
-void add_element_last(generic_liste_t *l, void *e);
-void add_element_trie(generic_liste_t *l, void *e,
-                      int (*compar_element)(void const *d1, void const *d2),
+void gl_add_elem_first(generic_liste_t* l, void *e);
+void gl_add_elem_last(generic_liste_t *l, void *e);
+void gl_add_elem_trie(generic_liste_t *l, void *e,
+                      int (*compar_elem)(void const *d1, void const *d2),
                       bool sens_croissant);
-void add_element_trie_c(generic_liste_t *l, void *e,
-                        int (*compar_element)(void const *d1, void const *d2));
-void add_element_trie_d(generic_liste_t *l, void *e,
-                        int (*compar_element)(void const *d1, void const *d2));
-void add_element_next(generic_elem_liste_t *e, void *data);
+void
+gl_add_elem_trie_c(generic_liste_t *l, void *e,
+                      int (*compar_elem)(void const *d1, void const *d2));
+void
+gl_add_elem_trie_d(generic_liste_t *l, void *e,
+                      int (*compar_elem)(void const *d1, void const *d2));
+void gl_add_elem_next(generic_elem_liste_t *e, void *data);
 
-void remove_first_element(generic_liste_t *l, void (*remove_data)(void *data));
-void remove_last_element(generic_liste_t *l, void (*remove_data)(void *data));
-void remove_next_element(generic_elem_liste_t *e,
+void gl_remove_first_elem(generic_liste_t *l,
+                             void (*remove_data)(void *data));
+void gl_remove_last_elem(generic_liste_t *l,
+                            void (*remove_data)(void *data));
+void gl_remove_next_elem(generic_elem_liste_t *e,
+                            void (*remove_data)(void *data));
+void gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
                          void (*remove_data)(void *data));
-void remove_element_n(generic_liste_t *l, unsigned int const n,
-                      void (*remove_data)(void *data));
-//void remove_element_adrr_data(generic_liste_t *l, void *d);
-//void remove_element_doublons(generic_liste_t *l);
-//void remove_element_val_data(generic_liste_t *l, void *data);
+//void gl_remove_elem_adrr_data(generic_liste_t *l, void *d);
+//void gl_remove_elem_doublons(generic_liste_t *l);
+//void gl_remove_elem_val_data(generic_liste_t *l, void *data);
 
-void trie_liste_fusion(generic_liste_t *l, bool sens_croissant);
-void division(generic_liste_t *l);
-void fusion(generic_liste_t *l, bool sens_croissant);
+void gl_trie_fusion(generic_liste_t *l, bool sens_croissant);
+void gl_division(generic_liste_t *l);
+void gl_fusion(generic_liste_t *l, bool sens_croissant);
 
-void visu_liste(generic_liste_t l, void (*visuElement)(void const *data),
-                char const *sep);
+void gl_visu(generic_liste_t l, void (*visuelem)(void const *data),
+             char const *sep);
 
-void free_liste(generic_liste_t *l, void (*remove_data)(void *data));
+void gl_free(generic_liste_t *l, void (*remove_data)(void *data));
 
 #endif
