@@ -23,23 +23,26 @@ static bool compar_tab(unsigned int const *tab1,
 {
     unsigned int i;
 
-    for(i=0; i<taille; i++){
-        if(tab1[i] != tab2[i]){
+    for(i=0; i<taille; i++) {
+        if(tab1[i] != tab2[i]) {
             return false;
         }
     }
     return true;
 }
+
 void visu(unsigned int *tab, unsigned int taille)
 {
     unsigned int i;
-    for(i=0; i<taille; i++){
+
+    for(i=0; i<taille; i++) {
         printf("%d, ", tab[i]);
     }
     printf("\n");
 }
 
-bool test_lecture_matrice(){
+bool test_lecture_matrice()
+{
     unsigned int i;
     unsigned int lig = 20;
     unsigned int col = 7;
@@ -69,8 +72,8 @@ bool test_lecture_matrice(){
 
     lire_matrice(f, tab, lig, col);
 
-    for(i=0; i<lig; i++){
-        if(!compar_tab(mat[i], tab[i], 7)){
+    for(i=0; i<lig; i++) {
+        if(!compar_tab(mat[i], tab[i], 7)) {
             printf("i : %d\n", i);
             visu(tab[i], col);
             return false;
