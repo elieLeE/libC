@@ -3,7 +3,7 @@
 #include "prime.h"
 #include "../mem/mem.h"
 
-bool isPrime(unsigned long n)
+bool is_prime(unsigned long n)
 {
     unsigned long i;
 
@@ -30,7 +30,7 @@ bool isPrime(unsigned long n)
     return true;
 }
 
-void remplissageTabPrimeBool(bool *tab, unsigned int lim)
+void remplissage_tab_prime_bool(bool *tab, unsigned int lim)
 {
     unsigned int i = 2, j;
 
