@@ -8,7 +8,7 @@
  * add nbreDigit
  * */
 
-void nbreToDigits(unsigned int n, unsigned int *tab);
-int nbreDigits(int n);
+void nbre_to_digits(unsigned int n, unsigned int *tab);
+int nbre_digits(int n);
 
 #endif
