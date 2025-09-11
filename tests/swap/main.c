@@ -1,11 +1,11 @@
-#include "../../src/swap.h"
+#include "../../src/macros.h"
 #include "../shared/ftest.h"
 
 int main(){
     int a = 5;
     int b = 13;
 
-    echangeGenerique(&a, &b, sizeof(a)); 
+    SWAP(int, &a, &b);
 
     affResultTest("testEchangeGenerique", ((a==13) && (b = 5)));
 
