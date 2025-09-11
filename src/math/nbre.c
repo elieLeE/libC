@@ -26,3 +26,19 @@ unsigned int get_digits_from_number(unsigned int n, unsigned char *tab)
 
     return i;
 }
+
+bool is_nber_a_palindrome(unsigned int n)
+{
+    static unsigned char tab_digit[6];
+    unsigned int nbre_digits;
+
+    nbre_digits = get_digits_from_number(n, tab_digit);
+
+    for (unsigned int i = 0; i < nbre_digits / 2; i++) {
+        if (tab_digit[i] != tab_digit[nbre_digits - i - 1]) {
+            return false;
+        }
+    }
+
+    return true;
+}
