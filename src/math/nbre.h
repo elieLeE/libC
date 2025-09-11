@@ -4,11 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-/*
- * add nbreDigit
- * */
-
-void nbre_to_digits(unsigned int n, unsigned int *tab);
 int nbre_digits(int n);
+unsigned int get_digits_from_number(unsigned int n, unsigned char *tab);
 
 #endif
