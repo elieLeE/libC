@@ -1,6 +1,6 @@
 #include "nbre.h"
 
-int nbre_digits(int n)
+int count_digits_in_nber(int n)
 {
     int i = 1;
     int compt = 0;

@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-int nbre_digits(int n);
+int count_digits_in_nber(int n);
 unsigned int get_digits_from_number(unsigned int n, unsigned char *tab);
 bool is_nber_a_palindrome(unsigned int n);
 
