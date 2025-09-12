@@ -27,6 +27,22 @@ unsigned int get_digits_from_number(unsigned int n, unsigned char *tab)
     return i;
 }
 
+unsigned int
+get_digits_iterations_from_number(unsigned int n, unsigned char *tab)
+{
+    unsigned int i = 0;
+
+    while(n >= 1) {
+        unsigned int n2 = n / 10;
+
+        tab[(n - n2 * 10)]++;
+        n = n / 10;
+        i++;
+    }
+
+    return i;
+}
+
 bool is_nber_a_palindrome(unsigned int n)
 {
     static unsigned char tab_digit[6];
