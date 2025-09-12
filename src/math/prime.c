@@ -32,23 +32,34 @@ bool is_prime(unsigned long n)
 
 void remplissage_tab_prime_bool(bool *tab, unsigned int lim)
 {
-    unsigned int i = 2, j;
+    unsigned int i, j;
 
+    j = 4;
+    while(j < lim) {
+        tab[j] = true;
+        j = j + 2;
+    }
+
+    i = 3;
     while(i < lim) {
         while(tab[i]) {
-            i++;
+            i += 2;
         }
 
-        j = i + i;
+        /* As i is an odd number, 2 * i will be an even number.
+         * But all of them have already been checked on the previous loop.
+         * So, skip 2 * i and directly pass to " * i. */
+        j = 3 * i;
         while(j < lim) {
             tab[j] = true;
-            j = j + i;
+            /* Same the previously: we skip the even numbers */
+            j = j + 2 * i;
         }
-        i++;
+        i+=2;
     }
 }
 
-void remplissage_tab_prime(unsigned int* tabPrime, unsigned int lim)
+unsigned int remplissage_tab_prime(unsigned int* tabPrime, unsigned int lim)
 {
     unsigned int i, j;
     bool *tab_bool;
@@ -67,6 +78,8 @@ void remplissage_tab_prime(unsigned int* tabPrime, unsigned int lim)
     }
 
     free(tab_bool);
+
+    return j - 1;
 }
 
 

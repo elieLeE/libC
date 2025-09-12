@@ -9,7 +9,7 @@
 
 bool is_prime(unsigned long n);
 void remplissage_tab_prime_bool(bool *tab, unsigned int lim);
-void remplissage_tab_prime(unsigned int *tabPrime, unsigned int lim);
+unsigned int remplissage_tab_prime(unsigned int *tabPrime, unsigned int lim);
 
 #endif
 
