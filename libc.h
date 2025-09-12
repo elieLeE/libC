@@ -8,7 +8,6 @@
 #include "src/io/fichier.h"
 #include "src/mem/mem.h"
 #include "src/liste/liste.h"
-#include "src/swap.h"
 
 #include "src/math/sum.h"
 #include "src/math/prime.h"
