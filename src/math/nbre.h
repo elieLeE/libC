@@ -6,6 +6,7 @@
 
 int count_digits_in_nber(int n);
 unsigned int get_digits_from_number(unsigned int n, unsigned char *tab);
+int get_digits_iterations_from_number(unsigned int n, unsigned char *tab);
 
 bool are_permutation_nbers(unsigned int n, unsigned int n2);
 bool is_nber_a_palindrome(unsigned int n);

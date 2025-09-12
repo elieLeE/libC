@@ -29,8 +29,7 @@ unsigned int get_digits_from_number(unsigned int n, unsigned char *tab)
     return i;
 }
 
-static int
-get_digits_iterations_from_number(unsigned int n, unsigned char *tab)
+int get_digits_iterations_from_number(unsigned int n, unsigned char *tab)
 {
     unsigned int i = 0;
 
