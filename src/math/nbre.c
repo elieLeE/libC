@@ -5,7 +5,7 @@ int count_digits_in_nber(int n)
     int i = 1;
     int compt = 0;
 
-    while(n >= i) {
+    while (n >= i) {
         i = i * 10;
         compt++;
     }
@@ -16,7 +16,7 @@ unsigned int get_digits_from_number(unsigned int n, unsigned char *tab)
 {
     unsigned int i = 0;
 
-    while(n >= 1) {
+    while (n >= 1) {
         unsigned int n2 = n / 10;
 
         tab[i] = (n - n2 * 10);
@@ -32,7 +32,7 @@ get_digits_iterations_from_number(unsigned int n, unsigned char *tab)
 {
     unsigned int i = 0;
 
-    while(n >= 1) {
+    while (n >= 1) {
         unsigned int n2 = n / 10;
 
         tab[(n - n2 * 10)]++;

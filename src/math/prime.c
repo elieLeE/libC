@@ -35,14 +35,14 @@ void remplissage_tab_prime_bool(bool *tab, unsigned int lim)
     unsigned int i, j;
 
     j = 4;
-    while(j < lim) {
+    while (j < lim) {
         tab[j] = true;
         j = j + 2;
     }
 
     i = 3;
-    while(i < lim) {
-        while(tab[i]) {
+    while (i < lim) {
+        while (tab[i]) {
             i += 2;
         }
 
@@ -50,12 +50,12 @@ void remplissage_tab_prime_bool(bool *tab, unsigned int lim)
          * But all of them have already been checked on the previous loop.
          * So, skip 2 * i and directly pass to " * i. */
         j = 3 * i;
-        while(j < lim) {
+        while (j < lim) {
             tab[j] = true;
             /* Same the previously: we skip the even numbers */
             j = j + 2 * i;
         }
-        i+=2;
+        i += 2;
     }
 }
 
@@ -70,8 +70,8 @@ unsigned int remplissage_tab_prime(unsigned int* tabPrime, unsigned int lim)
 
     j = 1;
     tabPrime[0] = 2;
-    for(i = 3; i <= lim; i = i + 2) {
-        if(!tab_bool[i]) {
+    for (i = 3; i <= lim; i = i + 2) {
+        if (!tab_bool[i]) {
             tabPrime[j] = i;
             j++;
         }
