@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #include "nbre.h"
 
 int count_digits_in_nber(int n)
