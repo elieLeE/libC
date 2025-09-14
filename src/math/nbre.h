@@ -11,4 +11,7 @@ int get_digits_iterations_from_number(unsigned int n, unsigned char *tab);
 bool are_permutation_nbers(unsigned int n, unsigned int n2);
 bool is_nber_a_palindrome(unsigned int n);
 
+unsigned long
+build_pandigital_number(int digits[10], int first_idx, int last_idx);
+
 #endif
