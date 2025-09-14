@@ -83,7 +83,7 @@ bool are_permutation_nbers(unsigned int n, unsigned int n2)
 }
 
 unsigned long
-build_pandigital_number(int digits[10], int first_idx, int last_idx)
+build_number_from_digits(unsigned char digits[10], int first_idx, int last_idx)
 {
     unsigned long n = 0;
 
