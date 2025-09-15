@@ -2,10 +2,10 @@
 
 #include "nbre.h"
 
-int count_digits_in_nber(int n)
+unsigned int count_digits_in_nber(unsigned int n)
 {
-    int i = 1;
-    int compt = 0;
+    unsigned int i = 1;
+    unsigned int compt = 0;
 
     while (n >= i) {
         i = i * 10;

@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-int count_digits_in_nber(int n);
+unsigned int count_digits_in_nber(unsigned int n);
 unsigned int get_digits_from_number(unsigned int n, unsigned char *out);
 int get_digits_iterations_from_number(unsigned int n, unsigned char *out);
 
