@@ -92,6 +92,44 @@ get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
     return j - 1;
 }
 
+unsigned int
+get_all_n_first_primes(unsigned long lim, unsigned int size_tab_out,
+                       unsigned long *out)
+{
+    unsigned int counter;
+    unsigned long current_nber;
+
+    out[0] = 2;
+    current_nber = 3;
+    counter = 1;
+
+    while (counter < lim && counter < size_tab_out) {
+        bool current_nber_is_prime = true;
+
+        for (unsigned int i = 0; i < counter; i++) {
+            if (current_nber % out[i] == 0) {
+                current_nber_is_prime = false;
+                break;
+            }
+        }
+
+        if (current_nber_is_prime) {
+            out[counter] = current_nber;
+            counter++;
+        }
+        current_nber += 2;
+    }
+
+    if (counter == lim) {
+        return 0;
+    }
+
+    fprintf(stderr, "array have been full filled before getting "
+            "the %ld° prime, file '%s', line '%d'",
+            lim, __FILE__, __LINE__);
+    return -1;
+}
+
 unsigned int get_all_primes_factors_of_n(unsigned long n,
                                          const unsigned long primes[],
                                          unsigned int primes_tab_size,
