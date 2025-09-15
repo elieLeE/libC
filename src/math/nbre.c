@@ -82,8 +82,8 @@ bool are_permutation_nbers(unsigned int n, unsigned int n2)
     return true;
 }
 
-unsigned long
-build_number_from_digits(unsigned char digits[10], int first_idx, int last_idx)
+unsigned long build_number_from_digits(const unsigned char digits[],
+                                       int first_idx, int last_idx)
 {
     unsigned long n = 0;
 
