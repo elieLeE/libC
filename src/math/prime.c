@@ -84,6 +84,29 @@ unsigned int remplissage_tab_prime(unsigned int* tab_prime, unsigned int lim)
     return j - 1;
 }
 
+unsigned int get_all_primes_factors_of_n(unsigned long n,
+                                         unsigned int *primes,
+                                         unsigned int primes_tab_size,
+                                         unsigned int size_tab_out,
+                                         prime_factor_t *out)
+{
+    unsigned int primes_factors_idx = 0;
+    unsigned x = n;
+
+    for (unsigned int i = 0; (i < primes_tab_size) && (i < size_tab_out); i++)
+    {
+        while (x % ((unsigned long)primes[i]) == 0) {
+            out[primes_factors_idx].prime = primes[i];
+            out[primes_factors_idx].iteration++;
+
+            x = x / ((unsigned long)primes[i]);
+        }
+        primes_factors_idx++;
+    }
+
+    return primes_factors_idx;
+}
+
 static int
 get_first_diviseur_idx(unsigned int nbre, unsigned int primes_nber[],
                        unsigned int idx_max, unsigned int *out)
