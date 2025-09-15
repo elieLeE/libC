@@ -62,8 +62,8 @@ static void fill_tab_prime_bool(unsigned int lim, bool out[])
 }
 
 unsigned int
-get_all_primes_below_n(unsigned int lim, unsigned int size_tab_out,
-                       unsigned int *out)
+get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
+                       unsigned long *out)
 {
     unsigned int i, j;
     bool *tab_bool;
@@ -93,7 +93,7 @@ get_all_primes_below_n(unsigned int lim, unsigned int size_tab_out,
 }
 
 unsigned int get_all_primes_factors_of_n(unsigned long n,
-                                         const unsigned int primes[],
+                                         const unsigned long primes[],
                                          unsigned int primes_tab_size,
                                          unsigned int size_tab_out,
                                          prime_factor_t out[])
@@ -116,7 +116,7 @@ unsigned int get_all_primes_factors_of_n(unsigned long n,
 }
 
 static int
-get_first_diviseur_idx(unsigned int nbre, const unsigned int primes[],
+get_first_diviseur_idx(unsigned long nbre, const unsigned long primes[],
                        unsigned int idx_max, unsigned int *out)
 {
     unsigned int i = 0;
@@ -131,7 +131,7 @@ get_first_diviseur_idx(unsigned int nbre, const unsigned int primes[],
     return -1;
 }
 
-unsigned int get_phi(unsigned int n, const unsigned int primes[],
+unsigned int get_phi(unsigned long n, const unsigned long primes[],
                      unsigned int idx_max, bool stop_on_firt_divisor)
 {
     unsigned int debut;
