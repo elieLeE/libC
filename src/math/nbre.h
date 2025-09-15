@@ -5,8 +5,8 @@
 #include <stdio.h>
 
 int count_digits_in_nber(int n);
-unsigned int get_digits_from_number(unsigned int n, unsigned char *tab);
-int get_digits_iterations_from_number(unsigned int n, unsigned char *tab);
+unsigned int get_digits_from_number(unsigned int n, unsigned char *out);
+int get_digits_iterations_from_number(unsigned int n, unsigned char *out);
 
 bool are_permutation_nbers(unsigned int n, unsigned int n2);
 bool is_nber_a_palindrome(unsigned int n);

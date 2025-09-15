@@ -14,14 +14,14 @@ int count_digits_in_nber(int n)
     return compt;
 }
 
-unsigned int get_digits_from_number(unsigned int n, unsigned char *tab)
+unsigned int get_digits_from_number(unsigned int n, unsigned char *out)
 {
     unsigned int i = 0;
 
     while (n >= 1) {
         unsigned int n2 = n / 10;
 
-        tab[i] = (n - n2 * 10);
+        out[i] = (n - n2 * 10);
         n = n / 10;
         i++;
     }
@@ -29,14 +29,14 @@ unsigned int get_digits_from_number(unsigned int n, unsigned char *tab)
     return i;
 }
 
-int get_digits_iterations_from_number(unsigned int n, unsigned char *tab)
+int get_digits_iterations_from_number(unsigned int n, unsigned char *out)
 {
     unsigned int i = 0;
 
     while (n >= 1) {
         unsigned int n2 = n / 10;
 
-        tab[(n - n2 * 10)]++;
+        out[(n - n2 * 10)]++;
         n = n / 10;
         i++;
     }
