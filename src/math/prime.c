@@ -61,7 +61,7 @@ void remplissage_tab_prime_bool(bool *tab, unsigned int lim)
     }
 }
 
-unsigned int remplissage_tab_prime(unsigned int* tabPrime, unsigned int lim)
+unsigned int remplissage_tab_prime(unsigned int* tab_prime, unsigned int lim)
 {
     unsigned int i, j;
     bool *tab_bool;
@@ -71,10 +71,10 @@ unsigned int remplissage_tab_prime(unsigned int* tabPrime, unsigned int lim)
     remplissage_tab_prime_bool(tab_bool, lim);
 
     j = 1;
-    tabPrime[0] = 2;
+    tab_prime[0] = 2;
     for (i = 3; i <= lim; i = i + 2) {
         if (!tab_bool[i]) {
-            tabPrime[j] = i;
+            tab_prime[j] = i;
             j++;
         }
     }
