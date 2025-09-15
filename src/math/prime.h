@@ -20,12 +20,12 @@ unsigned int
 get_all_primes_below_n(unsigned int lim, unsigned int size_tab_out,
                        unsigned int *out);
 unsigned int get_all_primes_factors_of_n(unsigned long n,
-                                         unsigned int *primes,
+                                         const unsigned int primes[],
                                          unsigned int primes_tab_size,
                                          unsigned int size_tab_out,
-                                         prime_factor_t *out);
+                                         prime_factor_t out[]);
 
-unsigned int get_phi(unsigned int n, unsigned int primes_nber[],
+unsigned int get_phi(unsigned int n, const unsigned int primes[],
                      unsigned int idx_max, bool stop_on_firt_divisor);
 
 #endif
