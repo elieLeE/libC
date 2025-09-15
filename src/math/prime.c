@@ -32,7 +32,7 @@ bool is_prime(unsigned long n)
     return true;
 }
 
-void remplissage_tab_prime_bool(bool *tab, unsigned int lim)
+static void fill_tab_prime_bool(bool *tab, unsigned int lim)
 {
     unsigned int i, j;
 
