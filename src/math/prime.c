@@ -32,19 +32,19 @@ bool is_prime(unsigned long n)
     return true;
 }
 
-static void fill_tab_prime_bool(bool *tab, unsigned int lim)
+static void fill_tab_prime_bool(unsigned int lim, bool out[])
 {
     unsigned int i, j;
 
     j = 4;
     while (j < lim) {
-        tab[j] = true;
+        out[j] = true;
         j = j + 2;
     }
 
     i = 3;
     while (i < lim) {
-        while (tab[i]) {
+        while (out[i]) {
             i += 2;
         }
 
@@ -53,7 +53,7 @@ static void fill_tab_prime_bool(bool *tab, unsigned int lim)
          * So, skip 2 * i and directly pass to " * i. */
         j = 3 * i;
         while (j < lim) {
-            tab[j] = true;
+            out[j] = true;
             /* Same the previously: we skip the even numbers */
             j = j + 2 * i;
         }
@@ -61,20 +61,28 @@ static void fill_tab_prime_bool(bool *tab, unsigned int lim)
     }
 }
 
-unsigned int remplissage_tab_prime(unsigned int* tab_prime, unsigned int lim)
+unsigned int
+get_all_primes_below_n(unsigned int lim, unsigned int size_tab_out,
+                       unsigned int *out)
 {
     unsigned int i, j;
     bool *tab_bool;
 
     tab_bool = p_calloc(lim * sizeof(bool));
 
-    remplissage_tab_prime_bool(tab_bool, lim);
+    fill_tab_prime_bool(lim, tab_bool);
 
     j = 1;
-    tab_prime[0] = 2;
+    out[0] = 2;
     for (i = 3; i <= lim; i = i + 2) {
         if (!tab_bool[i]) {
-            tab_prime[j] = i;
+            if (j == size_tab_out) {
+                fprintf(stderr, "array is too short, fichier %s, ligne %d\n"
+                        "size array: %d, index: %d\n", __FILE__, __LINE__,
+                        size_tab_out, j);
+                break;
+            }
+            out[j] = i;
             j++;
         }
     }

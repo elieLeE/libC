@@ -16,7 +16,9 @@ typedef struct prime_factor_t {
  * use long long everywhere (especially in the method "remplissage_tab_prime"
  * for example. But, it does not seem really necessary for now. */
 bool is_prime(unsigned long n);
-unsigned int remplissage_tab_prime(unsigned int *tab_prime, unsigned int lim);
+unsigned int
+get_all_primes_below_n(unsigned int lim, unsigned int size_tab_out,
+                       unsigned int *out);
 unsigned int get_all_primes_factors_of_n(unsigned long n,
                                          unsigned int *primes,
                                          unsigned int primes_tab_size,
