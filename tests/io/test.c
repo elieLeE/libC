@@ -10,11 +10,16 @@ bool test_lecture_simple()
     FILE* f = ouv_fichier("fichierTest", "r");
     char *s = p_calloc(50*sizeof(*s));
     char temoin[] = "test de lecture";
+    bool res;
 
     fgets(s, 50, f);
     fermer_fichier(&f);
 
-    return !strncmp(s, temoin, strlen(temoin));
+    res = !strncmp(s, temoin, strlen(temoin));
+
+    p_free((void **)&s);
+
+    return res;
 }
 
 static bool compar_tab(unsigned int const *tab1,
@@ -67,7 +72,7 @@ bool test_lecture_matrice()
         {48, 65, 0, 11, 10, 8, 41},
         {31, 8, 21, 39, 27, 5, 12}};
     unsigned int **tab =
-        (unsigned int**)alloc_tab_2d(lig, col, sizeof(unsigned int));
+        (unsigned int **)alloc_tab_2d(lig, col, sizeof(unsigned int));
     FILE* f = ouv_fichier("fichierTestLectureMatrice", "r");
 
     lire_matrice(f, tab, lig, col);
@@ -79,6 +84,10 @@ bool test_lecture_matrice()
             return false;
         }
     }
+
+    free_tab_2d((void **)tab, lig);
+    fermer_fichier(&f);
+
     return true;
 }
 
