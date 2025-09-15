@@ -44,7 +44,7 @@ static void fill_tab_prime_bool(unsigned int lim, bool out[])
 
     i = 3;
     while (i < lim) {
-        while (out[i]) {
+        while (i < lim && out[i]) {
             i += 2;
         }
 
@@ -68,13 +68,13 @@ get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
     unsigned int i, j;
     bool *tab_bool;
 
-    tab_bool = p_calloc(lim * sizeof(bool));
+    tab_bool = p_calloc(size_tab_out * sizeof(bool));
 
     fill_tab_prime_bool(lim, tab_bool);
 
     j = 1;
     out[0] = 2;
-    for (i = 3; i <= lim; i = i + 2) {
+    for (i = 3; i <= lim && i < size_tab_out; i = i + 2) {
         if (!tab_bool[i]) {
             if (j == size_tab_out) {
                 fprintf(stderr, "array is too short, fichier %s, ligne %d\n"
