@@ -93,3 +93,14 @@ unsigned long build_number_from_digits(const unsigned char digits[],
     return n;
 }
 
+unsigned long build_number_from_digits_rev(const unsigned char digits[],
+                                           int first_idx, int last_idx)
+{
+    unsigned long n = 0;
+
+    for (int i = last_idx; i >= first_idx; i--) {
+       n =  (n * 10) + digits[i];
+    }
+    return n;
+}
+

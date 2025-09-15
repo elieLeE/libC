@@ -13,5 +13,7 @@ bool is_nber_a_palindrome(unsigned int n);
 
 unsigned long build_number_from_digits(const unsigned char digits[],
                                       int first_idx, int last_idx);
+unsigned long build_number_from_digits_rev(const unsigned char digits[],
+                                           int first_idx, int last_idx);
 
 #endif
