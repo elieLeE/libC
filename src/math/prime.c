@@ -9,22 +9,22 @@ bool is_prime(unsigned long n)
 {
     unsigned long i;
 
-    if(n <= 1) {
+    if (n <= 1) {
         fprintf(stderr, "n <= 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
         return false;
     }
 
-    if(n == 2) {
+    if (n == 2) {
         return true;
     }
 
-    if(n % 2 == 0) {
+    if (n % 2 == 0) {
         return false;
     }
 
     i = 3;
-    while(i * i <= n) {
-        if(n % i == 0) {
+    while (i * i <= n) {
+        if (n % i == 0) {
             return false;
         }
         i = i+2;
