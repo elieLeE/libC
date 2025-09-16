@@ -93,7 +93,7 @@ get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
 }
 
 unsigned int
-get_all_n_first_primes(unsigned long lim, unsigned int size_tab_out,
+get_all_n_first_primes(unsigned long count_asked, unsigned int size_tab_out,
                        unsigned long *out)
 {
     unsigned int counter;
@@ -103,7 +103,7 @@ get_all_n_first_primes(unsigned long lim, unsigned int size_tab_out,
     current_nber = 3;
     counter = 1;
 
-    while (counter < lim && counter < size_tab_out) {
+    while (counter < count_asked && counter < size_tab_out) {
         bool current_nber_is_prime = true;
 
         for (unsigned int i = 0; i < counter; i++) {
@@ -120,13 +120,13 @@ get_all_n_first_primes(unsigned long lim, unsigned int size_tab_out,
         current_nber += 2;
     }
 
-    if (counter == lim) {
+    if (counter == count_asked) {
         return 0;
     }
 
     fprintf(stderr, "array have been full filled before getting "
             "the %ld° prime, file '%s', line '%d'",
-            lim, __FILE__, __LINE__);
+            count_asked, __FILE__, __LINE__);
     return -1;
 }
 

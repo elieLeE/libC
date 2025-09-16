@@ -16,7 +16,7 @@ bool is_prime(unsigned long n);
 unsigned int
 get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
                        unsigned long *out);
-unsigned int get_all_n_first_primes(unsigned long lim,
+unsigned int get_all_n_first_primes(unsigned long count_asked,
                                     unsigned int size_tab_out,
                                     unsigned long *out);
 unsigned int get_all_primes_factors_of_n(unsigned long n,
