@@ -32,14 +32,15 @@ bool is_prime(unsigned long n)
     return true;
 }
 
+/* This methods is very efficient but needs an array with all numbers to lim */
 static void fill_tab_prime_bool(unsigned int lim, bool out[])
 {
     unsigned int i, j;
 
-    j = 4;
-    while (j < lim) {
-        out[j] = true;
-        j = j + 2;
+    i = 4;
+    while (i < lim) {
+        out[i] = true;
+        i = i + 2;
     }
 
     i = 3;
@@ -65,21 +66,18 @@ unsigned int
 get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
                        unsigned long *out)
 {
-    unsigned int i, j;
+    unsigned long i, j;
     bool *tab_bool;
 
-    tab_bool = p_calloc(size_tab_out * sizeof(bool));
+    tab_bool = p_calloc(lim * sizeof(bool));
 
     fill_tab_prime_bool(lim, tab_bool);
 
     j = 1;
     out[0] = 2;
-    for (i = 3; i <= lim && i < size_tab_out; i = i + 2) {
+    for (i = 3; i <= lim; i = i + 2) {
         if (!tab_bool[i]) {
-            if (j == size_tab_out) {
-                fprintf(stderr, "array is too short, fichier %s, ligne %d\n"
-                        "size array: %d, index: %d\n", __FILE__, __LINE__,
-                        size_tab_out, j);
+            if (j >= size_tab_out) {
                 break;
             }
             out[j] = i;
@@ -87,6 +85,12 @@ get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
         }
     }
 
+    if (j >= size_tab_out && i < lim) {
+        fprintf(stderr, "the array has fully been filled before reaching to "
+                "the asked limit (last index: %ld, last number tested: %ld, "
+                "limit: %ld, array size: %d, file: %s, line: %d\n",
+                j, i, lim, size_tab_out, __FILE__, __LINE__);
+    }
     free(tab_bool);
 
     return j - 1;
