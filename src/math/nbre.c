@@ -73,7 +73,7 @@ bool are_permutation_nbers(unsigned int n, unsigned int n2)
         return false;
     }
 
-    for (unsigned char i = 0; i < 10; i++) {
+    for (unsigned int i = 0; i < 10; i++) {
         if (digits_n[i] != digits_n2[i]) {
             return false;
 
@@ -82,23 +82,25 @@ bool are_permutation_nbers(unsigned int n, unsigned int n2)
     return true;
 }
 
-unsigned long build_number_from_digits(const unsigned char digits[],
-                                       int first_idx, int last_idx)
+unsigned long
+build_number_from_digits(const unsigned char digits[], unsigned int first_idx,
+                         unsigned int last_idx)
 {
     unsigned long n = 0;
 
-    for (int i = first_idx; i <= last_idx; i++) {
+    for (unsigned int i = first_idx; i <= last_idx; i++) {
        n =  (n * 10) + digits[i];
     }
     return n;
 }
 
-unsigned long build_number_from_digits_rev(const unsigned char digits[],
-                                           int first_idx, int last_idx)
+unsigned long
+build_number_from_digits_rev(const unsigned char digits[],
+                             unsigned int first_idx, unsigned int last_idx)
 {
     unsigned long n = 0;
 
-    for (int i = last_idx; i >= first_idx; i--) {
+    for (unsigned int i = last_idx; i >= first_idx; i--) {
        n =  (n * 10) + digits[i];
     }
     return n;
