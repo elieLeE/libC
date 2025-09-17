@@ -10,4 +10,10 @@
         *_a = _c;                                                             \
     } while(0)
 
+#define MAX(_a, _b)                                                           \
+     _a > _b ? _a : _b;
+
+#define MIN(_a, _b)                                                           \
+    _a < _b ? _a : _b;
+
 #endif
