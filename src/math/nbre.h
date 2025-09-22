@@ -19,4 +19,8 @@ unsigned long
 build_number_from_digits_rev(const unsigned char digits[],
                              unsigned int first_idx, unsigned int last_idx);
 
+bool is_a_increasing_number(unsigned char digits[], unsigned int max_idx);
+bool is_a_decreasing_number(unsigned char digits[], unsigned int max_idx);
+bool is_a_bouncy_number(unsigned char digits[], unsigned int max_idx);
+
 #endif
