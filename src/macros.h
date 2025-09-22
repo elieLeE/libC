@@ -16,4 +16,7 @@
 #define MIN(_a, _b)                                                           \
     _a < _b ? _a : _b;
 
+#define PERCENTAGE(_a, _b)                                                    \
+    ((double)_a) / _b * 100;
+
 #endif
