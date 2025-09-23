@@ -96,9 +96,8 @@ get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
     return j - 1;
 }
 
-unsigned int
-get_all_n_first_primes(unsigned long count_asked, unsigned int size_tab_out,
-                       unsigned long *out)
+int get_all_n_first_primes(unsigned long count_asked,
+                           unsigned int size_tab_out, unsigned long *out)
 {
     unsigned int counter;
     unsigned long current_nber;
@@ -140,21 +139,34 @@ unsigned int get_all_primes_factors_of_n(unsigned long n,
                                          unsigned int size_tab_out,
                                          prime_factor_t out[])
 {
-    unsigned int primes_factors_idx = 0;
-    unsigned x = n;
+    unsigned int primes_factors_count = 0;
 
-    for (unsigned int i = 0; (i < primes_tab_size) && (i < size_tab_out); i++)
+    for (unsigned int i = 0;
+         (i < primes_tab_size) && (i < size_tab_out); i++)
     {
-        while (x % ((unsigned long)primes[i]) == 0) {
-            out[primes_factors_idx].prime = primes[i];
-            out[primes_factors_idx].iteration++;
+        bool new_prime_factor_detected = false;
 
-            x = x / ((unsigned long)primes[i]);
+        while (n % primes[i] == 0) {
+            new_prime_factor_detected = true;
+
+            out[primes_factors_count].prime = primes[i];
+            out[primes_factors_count].iteration++;
+
+            n = n / primes[i];
+
+            if (n == 1) {
+                primes_factors_count++;
+
+                return primes_factors_count;
+            }
         }
-        primes_factors_idx++;
+
+        if (new_prime_factor_detected) {
+            primes_factors_count++;
+        }
     }
 
-    return primes_factors_idx;
+    return primes_factors_count;
 }
 
 static int
@@ -206,5 +218,16 @@ unsigned int get_phi(unsigned long n, const unsigned long primes[],
 
     // prime number.
     return n - 1;
+}
+
+unsigned int get_divisors_count(unsigned int primes_factors_count,
+                                prime_factor_t primes_factors[])
+{
+    unsigned count = 1;
+
+    for (unsigned int i = 0; i < primes_factors_count; i++) {
+        count *= (primes_factors[i].iteration + 1);
+    }
+    return count;
 }
 
