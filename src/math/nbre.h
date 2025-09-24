@@ -15,9 +15,8 @@ bool is_nber_a_palindrome(unsigned int n);
 unsigned long
 build_number_from_digits(const unsigned char digits[], unsigned int first_idx,
                          unsigned int last_idx);
-unsigned long
-build_number_from_digits_rev(const unsigned char digits[],
-                             unsigned int first_idx, unsigned int last_idx);
+unsigned long build_number_from_digits_rev(const unsigned char digits[],
+                                           int first_idx, int last_idx);
 
 bool is_a_increasing_number(unsigned char digits[], unsigned int max_idx);
 bool is_a_decreasing_number(unsigned char digits[], unsigned int max_idx);
