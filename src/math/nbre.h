@@ -4,12 +4,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-unsigned int count_digits_in_nber(unsigned int n);
-unsigned int get_digits_from_number(unsigned int n, unsigned char *out);
-int get_digits_iterations_from_number(unsigned int n, unsigned char *out);
+unsigned int count_digits_in_nber(unsigned long n);
+unsigned int get_digits_from_number(unsigned long n, unsigned char *out);
+int get_digits_iterations_from_number(unsigned long n, unsigned char *out);
 
-bool are_permutation_nbers(unsigned int n, unsigned int n2);
-bool is_nber_a_palindrome(unsigned int n);
+bool are_permutation_nbers(unsigned long n, unsigned long n2);
+bool is_nber_a_palindrome(unsigned long n);
 
 /* The two methods below supposes that all the digits are positives */
 unsigned long

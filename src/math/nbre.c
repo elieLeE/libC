@@ -2,7 +2,7 @@
 
 #include "nbre.h"
 
-unsigned int count_digits_in_nber(unsigned int n)
+unsigned int count_digits_in_nber(unsigned long n)
 {
     unsigned int i = 1;
     unsigned int compt = 0;
@@ -14,12 +14,12 @@ unsigned int count_digits_in_nber(unsigned int n)
     return compt;
 }
 
-unsigned int get_digits_from_number(unsigned int n, unsigned char *out)
+unsigned int get_digits_from_number(unsigned long n, unsigned char *out)
 {
     unsigned int i = 0;
 
     while (n >= 1) {
-        unsigned int n2 = n / 10;
+        unsigned long n2 = n / 10;
 
         out[i] = (n - n2 * 10);
         n = n / 10;
@@ -29,12 +29,12 @@ unsigned int get_digits_from_number(unsigned int n, unsigned char *out)
     return i;
 }
 
-int get_digits_iterations_from_number(unsigned int n, unsigned char *out)
+int get_digits_iterations_from_number(unsigned long n, unsigned char *out)
 {
     unsigned int i = 0;
 
     while (n >= 1) {
-        unsigned int n2 = n / 10;
+        unsigned long n2 = n / 10;
 
         out[(n - n2 * 10)]++;
         n = n / 10;
@@ -44,7 +44,7 @@ int get_digits_iterations_from_number(unsigned int n, unsigned char *out)
     return i;
 }
 
-bool is_nber_a_palindrome(unsigned int n)
+bool is_nber_a_palindrome(unsigned long n)
 {
     static unsigned char tab_digit[6];
     unsigned int nbre_digits;
@@ -60,7 +60,7 @@ bool is_nber_a_palindrome(unsigned int n)
     return true;
 }
 
-bool are_permutation_nbers(unsigned int n, unsigned int n2)
+bool are_permutation_nbers(unsigned long n, unsigned long n2)
 {
     unsigned char digits_n[10] = {0};
     unsigned char digits_n2[10] = {0};
