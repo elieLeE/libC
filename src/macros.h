@@ -53,4 +53,11 @@
         }                                                                     \
     })
 
+/* s1_p and s2_p has to be pointers on structures.
+ * Return true is s1_p and s2 have the same bytes. */
+#define ARE_SAME_STRUCT(_s1_p, _s2_p)                                         \
+    ({                                                                        \
+         memcmp(_s1_p, _s2_p, sizeof(*_s1_p)) == 0;                           \
+    })
+
 #endif
