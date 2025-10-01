@@ -2,6 +2,7 @@
 #define _SHARED_SWAP_H_
 
 #include <string.h>
+#include <stdio.h>
 
 #define SWAP(_type, _a, _b)                                                   \
     do {                                                                      \
@@ -18,5 +19,38 @@
 
 #define PERCENTAGE(_a, _b)                                                    \
     ((double)_a) / _b * 100;
+
+#define RETHROW(_exp)                                                         \
+    ({                                                                        \
+        __auto_type _res = _exp;                                              \
+        if (_res < 0) {                                                       \
+            return _res;                                                      \
+        }                                                                     \
+    })
+
+
+#define RETHROW_P(_exp)                                                       \
+    ({                                                                        \
+        __auto_type _res = _exp;                                              \
+        if (_res == NULL) {                                                   \
+            return _res;                                                      \
+        }                                                                     \
+    })
+
+#define RETHROW_PN(_exp)                                                      \
+    ({                                                                        \
+        __auto_type _res = _exp;                                              \
+        if (_res == NULL) {                                                   \
+            return -1;                                                        \
+        }                                                                     \
+    })
+
+#define RETHROW_NP(_exp)                                                      \
+    ({                                                                        \
+        __auto_type _res = _exp;                                              \
+        if (_res < 0) {                                                       \
+            return NULL;                                                      \
+        }                                                                     \
+    })
 
 #endif
