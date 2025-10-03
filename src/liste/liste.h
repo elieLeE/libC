@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include "type.h"
 
-generic_liste_t gl_init(void);
+void gl_init(generic_liste_t *l);
 
 bool gl_is_empty(generic_liste_t *l);
 bool gl_is_elem_empty(generic_elem_liste_t *e);

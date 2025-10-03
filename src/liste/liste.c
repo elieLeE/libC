@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "liste.h"
 #include "../mem/mem.h"
 
@@ -215,15 +217,9 @@ void gl_fusion(generic_liste_t *l, bool sensCroissant)
 
 /* }}} */
 
-generic_liste_t gl_init(void)
+void gl_init(generic_liste_t *l)
 {
-    generic_liste_t l;
-
-    l.first = NULL;
-    l.end = NULL;
-    l.nbre_elem = 0;
-
-    return l;
+    memset(l, 0, sizeof(*l));
 }
 
 bool gl_is_empty(generic_liste_t *l)

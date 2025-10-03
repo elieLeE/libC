@@ -3,7 +3,9 @@
 
 int main()
 {
-    generic_liste_t l = gl_init();
+    generic_liste_t l;
+
+    gl_init(&l);
 
     test_add_and_remove_element(&l);
 
@@ -11,7 +13,7 @@ int main()
      * simplie l'initilisation de la liste
      * et permet de tester avec et sans liberation explicaites des datas
      * */
-    l = gl_init();
+    gl_init(&l);
 
     test_add_element_trie_c(&l);
     test_add_element_trie_d(&l);
