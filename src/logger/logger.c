@@ -6,7 +6,7 @@
 
 #include "logger.h"
 
-static const char *get_fmt_text_lpg(logger_level_t level)
+static const char *get_fmt_text_log(logger_level_t level)
 {
     switch (level) {
     case LOGGER_INFO:
@@ -47,9 +47,13 @@ void logger_log(const char *file, int line, logger_level_t level,
     vsnprintf(buf, sizeof(buf), fmt, va);
     va_end(va);
 
-    txt_fmt = get_fmt_text_lpg(level);
+    txt_fmt = get_fmt_text_log(level);
     printf(COLOR_WHITE "%s:%d %s -- %s%s" COLOR_RESET,
            file, line, time_buf, txt_fmt, buf);
+
+    if (buf[strlen(buf) - 1] != '\n') {
+        printf("\n");
+    }
 
     if (level == LOGGER_FATAL) {
         abort();
