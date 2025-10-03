@@ -232,18 +232,20 @@ bool gl_is_elem_empty(generic_elem_liste_t *e)
     return (e == NULL);
 }
 
-void gl_visu(generic_liste_t l, void (*visuElement)(void const *data),
+void gl_visu(generic_liste_t *l, void (*visuElement)(void const *data),
              char const *sep)
 {
-    if(visuElement != NULL)
-    {
-        generic_elem_liste_t *p = l.first;
+    if (gl_is_empty(l)) {
+        return;
+    }
+    if (visuElement != NULL) {
+        generic_elem_liste_t *p = l->first;
 
-        while(!gl_is_elem_empty(p)) {
+        while (!gl_is_elem_empty(p)) {
             (*(visuElement))(p->data);
             p = p->suiv;
+            printf("%s", sep);
         }
-        printf("%s", sep);
     } else {
         fprintf(stderr,
                 "impossible de visuliser la liste, visuElement NULL\n");

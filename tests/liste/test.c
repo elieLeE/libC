@@ -4,7 +4,7 @@
 
 void visu_element(void const *data)
 {
-    printf("%d, ", *((int *)data));
+    printf("%d", *((int *)data));
 }
 
 void remove_element(void *data)
@@ -47,7 +47,8 @@ void test_add_and_remove_element(generic_liste_t *l)
     gl_add_elem_first(l, f);
 
     printf("test_add_and_remove_element\t : attendu => 6, 1, 3 || obtenu => ");
-    gl_visu(*l, visu_element, "\b\b \n");
+    gl_visu(l, visu_element, ", ");
+    printf("\n");
 
     gl_free(l, remove_element);
 }
@@ -65,7 +66,7 @@ void test_add_element_trie_c(generic_liste_t *l)
 
     printf("test_add_element_trie_c\t : attendu => 1, 2, 3, 4, 5, 6 || "
            "obtenu => ");
-    gl_visu(*l, visu_element, "\b\b ");
+    gl_visu(l, visu_element, "\b\b ");
 
     if(verif_pointeur(*l)){
         printf("|| verif_pointeur ok\n");
@@ -89,7 +90,7 @@ void test_add_element_trie_d(generic_liste_t *l)
     gl_add_elem_trie(l, &tab[4], compar_element, false);
 
     printf("testAddElementTrieD\t : attendu => 6, 5, 4, 3, 2, 1 || obtenu => ");
-    gl_visu(*l, visu_element, "\b\b ");
+    gl_visu(l, visu_element, "\b\b ");
 
     if(verif_pointeur(*l)){
         printf("|| verif_pointeur ok\n");
@@ -137,7 +138,7 @@ void test_remove_element(generic_liste_t *l)
     //gl_remove_elem_n(l, 3);
 
     printf("test1 : attendu => 1, 3, 5, 6  || obtenu => ");
-    gl_visu(*l, visu_element, "\b\b \n");
+    gl_visu(l, visu_element, "\b\b \n");
 
     gl_free(l, remove_element);
 }
@@ -154,12 +155,12 @@ void test_triage_liste(generic_liste_t *l)
     gl_add_elem_trie(l, &tab[2], compar_element, true);
 
     printf("testTriage : avant triage => ");
-    gl_visu(*l, visu_element, "\b\b ");
+    gl_visu(l, visu_element, "\b\b ");
 
     //trieListeFusion(l, true);
 
     printf("|| apres triage => ");
-    gl_visu(*l, visu_element, "\b\b \n");
+    gl_visu(l, visu_element, "\b\b \n");
 
     gl_free(l, NULL);
 }

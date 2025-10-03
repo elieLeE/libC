@@ -45,7 +45,7 @@ void gl_trie_fusion(generic_liste_t *l, bool sens_croissant);
 void gl_division(generic_liste_t *l);
 void gl_fusion(generic_liste_t *l, bool sens_croissant);
 
-void gl_visu(generic_liste_t l, void (*visuelem)(void const *data),
+void gl_visu(generic_liste_t *l, void (*visuelem)(void const *data),
              char const *sep);
 
 void gl_free(generic_liste_t *l, void (*remove_data)(void *data));
