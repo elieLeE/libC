@@ -232,6 +232,7 @@ bool gl_is_elem_empty(generic_elem_liste_t *e)
     return (e == NULL);
 }
 
+/* XXX: maybe this method is not necessary. TO REMOVE ? */
 void gl_visu(generic_liste_t *l, void (*visuElement)(void const *data),
              char const *sep)
 {
@@ -239,11 +240,10 @@ void gl_visu(generic_liste_t *l, void (*visuElement)(void const *data),
         return;
     }
     if (visuElement != NULL) {
-        generic_elem_liste_t *p = l->first;
+        generic_elem_liste_t *elem;
 
-        while (!gl_is_elem_empty(p)) {
-            (*(visuElement))(p->data);
-            p = p->suiv;
+        gl_for_each(elem, l->first) {
+            (*(visuElement))(elem->data);
             printf("%s", sep);
         }
     } else {
