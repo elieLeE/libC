@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "test.h"
-#include "../../src/io/fichier.h"
+#include "../../src/io/io.h"
 #include "../../src/mem/mem.h"
 
 bool test_lecture_simple()
