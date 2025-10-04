@@ -1,5 +1,14 @@
 #include "io.h"
 
+void flush_stdin(void)
+{
+    char c;
+
+    c = getchar();
+    while (c != '\n' && c != EOF) {
+        c = getchar();
+    }
+}
 
 FILE* ouv_fichier(char const *name, char const *mode)
 {
