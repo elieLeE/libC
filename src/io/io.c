@@ -1,4 +1,5 @@
-#include "fichier.h"
+#include "io.h"
+
 
 FILE* ouv_fichier(char const *name, char const *mode)
 {
