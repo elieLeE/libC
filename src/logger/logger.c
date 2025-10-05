@@ -17,6 +17,8 @@ static const char *get_fmt_text_log(logger_level_t level)
     case LOGGER_FATAL:
         return COLOR_RED TXT_BOLD;
     }
+
+    logger_fatal("invalid logger level: %d", level);
     return "";
 }
 
