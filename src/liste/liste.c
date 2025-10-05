@@ -240,8 +240,6 @@ void gl_visu(generic_liste_t *l, void (*visuElement)(void const *data),
         return;
     }
     if (visuElement != NULL) {
-        generic_elem_liste_t *elem;
-
         gl_for_each(elem, l->first) {
             (*(visuElement))(elem->data);
             printf("%s", sep);

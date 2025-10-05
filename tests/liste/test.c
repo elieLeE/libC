@@ -4,8 +4,6 @@
 
 void visu_liste(generic_liste_t *l)
 {
-    generic_elem_liste_t *elem;
-
     gl_for_each(elem, l->first) {
         printf("%d, ", *(int *)(elem->data));
     }

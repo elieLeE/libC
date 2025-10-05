@@ -13,7 +13,7 @@
 
 /* Here, head has to be a generic_elem_liste_t */
 #define gl_for_each(_p, _head) \
-    for (_p = _head; _p != NULL; _p = _p->suiv)
+    for (generic_elem_liste_t *_p = _head; _p != NULL; _p = _p->suiv)
 
 void gl_init(generic_liste_t *l);
 
