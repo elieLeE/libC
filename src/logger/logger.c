@@ -22,6 +22,23 @@ static const char *get_fmt_text_log(logger_level_t level)
     return "";
 }
 
+static const char *get_level_str(logger_level_t level)
+{
+    switch (level) {
+    case LOGGER_INFO:
+        return "INFO";
+    case LOGGER_WARNING:
+        return "WARNING";
+    case LOGGER_ERROR:
+        return "ERROR";
+    case LOGGER_FATAL:
+        return "FATAL";
+    }
+
+    logger_fatal("invalid logger level: %d", level);
+    return "";
+}
+
 __attribute ((format (printf, 4, 5)))
 void logger_log(const char *file, int line, logger_level_t level,
                 const char *fmt, ...)
@@ -33,6 +50,7 @@ void logger_log(const char *file, int line, logger_level_t level,
     va_list va;
     char buf[100];
     const char *txt_fmt;
+    const char *level_txt;
 
     memset(time_buf, 0, 50);
     memset(buf, 0, 100);
@@ -49,9 +67,10 @@ void logger_log(const char *file, int line, logger_level_t level,
     vsnprintf(buf, sizeof(buf), fmt, va);
     va_end(va);
 
+    level_txt = get_level_str(level);
     txt_fmt = get_fmt_text_log(level);
-    printf(COLOR_WHITE "%s:%d %s -- %s%s" COLOR_RESET,
-           file, line, time_buf, txt_fmt, buf);
+    printf(COLOR_WHITE "%s:%d %s -- %s%s: %s" COLOR_RESET,
+           file, line, time_buf, txt_fmt, level_txt, buf);
 
     if (buf[strlen(buf) - 1] != '\n') {
         printf("\n");
