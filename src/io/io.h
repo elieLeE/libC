@@ -5,6 +5,8 @@
 #include <stdlib.h>
 
 void flush_stdin(void);
+int read_n_carac_and_flush(unsigned long max_length, FILE *stream,
+                           char *data_read);
 
 FILE *ouv_fichier(char const *name, char const *mode);
 void fermer_fichier(FILE **f);
