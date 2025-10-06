@@ -39,21 +39,17 @@ static const char *get_level_str(logger_level_t level)
     return "";
 }
 
-__attribute ((format (printf, 4, 5)))
-void logger_log(const char *file, int line, logger_level_t level,
-                const char *fmt, ...)
+static void
+logger_log_(const char *file, int line, logger_level_t level, const char *txt)
 {
     time_t now;
     struct tm *time_infos;
     char time_buf[50];
     size_t rc;
-    va_list va;
-    char buf[100];
     const char *txt_fmt;
     const char *level_txt;
 
     memset(time_buf, 0, 50);
-    memset(buf, 0, 100);
 
     now = time(NULL);
     time_infos = localtime(&now);
@@ -63,20 +59,32 @@ void logger_log(const char *file, int line, logger_level_t level,
                   time_infos->tm_min);
     snprintf(time_buf + rc, sizeof(time_buf) - rc, ".%06ld", now / 1000);
 
-    va_start(va, fmt);
-    vsnprintf(buf, sizeof(buf), fmt, va);
-    va_end(va);
-
     level_txt = get_level_str(level);
     txt_fmt = get_fmt_text_log(level);
     printf(COLOR_WHITE "%s:%d %s -- %s%s: %s" COLOR_RESET,
-           file, line, time_buf, txt_fmt, level_txt, buf);
+           file, line, time_buf, txt_fmt, level_txt, txt);
 
-    if (buf[strlen(buf) - 1] != '\n') {
+    if (txt[strlen(txt) - 1] != '\n') {
         printf("\n");
     }
 
     if (level == LOGGER_FATAL) {
         abort();
     }
+}
+
+__attribute ((format (printf, 4, 5)))
+void logger_log(const char *file, int line, logger_level_t level,
+                const char *fmt, ...)
+{
+    char buf[100];
+    va_list va;
+
+    memset(buf, 0, 100);
+
+    va_start(va, fmt);
+    vsnprintf(buf, sizeof(buf), fmt, va);
+    va_end(va);
+
+    logger_log_(file, line, level, buf);
 }
