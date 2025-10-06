@@ -60,4 +60,12 @@
          memcmp(_s1_p, _s2_p, sizeof(*_s1_p)) == 0;                           \
     })
 
+#define ASSERT(_cond, fmt, ...)                                               \
+    do {                                                                      \
+        if (!(_cond)) {                                                       \
+            logger_error(fmt, ##__VA_ARGS__);                                 \
+            assert(_cond);                                                    \
+        }                                                                     \
+    } while (0);
+
 #endif
