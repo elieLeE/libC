@@ -1,6 +1,8 @@
 #ifndef __LOGGER_H__
 #define __LOGGER_H__
 
+#include <stdbool.h>
+
 /**
  * Using of color: printf(COLOR_* " Warning\n" COLOR_RESET");
 */
@@ -40,6 +42,11 @@ void logger_assert_failed(const char *file, int line, const char *fmt, ...);
 
 #define logger_fatal(fmt, ...)                                                \
     logger_log(__FILE__, __LINE__, LOGGER_FATAL, fmt, ##__VA_ARGS__)
+
+void logger_test_result(const char *test_name, bool res);
+
+#define logger_test_ok(_test_name)                                            \
+    logger_test_result(_test_name, true);
 
 #endif
 

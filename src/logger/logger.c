@@ -104,3 +104,19 @@ void logger_assert_failed(const char *file, int line, const char *fmt, ...)
 
     logger_log_(file, line, LOGGER_FATAL, buf);
 }
+
+void logger_test_result(const char *test_name, bool res)
+{
+    const char *txt_fmt;
+    const char *txt_res;
+
+    if (res) {
+        txt_res = "OK";
+        txt_fmt = COLOR_GREEN;
+    } else {
+        txt_res = "FAILED";
+        txt_fmt = COLOR_RED;
+    }
+
+    printf("%s%s: %s\n" COLOR_RESET, test_name, txt_fmt, txt_res);
+}
