@@ -88,3 +88,19 @@ void logger_log(const char *file, int line, logger_level_t level,
 
     logger_log_(file, line, level, buf);
 }
+
+__attribute ((format (printf, 3, 4)))
+void logger_assert_failed(const char *file, int line, const char *fmt, ...)
+{
+    char buf[100] = "ASSERT FAILED => ";
+
+    va_list va;
+
+    memset(buf, 0, 100);
+
+    va_start(va, fmt);
+    vsnprintf(buf + strlen(buf), sizeof(buf), fmt, va);
+    va_end(va);
+
+    logger_log_(file, line, LOGGER_FATAL, buf);
+}
