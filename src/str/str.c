@@ -1,0 +1,12 @@
+#include <ctype.h>
+#include <string.h>
+
+#include "../../libC/src/str.h"
+
+void upper_string(char *str)
+{
+    for (unsigned int i = 0; i < strlen(str); i++) {
+        str[i] = toupper(str[i]);
+    }
+}
+
