@@ -3,6 +3,8 @@
 #include "liste.h"
 #include "../mem/mem.h"
 
+/* TODO: this file has be coded a long time ago and needs some refactoring */
+
 /* {{{ Adding methods */
 
 void gl_add_elem_first(generic_liste_t *l, void *data)
@@ -230,6 +232,19 @@ bool gl_is_empty(generic_liste_t *l)
 bool gl_is_elem_empty(generic_elem_liste_t *e)
 {
     return (e == NULL);
+}
+
+generic_elem_liste_t *
+gl_get_elem_data(generic_liste_t *l, void *searching_data,
+                 int (*cmp_cb)(const void *, const void *))
+{
+    gl_for_each(elem, l->first) {
+        if (cmp_cb(elem->data, searching_data) == 0) {
+            return elem;
+        }
+    }
+
+    return NULL;
 }
 
 /* XXX: maybe this method is not necessary. TO REMOVE ? */
