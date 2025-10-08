@@ -20,6 +20,8 @@ void gl_init(generic_liste_t *l);
 bool gl_is_empty(generic_liste_t *l);
 bool gl_is_elem_empty(generic_elem_liste_t *e);
 
+bool gl_contains_data(generic_liste_t *l, void *searching_data,
+                 int (*cmp_cb)(const void *, const void *));
 generic_elem_liste_t *
 gl_get_elem_data(generic_liste_t *l, void *searching_data,
                  int (*cmp_cb)(const void *, const void *));
