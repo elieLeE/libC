@@ -15,10 +15,10 @@ void gl_add_elem_first(generic_liste_t *l, void *data)
     new->suiv = l->first;
     new->prec = NULL;
 
-    if (!gl_is_empty(l)) {
-        l->first->prec = new;
-    } else {
+    if (gl_is_empty(l)) {
         l->end = new;
+    } else {
+        l->first->prec = new;
     }
 
     l->first = new;
