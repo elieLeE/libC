@@ -3,10 +3,10 @@
 
 #include "../../src/liste/liste.h"
 
-void test_add_and_remove_element(generic_liste_t *l);
-void test_add_element_trie_c(generic_liste_t *l);
-void test_add_element_trie_d(generic_liste_t *l);
-void test_remove_element(generic_liste_t *l);
-void test_triage_liste(generic_liste_t *l);
+void test_get_elem_data(void);
+void test_add_and_remove_element(void);
+void test_add_element_trie(void);
+void test_remove_element(void);
+void test_triage_liste(void);
 
 #endif

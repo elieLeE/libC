@@ -1,26 +1,15 @@
-#include "../../src/liste/liste.h"
 #include "test.h"
+#include "../../src/macros.h"
 
 int main()
 {
-    generic_liste_t l;
+    BEGIN_TEST_MODULE("LISTE");
 
-    gl_init(&l);
+    CALL_TEST_FUNC(test_get_elem_data);
+    CALL_TEST_FUNC(test_add_and_remove_element);
+    CALL_TEST_FUNC(test_add_element_trie);
 
-    test_add_and_remove_element(&l);
-
-    /*
-     * simplie l'initilisation de la liste
-     * et permet de tester avec et sans liberation explicaites des datas
-     * */
-    gl_init(&l);
-
-    test_add_element_trie_c(&l);
-    test_add_element_trie_d(&l);
-
-    /*l = creerListe((void(*)(void *))visuElement,
-     * (int(*)(void*, void*))comparElement, (void(*)(void *))removeElement);
-      testRemoveElement(&l);*/
+    END_TEST_MODULE();
 
     return 0;
 }
