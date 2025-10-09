@@ -30,7 +30,7 @@ void logger_log(const char *file, int line, logger_level_t level,
                 const char *fmt, ...);
 
 __attribute ((format (printf, 3, 4)))
-void logger_assert_failed(const char *file, int line, const char *fmt, ...);
+void _logger_assert_failed(const char *file, int line, const char *fmt, ...);
 
 #define logger_info(fmt, ...)                                                 \
     logger_log(__FILE__, __LINE__, LOGGER_INFO, fmt, ##__VA_ARGS__)
@@ -43,6 +43,9 @@ void logger_assert_failed(const char *file, int line, const char *fmt, ...);
 
 #define logger_fatal(fmt, ...)                                                \
     logger_log(__FILE__, __LINE__, LOGGER_FATAL, fmt, ##__VA_ARGS__)
+
+#define logger_assert_failed(fmt, ...)                                        \
+    _logger_assert_failed(__FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
 void logger_test_result(const char *test_name, bool res);
 

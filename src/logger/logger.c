@@ -90,7 +90,7 @@ void logger_log(const char *file, int line, logger_level_t level,
 }
 
 __attribute ((format (printf, 3, 4)))
-void logger_assert_failed(const char *file, int line, const char *fmt, ...)
+void _logger_assert_failed(const char *file, int line, const char *fmt, ...)
 {
     char buf[100] = "ASSERT FAILED => ";
 
