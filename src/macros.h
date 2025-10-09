@@ -63,9 +63,10 @@
 #define ASSERT(_cond, fmt, ...)                                               \
     do {                                                                      \
         if (!(_cond)) {                                                       \
-            logger_error(fmt, ##__VA_ARGS__);                                 \
+            logger_assert_failed(fmt, ##__VA_ARGS__);                         \
             assert(_cond);                                                    \
         }                                                                     \
-    } while (0);
+    } while (0)
+
 
 #endif
