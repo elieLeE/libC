@@ -28,15 +28,16 @@ gl_get_elem_data(generic_liste_t *l, void *searching_data,
 
 void gl_add_elem_first(generic_liste_t* l, void *e);
 void gl_add_elem_last(generic_liste_t *l, void *e);
-void gl_add_elem_trie(generic_liste_t *l, void *e,
-                      int (*compar_elem)(void const *d1, void const *d2),
-                      bool sens_croissant);
-void
-gl_add_elem_trie_c(generic_liste_t *l, void *e,
-                      int (*compar_elem)(void const *d1, void const *d2));
-void
-gl_add_elem_trie_d(generic_liste_t *l, void *e,
-                      int (*compar_elem)(void const *d1, void const *d2));
+/* Add a new element and sorted it.
+ * Warning; list has to be already sorted. If it is not, the position of the
+ * new element will be undetermined.
+ * You chose the way of the sorting. If 'cmp_cb' works like usual
+ * (returns > 0 if d1 > d2, < 0 if d2 < d1 and 0 else), then the list will be
+ * sorted increasing.
+ * If you want to sort it decreasing, just return opposite value in 'cmp_cb'
+ */
+void gl_add_elem_sorted(generic_liste_t *l, void *e,
+                        int (*compar_elem)(void const *d1, void const *d2));
 
 void gl_remove_first_elem(generic_liste_t *l,
                              void (*remove_data)(void *data));

@@ -11,7 +11,9 @@ CC=gcc
 CFLAGS=-std=c99 -Wextra -Wall -g# -ansi -pedantic
 LDFLAGS=
 EXEC=test
-SRC= $(wildcard *.c ../../src/liste/*.c ../../src/mem/mem.c)
+LIB_C=../../src/
+SRC= $(wildcard *.c $(LIB_C)/liste/*.c $(LIB_C)/mem/mem.c\
+	 $(LIB_C)/logger/logger.c)
 OBJ= $(SRC:.c=.o)
 INCLUDE=-I. -I../../src/liste/
 

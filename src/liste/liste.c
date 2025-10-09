@@ -2,6 +2,7 @@
 
 #include "liste.h"
 #include "../mem/mem.h"
+#include "../logger/logger.h"
 
 /* TODO: this file has be coded a long time ago and needs some refactoring */
 
@@ -52,64 +53,29 @@ void gl_add_elem_last(generic_liste_t *l, void *data)
     }
 }
 
-void gl_add_elem_trie(generic_liste_t *l, void *data,
-                      int (*compar_elem)(void const *d1, void const *d2),
-                      bool sens_croissant)
+void gl_add_elem_sorted(generic_liste_t *l, void *data,
+                        int (*cmp_elem)(void const *d1, void const *d2))
 {
-    if (!(compar_elem == NULL)) {
-        if (gl_is_empty(l)) {
-            gl_add_elem_first(l, data);
-        } else {
-            if (sens_croissant) {
-                gl_add_elem_trie_c(l, data, compar_elem);
-            } else {
-                gl_add_elem_trie_d(l, data, compar_elem);
-            }
-        }
-    } else {
-        fprintf(stderr, "compar_elem NULL\n");
+    if (cmp_elem == NULL) {
+        logger_fatal("cmp_elem is NULL");
     }
-}
 
-void gl_add_elem_trie_c(generic_liste_t *l, void *data,
-                        int (*compar_elem)(void const *d1, void const *d2))
-{
-    if ((*(compar_elem))(l->first->data, data) >= 0) {
+    if (gl_is_empty(l)) {
         gl_add_elem_first(l, data);
-    } else if ((*(compar_elem))(l->end->data, data) <= 0) {
+    } else if (cmp_elem(l->first->data, data) >= 0) {
+        gl_add_elem_first(l, data);
+    } else if (cmp_elem(l->end->data, data) <= 0) {
         gl_add_elem_last(l, data);
     } else {
-        generic_elem_liste_t *p = l->first;
+        generic_elem_liste_t *n;
 
-        if ((*(compar_elem))(data, l->first->data) > 0) {
-            while ((!gl_is_elem_empty(p->suiv)) &&
-                  ((*(compar_elem))(p->suiv->data, data) < 0))
-            {
-                p = p->suiv;
+        gl_for_each(p, l->first) {
+            if (cmp_elem(p->suiv->data, data) >= 0) {
+                n = p;
+                break;
             }
         }
-        gl_add_elem_next(l, p, data);
-    }
-}
-
-void gl_add_elem_trie_d(generic_liste_t *l, void *data,
-                        int (*compar_elem)(void const *d1, void const *d2))
-{
-    if ((*(compar_elem))(l->first->data, data) <= 0) {
-        gl_add_elem_first(l, data);
-    } else if ((*(compar_elem))(l->end->data, data) >= 0) {
-        gl_add_elem_last(l, data);
-    } else {
-        generic_elem_liste_t *p = l->first;
-
-        if ((*(compar_elem))(data, l->first->data) < 0) {
-            while ((!gl_is_elem_empty(p->suiv)) &&
-                  ((*(compar_elem))(p->suiv->data, data) > 0))
-            {
-                p = p->suiv;
-            }
-        }
-        gl_add_elem_next(l, p, data);
+        gl_add_elem_next(l, n, data);
     }
 }
 
