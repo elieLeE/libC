@@ -25,22 +25,31 @@ void gl_add_elem_first(generic_liste_t *l, void *data)
     (l->nbre_elem)++;
 }
 
-void gl_add_elem_last(generic_liste_t *l, void *data)
+static void
+gl_add_elem_next(generic_liste_t *l, generic_elem_liste_t *e, void *data)
 {
     generic_elem_liste_t *new = p_calloc(sizeof(*new));
 
     new->data = data;
-    new->suiv = NULL;
-    new->prec = l->end;
-
-    if (!gl_is_empty(l)) {
-        l->end->suiv = new;
-    } else {
-        l->first = new;
+    new->suiv = e->suiv;
+    new->prec = e;
+    if (e->suiv != NULL) {
+        e->suiv->prec = new;
     }
+    e->suiv = new;
 
-    l->end = new;
     (l->nbre_elem)++;
+}
+
+void gl_add_elem_last(generic_liste_t *l, void *data)
+{
+    if (gl_is_empty(l)) {
+        gl_add_elem_first(l, data);
+    } else {
+        gl_add_elem_next(l, l->end, data);
+
+        l->end = l->end->suiv;
+    }
 }
 
 void gl_add_elem_trie(generic_liste_t *l, void *data,
@@ -79,20 +88,8 @@ void gl_add_elem_trie_c(generic_liste_t *l, void *data,
                 p = p->suiv;
             }
         }
-        gl_add_elem_next(p, data);
-        (l->nbre_elem)++;
+        gl_add_elem_next(l, p, data);
     }
-}
-
-void gl_add_elem_next(generic_elem_liste_t *e, void *data)
-{
-    generic_elem_liste_t *new = p_calloc(sizeof(*new));
-
-    new->data = data;
-    new->suiv = e->suiv;
-    new->prec = e;
-    e->suiv->prec = new;
-    e->suiv = new;
 }
 
 void gl_add_elem_trie_d(generic_liste_t *l, void *data,
@@ -112,8 +109,7 @@ void gl_add_elem_trie_d(generic_liste_t *l, void *data,
                 p = p->suiv;
             }
         }
-        gl_add_elem_next(p, data);
-        (l->nbre_elem)++;
+        gl_add_elem_next(l, p, data);
     }
 }
 
