@@ -47,7 +47,10 @@ void _logger_assert_failed(const char *file, int line, const char *fmt, ...);
 #define logger_assert_failed(fmt, ...)                                        \
     _logger_assert_failed(__FILE__, __LINE__, fmt, ##__VA_ARGS__)
 
+void logger_test_begin_module(const char *test_name);
+void logger_test_start(const char *test_name);
 void logger_test_result(const char *test_name, bool res);
+void logger_test_end_module(const char *test_name);
 
 #define logger_test_ok(_test_name)                                            \
     logger_test_result(_test_name, true);

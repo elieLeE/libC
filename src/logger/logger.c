@@ -102,10 +102,25 @@ void _logger_assert_failed(const char *file, int line, const char *fmt, ...)
     logger_log_(file, line, LOGGER_ERROR, buf);
 }
 
+void logger_test_begin_module(const char *module_name)
+{
+    printf("Run all tests of module " COLOR_MAGENTA "%s\n" COLOR_RESET,
+           module_name);
+}
+
+void logger_test_end_module(const char *module_name)
+{
+    printf("Leave module " COLOR_MAGENTA "%s\n" COLOR_RESET,
+           module_name);
+}
+void logger_test_start(const char *test_name)
+{
+    printf("\tSTART TEST " COLOR_BLUE "%s\n" COLOR_RESET, test_name);
+}
+
 void logger_test_result(const char *test_name, bool res)
 {
-    const char *txt_fmt;
-    const char *txt_res;
+    const char *txt_fmt, *txt_res;
 
     if (res) {
         txt_res = "OK";
@@ -115,5 +130,6 @@ void logger_test_result(const char *test_name, bool res)
         txt_fmt = COLOR_RED;
     }
 
-    printf("%s%s: %s\n" COLOR_RESET, test_name, txt_fmt, txt_res);
+    printf("\t%s%s: %s\n" COLOR_RESET, test_name, txt_fmt, txt_res);
 }
+
