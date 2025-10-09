@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "assert.h"
+
 #define SWAP(_type, _a, _b)                                                   \
     do {                                                                      \
         _type _c = *_b;                                                       \
