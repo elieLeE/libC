@@ -249,7 +249,7 @@ void gl_init(generic_liste_t *l)
 
 bool gl_is_empty(generic_liste_t *l)
 {
-    return (l->first==NULL);
+    return (l->first == NULL);
 }
 
 bool gl_is_elem_empty(generic_elem_liste_t *e)
