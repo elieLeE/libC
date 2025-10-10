@@ -294,10 +294,10 @@ void gl_visu(generic_liste_t *l, void (*visuElement)(void const *data),
     }
 }
 
-void gl_free(generic_liste_t *l, void (*remove_data)(void *data))
+void gl_free(generic_liste_t *l, void (*remove_data_cb)(void *data))
 {
     while (!gl_is_empty(l)) {
-        gl_remove_first_elem(l, remove_data);
+        assert(gl_remove_first_elem(l, remove_data_cb) == 0);
     }
     l->first = NULL;
     l->end = NULL;
