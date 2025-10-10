@@ -130,11 +130,10 @@ void test_add_element_trie(void)
     gl_free(&l, NULL);
 }
 
-/* TODO => not call for now */
 void test_remove_element(void)
 {
     generic_liste_t l;
-    int expected_vals[5] = {1, 3, 5, 6};
+    int expected_vals[5] = {2, 4, 5};
 
     gl_init(&l);
 
@@ -146,9 +145,10 @@ void test_remove_element(void)
     gl_add_elem_sorted(&l, get_new_int(6), cmp_elem_increasing);
 
     gl_remove_elem_n(&l, 2, remove_element);
-    //gl_remove_elem_&n(l, 3);
+    gl_remove_last_elem(&l, remove_element);
+    gl_remove_first_elem(&l, remove_element);
 
-    check_list_data(&l, expected_vals, 6);
+    check_list_data(&l, expected_vals, 3);
 
     gl_free(&l, remove_element);
 }
