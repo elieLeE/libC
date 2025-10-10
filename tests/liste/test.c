@@ -55,6 +55,8 @@ void test_get_elem_data(void)
 
     gl_init(&l);
 
+    ASSERT(gl_is_empty(&l), "list should be empty");
+
     a = p_calloc(sizeof(int));
     *a = 1;
 
@@ -64,6 +66,8 @@ void test_get_elem_data(void)
     ASSERT((elem != NULL), "elem has not been found");
 
     gl_free(&l, remove_element);
+
+    ASSERT(gl_is_empty(&l), "list should be empty");
 }
 
 void test_add_and_remove_element(void)
