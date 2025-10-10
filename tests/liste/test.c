@@ -26,12 +26,12 @@ static void check_list_data(const generic_liste_t *l,
     }
 }
 
-void remove_element(void *data)
+static void remove_element(void *data)
 {
     p_free(&data);
 }
 
-int cmp_elem_increasing(void const *d1, void const *d2)
+static int cmp_elem_increasing(void const *d1, void const *d2)
 {
     int const *a = d1;
     int const *b = d2;
@@ -39,7 +39,7 @@ int cmp_elem_increasing(void const *d1, void const *d2)
     return (*a - *b);
 }
 
-int cmp_elem_decreasing(void const *d1, void const *d2)
+static int cmp_elem_decreasing(void const *d1, void const *d2)
 {
     int const *a = d1;
     int const *b = d2;
