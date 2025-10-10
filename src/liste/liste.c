@@ -1,5 +1,7 @@
 #include <string.h>
 
+#include "assert.h"
+
 #include "liste.h"
 #include "../mem/mem.h"
 #include "../logger/logger.h"
@@ -155,48 +157,74 @@ int gl_remove_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
     return 0;
 }
 
-void gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
-                      void (*remove_data)(void *data))
+static int
+gl_remove_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
+               void (*remove_data_cb)(void *data))
 {
-    printf("removeElementN NOT YET FONCTIONNAL\n");
-    return;
-
-    if (((int)n > 0) && (n <= l->nbre_elem)) {
-        if (n == 1) {
-            gl_remove_first_elem(l, remove_data);
-        } else if (n == l->nbre_elem) {
-            gl_remove_last_elem(l, remove_data);
-        } else {
-            generic_elem_liste_t *p = NULL;
-            unsigned int compt = 1;
-
-            printf("suppresion milieu : %d\n", n);
-
-            p = l->first;
-            while (compt < n - 1) {
-                p = p->suiv;
-            }
-            gl_remove_next_elem(p, remove_data);
-        }
+    if (elem_to_remove == NULL) {
+        logger_error("Can not remove a NULL elem");
+        assert(false);
+        return -1;
     }
-    printf("\n");
+    if (elem_to_remove->prec == NULL) {
+        logger_error("previous element is NULL whereas it should not be");
+        assert(false);
+        return -1;
+    }
+    if (elem_to_remove->suiv  == NULL) {
+        logger_error("next element is NULL whereas it should not be");
+        assert(false);
+        return -1;
+    }
+
+    elem_to_remove->prec->suiv = elem_to_remove->suiv;
+    elem_to_remove->suiv->prec = elem_to_remove->prec;
+
+    if (l->nbre_elem == 0) {
+        logger_fatal("'nbre_elem' is equal to 0 and so cannot be decreased, "
+                     "but an element has just been removed");
+    }
+    (l->nbre_elem)--;
+
+    /* remove_data_cb can be NULL as data can contain a data detained by
+     * someone else */
+    if (remove_data_cb != NULL) {
+        (*remove_data_cb)(elem_to_remove->data);
+    }
+
+    p_free((void **)&elem_to_remove);
+
+    return -1;
 }
 
-void
-gl_remove_next_elem(generic_elem_liste_t *e, void (*remove_data)(void *data))
+int gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
+                      void (*remove_data_cb)(void *data))
 {
-    printf("gl_remove_next_elem NOT YET FONCTIONNAL\n");
-    return;
+    unsigned int count = 0;
 
-    generic_elem_liste_t *p = e->suiv;
-    e->suiv = e->suiv->suiv;
-    e->suiv->prec = e;
-    /* remove_data can be NULL as data can contain a data detained by
-     * someone else */
-    if (remove_data != NULL) {
-        (*remove_data)(p->data);
+    if (n == 0) {
+        return gl_remove_first_elem(l, remove_data_cb);
     }
-    p_free((void **)&p);
+
+    if (l->nbre_elem == n) {
+        return gl_remove_last_elem(l, remove_data_cb);
+    }
+
+    if (l->nbre_elem < n) {
+        logger_error("index %d given to 'gl_remove_elem_n' is too big, "
+                     "the size of the list is %d", n, l->nbre_elem);
+        return -1;
+    }
+
+    gl_for_each(p, l->first) {
+        if (count == n) {
+            return gl_remove_elem(l, p, remove_data_cb);
+        }
+        count++;
+    }
+
+    logger_error("element at the position %d has not been found", n);
+    return -1;
 }
 
 /* }}} */
