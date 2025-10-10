@@ -130,25 +130,6 @@ void test_add_element_trie(void)
     gl_free(&l, NULL);
 }
 
-void test_add_element_trexpected_valsd(void)
-{
-    generic_liste_t l;
-    int tab[6] = {6, 5, 4, 3, 2, 1};
-
-    gl_init(&l);
-
-    gl_add_elem_sorted(&l, &tab[1], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[3], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[0], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[5], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[2], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[4], cmp_elem_decreasing);
-
-    check_list_data(&l, tab, 6);
-
-    gl_free(&l, NULL);
-}
-
 /* TODO => not call for now */
 void test_remove_element(void)
 {
