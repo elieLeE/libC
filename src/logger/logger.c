@@ -9,6 +9,8 @@
 static const char *get_fmt_text_log(logger_level_t level)
 {
     switch (level) {
+    case LOGGER_TRACE:
+    case LOGGER_DEBUG:
     case LOGGER_INFO:
         return "";
     case LOGGER_WARNING:
@@ -25,6 +27,10 @@ static const char *get_fmt_text_log(logger_level_t level)
 static const char *get_level_str(logger_level_t level)
 {
     switch (level) {
+    case LOGGER_TRACE:
+        return "TRACE";
+    case LOGGER_DEBUG:
+        return "DEBUG";
     case LOGGER_INFO:
         return "INFO";
     case LOGGER_WARNING:
@@ -42,12 +48,29 @@ static const char *get_level_str(logger_level_t level)
 static void
 logger_log_(const char *file, int line, int level, const char *txt)
 {
+    static int logger_level_min = -1;
     time_t now;
     struct tm *time_infos;
     char time_buf[50];
     size_t rc;
     const char *txt_fmt;
     const char *level_txt;
+
+    if (logger_level_min == -1) {
+        char *val = getenv("LOGGER_LEVEL_MIN");
+
+        if (val != NULL) {
+            logger_level_min = atoi(val);
+        } else {
+            logger_level_min = LOGGER_INFO;
+        }
+    }
+
+    if (level <= LOGGER_DEBUG &&
+        logger_level_min >= 0 && level < logger_level_min)
+    {
+        return;
+    }
 
     memset(time_buf, 0, 50);
 

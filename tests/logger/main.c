@@ -15,6 +15,8 @@ int main(void)
 
     printf("hello_word normal\n\n");
 
+    logger_trace("message info: %s\n", "le message");
+    logger_debug("message info: %s\n", "le message");
     logger_info("message info: %s\n", "le message");
     logger_warning("message warning: %s\n", "le message");
     logger_error("message error: %s\n", "le message");
