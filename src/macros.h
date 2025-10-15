@@ -30,6 +30,7 @@
         if (_res < 0) {                                                       \
             return _res;                                                      \
         }                                                                     \
+        _res;                                                                 \
     })
 
 
@@ -39,6 +40,7 @@
         if (_res == NULL) {                                                   \
             return _res;                                                      \
         }                                                                     \
+        _res;                                                                 \
     })
 
 #define RETHROW_PN(_exp)                                                      \
@@ -47,6 +49,7 @@
         if (_res == NULL) {                                                   \
             return -1;                                                        \
         }                                                                     \
+        _res;                                                                 \
     })
 
 #define RETHROW_NP(_exp)                                                      \
@@ -55,6 +58,7 @@
         if (_res < 0) {                                                       \
             return NULL;                                                      \
         }                                                                     \
+        _res;                                                                 \
     })
 
 /* s1_p and s2_p has to be pointers on structures.
