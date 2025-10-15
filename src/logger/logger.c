@@ -61,7 +61,7 @@ logger_log_(const char *file, int line, logger_level_t level, const char *txt)
 
     level_txt = get_level_str(level);
     txt_fmt = get_fmt_text_log(level);
-    printf(COLOR_WHITE "%s:%d %s -- %s%s: %s" COLOR_RESET,
+    printf("%s:%d %s -- %s%s: %s" COLOR_RESET,
            file, line, time_buf, txt_fmt, level_txt, txt);
 
     if (txt[strlen(txt) - 1] != '\n') {
