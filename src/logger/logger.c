@@ -40,7 +40,7 @@ static const char *get_level_str(logger_level_t level)
 }
 
 static void
-logger_log_(const char *file, int line, logger_level_t level, const char *txt)
+logger_log_(const char *file, int line, int level, const char *txt)
 {
     time_t now;
     struct tm *time_infos;
@@ -74,8 +74,7 @@ logger_log_(const char *file, int line, logger_level_t level, const char *txt)
 }
 
 __attribute ((format (printf, 4, 5)))
-void logger_log(const char *file, int line, logger_level_t level,
-                const char *fmt, ...)
+void logger_log(const char *file, int line, int level, const char *fmt, ...)
 {
     char buf[100];
     va_list va;
