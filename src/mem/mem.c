@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "mem.h"
 
 void* p_calloc(size_t const taille)
@@ -34,6 +36,11 @@ void* p_realloc(void *p, size_t const taille)
         exit(0);
     }
     return p;
+}
+
+void _p_clear(void *p, size_t size)
+{
+    memset(p, 0, size);
 }
 
 void** alloc_tab_2d(int const lig, int const col, size_t const tailleType)

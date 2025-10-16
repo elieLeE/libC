@@ -7,6 +7,12 @@
 void* p_calloc(size_t const taille);
 void* p_realloc(void *p, size_t const taille);
 
+void _p_clear(void *p, size_t size);
+#define p_clear(_p, _n)                                                       \
+    do {                                                                      \
+        _p_clear(_p, sizeof(*_p) * _n);                                       \
+    } while (0)
+
 void** alloc_tab_2d(int const lig, int const col, size_t const tailleType);
 
 void free_tab_2d(void** matrice, int const lig);
