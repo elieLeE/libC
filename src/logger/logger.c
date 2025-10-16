@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include "logger.h"
+#include "../mem/mem.h"
 
 static const char *get_fmt_text_log(logger_level_t level)
 {
@@ -72,7 +73,7 @@ logger_log_(const char *file, int line, int level, const char *txt)
         return;
     }
 
-    memset(time_buf, 0, 50);
+    p_clear(time_buf, 50);
 
     now = time(NULL);
     time_infos = localtime(&now);
@@ -102,7 +103,7 @@ void logger_log(const char *file, int line, int level, const char *fmt, ...)
     char buf[100];
     va_list va;
 
-    memset(buf, 0, 100);
+    p_clear(buf, 100);
 
     va_start(va, fmt);
     vsnprintf(buf, sizeof(buf), fmt, va);
