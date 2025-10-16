@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+/* XXX => the file is this folder have to be fully re-done */
+
 typedef struct structDichoSearch structDichoSearch;
 struct structDichoSearch{
     void const *tab;
