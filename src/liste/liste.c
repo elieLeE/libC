@@ -244,7 +244,7 @@ void gl_fusion(generic_liste_t *l, bool sensCroissant)
 
 void gl_init(generic_liste_t *l)
 {
-    memset(l, 0, sizeof(*l));
+    p_clear(l, 1);
 }
 
 bool gl_is_empty(generic_liste_t *l)
