@@ -74,12 +74,17 @@
         }                                                                     \
     } while (0)
 
-#define ASSERT_EQUAL(_v_obtained, _v_expected) \
+#define ASSERT_EQUAL(_v_obtained, _v_expected)                                \
     do {                                                                      \
         ASSERT((_v_obtained == _v_expected),                                  \
                "obtained: %d, expected: %d", _v_obtained, _v_expected);       \
     } while (0)
 
+#define ASSERT_STR_EQUAL(_str1, _str2)                                        \
+    do {                                                                      \
+        ASSERT((strcmp(_str1, _str2) == 0), "expected: %s, obtained: %s",     \
+               _str1, _str2);                                                 \
+    } while(0);
 
 /* }}} */
 /* {{{ For test */
