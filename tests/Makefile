@@ -13,7 +13,7 @@ LDFLAGS=
 EXEC=test
 LIB_C=../src/
 SRC= $(wildcard *.c $(LIB_C)/liste/*.c $(LIB_C)/mem/mem.c\
-	 $(LIB_C)/logger/logger.c)
+	 $(LIB_C)/logger/logger.c $(LIB_C)/io/io.c)
 OBJ= $(SRC:.c=.o)
 INCLUDE=-I. -I../../src/liste/
 
