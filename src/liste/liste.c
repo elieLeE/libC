@@ -247,12 +247,12 @@ void gl_init(generic_liste_t *l)
     p_clear(l, 1);
 }
 
-bool gl_is_empty(generic_liste_t *l)
+bool gl_is_empty(const generic_liste_t *l)
 {
     return (l->first == NULL);
 }
 
-bool gl_is_elem_empty(generic_elem_liste_t *e)
+bool gl_is_elem_empty(const generic_elem_liste_t *e)
 {
     return (e == NULL);
 }
@@ -277,7 +277,7 @@ bool gl_contains_data(generic_liste_t *l, void *searching_data,
 }
 
 /* XXX: maybe this method is not necessary. TO REMOVE ? */
-void gl_visu(generic_liste_t *l, void (*visuElement)(void const *data),
+void gl_visu(const generic_liste_t *l, void (*visuElement)(void const *data),
              char const *sep)
 {
     if (gl_is_empty(l)) {

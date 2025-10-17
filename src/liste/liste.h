@@ -20,11 +20,11 @@
 
 void gl_init(generic_liste_t *l);
 
-bool gl_is_empty(generic_liste_t *l);
-bool gl_is_elem_empty(generic_elem_liste_t *e);
+bool gl_is_empty(const generic_liste_t *l);
+bool gl_is_elem_empty(const generic_elem_liste_t *e);
 
 bool gl_contains_data(generic_liste_t *l, void *searching_data,
-                 int (*cmp_cb)(const void *, const void *));
+                      int (*cmp_cb)(const void *, const void *));
 generic_elem_liste_t *
 gl_get_elem_data(generic_liste_t *l, void *searching_data,
                  int (*cmp_cb)(const void *, const void *));
@@ -56,7 +56,7 @@ void gl_trie_fusion(generic_liste_t *l, bool sens_croissant);
 void gl_division(generic_liste_t *l);
 void gl_fusion(generic_liste_t *l, bool sens_croissant);
 
-void gl_visu(generic_liste_t *l, void (*visuelem)(void const *data),
+void gl_visu(const generic_liste_t *l, void (*visuelem)(void const *data),
              char const *sep);
 
 void gl_free(generic_liste_t *l, void (*remove_data)(void *data));
