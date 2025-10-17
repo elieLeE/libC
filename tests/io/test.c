@@ -51,7 +51,7 @@ bool test_lecture_matrice()
     unsigned int i;
     unsigned int lig = 20;
     unsigned int col = 7;
-    unsigned int mat[20][7] = {{35, 34, 58, 4, 59, 3, 47},
+    int mat[20][7] = {{35, 34, 58, 4, 59, 3, 47},
         {68, 45, 55, 69, 20, 23, 21},
         {9, 8, 32, 42, 48, 11, 26},
         {68, 52, 63, 34, 19, 49, 10},
@@ -71,8 +71,7 @@ bool test_lecture_matrice()
         {19, 18, 27, 28, 68, 54, 4},
         {48, 65, 0, 11, 10, 8, 41},
         {31, 8, 21, 39, 27, 5, 12}};
-    unsigned int **tab =
-        (unsigned int **)alloc_tab_2d(lig, col, sizeof(unsigned int));
+    int **tab = (int **)alloc_tab_2d(lig, col, sizeof(int));
     FILE* f = ouv_fichier("fichierTestLectureMatrice", "r");
 
     lire_matrice(f, tab, lig, col);
