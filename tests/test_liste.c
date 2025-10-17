@@ -1,6 +1,9 @@
-#include "test.h"
-#include "../../src/mem/mem.h"
-#include "../../src/macros.h"
+#include "test_liste.h"
+
+#include "../libc.h"
+#include "../src/liste/liste.h"
+#include "../src/mem/mem.h"
+#include "../src/macros.h"
 
 static int *get_new_int(int val)
 {
@@ -47,7 +50,7 @@ static int cmp_elem_decreasing(void const *d1, void const *d2)
     return (*b - *a);
 }
 
-void test_get_elem_data(void)
+static void test_get_elem_data(void)
 {
     int *a;
     generic_liste_t l;
@@ -70,7 +73,7 @@ void test_get_elem_data(void)
     ASSERT(gl_is_empty(&l), "list should be empty");
 }
 
-void test_add_and_remove_element(void)
+static void test_add_and_remove_element(void)
 {
     generic_liste_t l;
     int expected_vals[3] = {6, 1, 3};
@@ -92,7 +95,7 @@ void test_add_and_remove_element(void)
     gl_free(&l, remove_element);
 }
 
-void test_add_element_trie(void)
+static void test_add_element_trie(void)
 {
     generic_liste_t l;
     int expected_vals[6] = {1, 2, 3, 4, 5, 6};
@@ -130,7 +133,7 @@ void test_add_element_trie(void)
     gl_free(&l, NULL);
 }
 
-void test_remove_element(void)
+static void test_remove_element(void)
 {
     generic_liste_t l;
     int expected_vals[5] = {2, 4, 5};
@@ -153,7 +156,8 @@ void test_remove_element(void)
     gl_free(&l, remove_element);
 }
 
-void test_triage_liste(void)
+__attr_unused__
+static void test_triage_liste(void)
 {
     generic_liste_t l;
     int tab[6] = {1, 2, 3, 4, 5, 6};
@@ -170,4 +174,16 @@ void test_triage_liste(void)
     check_list_data(&l, tab, 6);
 
     gl_free(&l, NULL);
+}
+
+void run_tests_liste(void)
+{
+    BEGIN_TEST_MODULE("LISTE");
+
+    CALL_TEST_FUNC(test_get_elem_data);
+    CALL_TEST_FUNC(test_add_and_remove_element);
+    CALL_TEST_FUNC(test_add_element_trie);
+    CALL_TEST_FUNC(test_remove_element);
+
+    END_TEST_MODULE();
 }

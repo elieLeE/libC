@@ -12,11 +12,13 @@ CFLAGS=-std=c99 -Wextra -Wall -g# -ansi -pedantic
 LDFLAGS=
 EXEC=test
 LIB_C=../src/
-SRC= $(wildcard *.c)
+SRC= $(wildcard *.c $(LIB_C)/liste/*.c $(LIB_C)/mem/mem.c\
+	 $(LIB_C)/logger/logger.c)
 OBJ= $(SRC:.c=.o)
 INCLUDE=-I. -I../../src/liste/
 
 all: $(EXEC) cleanSimple
+
 
 debug: CFLAGS += -DDDebug -g
 debug: LDFLAGS += -DDDebug -g
