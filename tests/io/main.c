@@ -1,10 +1,14 @@
+#include "../../src/macros.h"
 #include "../shared/ftest.h"
 #include "test.h"
 
 int main()
 {
-    affResultTest("test_lecture\t\t", test_lecture_simple());
-    affResultTest("test_lecture_matrice\t",test_lecture_matrice());
+    BEGIN_TEST_MODULE("IO");
 
+    CALL_TEST_FUNC(test_lecture_simple);
+    CALL_TEST_FUNC(test_lecture_matrice);
+
+    END_TEST_MODULE();
     return 0;
 }

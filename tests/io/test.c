@@ -1,56 +1,28 @@
 #include <stdio.h>
-#include <string.h>
 
 #include "test.h"
 #include "../../src/io/io.h"
 #include "../../src/mem/mem.h"
+#include "../../src/macros.h"
 
-bool test_lecture_simple()
+void test_lecture_simple()
 {
     FILE* f = ouv_fichier("fichierTest", "r");
     char *s = p_calloc(50*sizeof(*s));
-    char temoin[] = "test de lecture";
-    bool res;
+    char temoin[] = "test de lecture\n";
 
     fgets(s, 50, f);
     fermer_fichier(&f);
 
-    res = !strncmp(s, temoin, strlen(temoin));
+    ASSERT_STR_EQUAL(s, temoin);
 
     p_free((void **)&s);
-
-    return res;
 }
 
-static bool compar_tab(unsigned int const *tab1,
-                       unsigned int const *tab2,
-                       unsigned int const taille)
+void test_lecture_matrice()
 {
-    unsigned int i;
-
-    for(i=0; i<taille; i++) {
-        if(tab1[i] != tab2[i]) {
-            return false;
-        }
-    }
-    return true;
-}
-
-void visu(unsigned int *tab, unsigned int taille)
-{
-    unsigned int i;
-
-    for(i=0; i<taille; i++) {
-        printf("%d, ", tab[i]);
-    }
-    printf("\n");
-}
-
-bool test_lecture_matrice()
-{
-    unsigned int i;
-    unsigned int lig = 20;
-    unsigned int col = 7;
+    int lig = 20;
+    int col = 7;
     int mat[20][7] = {{35, 34, 58, 4, 59, 3, 47},
         {68, 45, 55, 69, 20, 23, 21},
         {9, 8, 32, 42, 48, 11, 26},
@@ -76,17 +48,13 @@ bool test_lecture_matrice()
 
     lire_matrice(f, tab, lig, col);
 
-    for(i=0; i<lig; i++) {
-        if(!compar_tab(mat[i], tab[i], 7)) {
-            printf("i : %d\n", i);
-            visu(tab[i], col);
-            return false;
+    for (int i = 0; i < lig; i++) {
+        for (int j = 0; j < col; j++) {
+            ASSERT_EQUAL(mat[i][j], tab[i][j]);
         }
     }
 
     free_tab_2d((void **)tab, lig);
     fermer_fichier(&f);
-
-    return true;
 }
 
