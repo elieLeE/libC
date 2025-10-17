@@ -24,6 +24,8 @@
 #define PERCENTAGE(_a, _b)                                                    \
     ((double)_a) / _b * 100;
 
+/* {{{ RETHROW */
+
 #define RETHROW(_exp)                                                         \
     ({                                                                        \
         __auto_type _res = _exp;                                              \
@@ -61,6 +63,9 @@
         _res;                                                                 \
     })
 
+/* }}} */
+/* {{{ Assert */
+
 #define ASSERT(_cond, fmt, ...)                                               \
     do {                                                                      \
         if (!(_cond)) {                                                       \
@@ -74,6 +79,10 @@
         ASSERT((_v_obtained == _v_expected),                                  \
                "obtained: %d, expected: %d", _v_obtained, _v_expected);       \
     } while (0)
+
+
+/* }}} */
+/* {{{ For test */
 
 #define CALL_TEST_FUNC(_func)                                                 \
     do {                                                                      \
@@ -94,5 +103,7 @@
             logger_test_end_module(__module_name);                            \
         } while(0);                                                           \
     }
+
+/* }}} */
 
 #endif
