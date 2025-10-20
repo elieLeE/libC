@@ -15,6 +15,8 @@ typedef struct generic_elem_liste_t {
     void *data;
 } generic_elem_liste_t;
 
+typedef generic_elem_liste_t gl_elem_t;
+
 typedef struct generic_liste_t {
     generic_elem_liste_t *first, *end;
     unsigned int nbre_elem;
@@ -59,6 +61,7 @@ int gl_remove_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
                    void (*remove_data_cb)(void *data));
 int gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
                      void (*remove_data)(void *data));
+
 //void gl_remove_elem_adrr_data(generic_liste_t *l, void *d);
 //void gl_remove_elem_doublons(generic_liste_t *l);
 //void gl_remove_elem_val_data(generic_liste_t *l, void *data);
