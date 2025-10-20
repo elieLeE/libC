@@ -35,7 +35,7 @@ bool gl_is_elem_empty(const generic_elem_liste_t *e);
 bool gl_contains_data(generic_liste_t *l, void *searching_data,
                       int (*cmp_cb)(const void *, const void *));
 generic_elem_liste_t *
-gl_get_elem_data(generic_liste_t *l, void *searching_data,
+gl_get_elem_data(generic_liste_t *l, const void *searching_data,
                  int (*cmp_cb)(const void *, const void *));
 
 void gl_add_elem_first(generic_liste_t* l, void *e);
