@@ -55,6 +55,8 @@ int gl_remove_first_elem(generic_liste_t *l,
                          void (*remove_data)(void *data));
 int gl_remove_last_elem(generic_liste_t *l,
                         void (*remove_data)(void *data));
+int gl_remove_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
+                   void (*remove_data_cb)(void *data));
 int gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
                      void (*remove_data)(void *data));
 //void gl_remove_elem_adrr_data(generic_liste_t *l, void *d);

@@ -157,9 +157,8 @@ int gl_remove_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
     return 0;
 }
 
-static int
-gl_remove_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
-               void (*remove_data_cb)(void *data))
+int gl_remove_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
+                   void (*remove_data_cb)(void *data))
 {
     if (elem_to_remove == NULL) {
         logger_error("Can not remove a NULL elem");
