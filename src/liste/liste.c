@@ -166,6 +166,15 @@ gl_remove_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
         assert(false);
         return -1;
     }
+
+    if (elem_to_remove == l->first) {
+        return gl_remove_first_elem(l, remove_data_cb);
+    }
+
+    if (elem_to_remove == l->end) {
+        return gl_remove_last_elem(l, remove_data_cb);
+    }
+
     if (elem_to_remove->prec == NULL) {
         logger_error("previous element is NULL whereas it should not be");
         assert(false);
@@ -201,14 +210,6 @@ int gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
                       void (*remove_data_cb)(void *data))
 {
     unsigned int count = 0;
-
-    if (n == 0) {
-        return gl_remove_first_elem(l, remove_data_cb);
-    }
-
-    if (l->nbre_elem == n) {
-        return gl_remove_last_elem(l, remove_data_cb);
-    }
 
     if (l->nbre_elem < n) {
         logger_error("index %d given to 'gl_remove_elem_n' is too big, "
