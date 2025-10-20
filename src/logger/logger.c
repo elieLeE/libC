@@ -52,7 +52,7 @@ logger_log_(const char *file, int line, int level, const char *txt)
     static int logger_level_min = -1;
     time_t now;
     struct tm *time_infos;
-    char time_buf[50];
+    static char time_buf[50];
     size_t rc;
     const char *txt_fmt;
     const char *level_txt;
@@ -100,7 +100,7 @@ logger_log_(const char *file, int line, int level, const char *txt)
 __attribute ((format (printf, 4, 5)))
 void logger_log(const char *file, int line, int level, const char *fmt, ...)
 {
-    char buf[100];
+    static char buf[200];
     va_list va;
 
     p_clear(buf, 100);
