@@ -270,7 +270,7 @@ gl_get_elem_data(generic_liste_t *l, const void *searching_data,
     return NULL;
 }
 
-bool gl_contains_data(generic_liste_t *l, void *searching_data,
+bool gl_contains_data(generic_liste_t *l, const void *searching_data,
                  int (*cmp_cb)(const void *, const void *))
 {
     return gl_get_elem_data(l, searching_data, cmp_cb) != NULL;
