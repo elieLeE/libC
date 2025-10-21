@@ -103,7 +103,7 @@ void logger_log(const char *file, int line, int level, const char *fmt, ...)
     static char buf[200];
     va_list va;
 
-    p_clear(buf, 100);
+    p_clear(buf, 200);
 
     va_start(va, fmt);
     vsnprintf(buf, sizeof(buf), fmt, va);
