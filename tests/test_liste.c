@@ -16,9 +16,9 @@ static int *get_new_int(int val)
 
 static void check_list_data(const generic_liste_t *l,
                             const int expected_vals[],
-                            unsigned int val_count)
+                            int val_count)
 {
-    unsigned int i = 0;
+    int i = 0;
 
     ASSERT_EQUAL(l->nbre_elem, val_count);
 

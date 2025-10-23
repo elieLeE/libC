@@ -19,7 +19,7 @@ typedef generic_elem_liste_t gl_elem_t;
 
 typedef struct generic_liste_t {
     generic_elem_liste_t *first, *end;
-    unsigned int nbre_elem;
+    int nbre_elem;
 } generic_liste_t;
 
 /* Here, head has to be a generic_elem_liste_t */

@@ -252,10 +252,10 @@ int gl_delete_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
     return -1;
 }
 
-int gl_delete_elem_n(generic_liste_t *l, unsigned int const n,
+int gl_delete_elem_n(generic_liste_t *l, int const n,
                       void (*remove_data_cb)(void *data))
 {
-    unsigned int count = 0;
+    int count = 0;
 
     if (l->nbre_elem < n) {
         logger_error("index %d given to 'gl_remove_elem_n' is too big, "
