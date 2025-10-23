@@ -39,6 +39,7 @@ bool gl_contains_data(generic_liste_t *l, const void *searching_data,
 generic_elem_liste_t *
 gl_get_elem_data(generic_liste_t *l, const void *searching_data,
                  int (*cmp_cb)(const void *, const void *));
+generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, int n);
 
 void gl_insert_elem_first(generic_liste_t *l, gl_elem_t *elem);
 void
@@ -65,7 +66,7 @@ int gl_delete_last_elem(generic_liste_t *l,
                         void (*remove_data)(void *data));
 int gl_delete_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
                    void (*remove_data_cb)(void *data));
-int gl_delete_elem_n(generic_liste_t *l, unsigned int const n,
+int gl_delete_elem_n(generic_liste_t *l, int const n,
                      void (*remove_data)(void *data));
 
 //void gl_remove_elem_adrr_data(generic_liste_t *l, void *d);

@@ -127,6 +127,53 @@ gl_add_elem_sorted(generic_liste_t *l, void *data,
 }
 
 /* }}} */
+/* {{{ Getting methods */
+
+/* Methods here find an element from the list and return it but without
+ * removing it from the list. So, the element will be still present in it.
+ */
+
+generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, int n)
+{
+    int count = 0;
+
+    if (n < 0) {
+        logger_error("index got in 'gl_get_elem_n' is below than 0: %d", n);
+        return NULL;
+    }
+
+    if (l->nbre_elem < n) {
+        logger_error("index got (%d) in 'gl_get_elem_n' is greater length "
+                     "of the list (%d)", n, l->nbre_elem);
+        return NULL;
+    }
+
+    gl_for_each(p, l->first) {
+        if (count == n) {
+            return p;
+        }
+        count++;
+    }
+
+    logger_error("element at the position %d has not been found", n);
+
+    return NULL;
+}
+
+generic_elem_liste_t *
+gl_get_elem_data(generic_liste_t *l, const void *searching_data,
+                 int (*cmp_cb)(const void *, const void *))
+{
+    gl_for_each(elem, l->first) {
+        if (cmp_cb(elem->data, searching_data) == 0) {
+            return elem;
+        }
+    }
+
+    return NULL;
+}
+
+/* }}} */
 /* {{{ Deleting methods */
 
 /* Methods here deleting element from the list. */
@@ -302,19 +349,6 @@ bool gl_is_empty(const generic_liste_t *l)
 bool gl_is_elem_empty(const generic_elem_liste_t *e)
 {
     return (e == NULL);
-}
-
-generic_elem_liste_t *
-gl_get_elem_data(generic_liste_t *l, const void *searching_data,
-                 int (*cmp_cb)(const void *, const void *))
-{
-    gl_for_each(elem, l->first) {
-        if (cmp_cb(elem->data, searching_data) == 0) {
-            return elem;
-        }
-    }
-
-    return NULL;
 }
 
 bool gl_contains_data(generic_liste_t *l, const void *searching_data,
