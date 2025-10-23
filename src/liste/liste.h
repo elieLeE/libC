@@ -62,6 +62,7 @@ void gl_add_elem_sorted(generic_liste_t *l, void *e,
 
 gl_elem_t *gl_take_first_elem(generic_liste_t *l);
 gl_elem_t *gl_take_last_elem(generic_liste_t *l);
+int gl_remove_elem(generic_liste_t *l, gl_elem_t *elem);
 
 int gl_delete_first_elem(generic_liste_t *l,
                          void (*remove_data)(void *data));

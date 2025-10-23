@@ -238,6 +238,45 @@ gl_elem_t *gl_take_last_elem(generic_liste_t *l)
     return elem;
 }
 
+int gl_remove_elem(generic_liste_t *l, gl_elem_t *elem)
+{
+    if (elem == NULL) {
+        logger_error("Can not remove a NULL elem");
+        assert(false);
+        return -1;
+    }
+
+    if (elem == l->first) {
+        return gl_take_first_elem(l) == NULL ? -1 : 0;
+    }
+
+    if (elem == l->end) {
+        return gl_take_last_elem(l) == NULL ? -1 : 0;
+    }
+
+    if (elem == NULL) {
+        logger_error("previous element is NULL whereas it should not be");
+        assert(false);
+        return -1;
+    }
+    if (elem  == NULL) {
+        logger_error("next element is NULL whereas it should not be");
+        assert(false);
+        return -1;
+    }
+
+    elem->prec->suiv = elem->suiv;
+    elem->suiv->prec = elem->prec;
+
+    if (l->nbre_elem == 0) {
+        logger_fatal("'nbre_elem' is equal to 0 and so cannot be decreased, "
+                     "but an element has just been removed");
+    }
+    (l->nbre_elem)--;
+
+    return 0;
+}
+
 /* }}} */
 /* {{{ Deleting methods */
 
@@ -289,39 +328,7 @@ int gl_delete_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
 int gl_delete_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
                    void (*remove_data_cb)(void *data))
 {
-    if (elem_to_remove == NULL) {
-        logger_error("Can not remove a NULL elem");
-        assert(false);
-        return -1;
-    }
-
-    if (elem_to_remove == l->first) {
-        return gl_delete_first_elem(l, remove_data_cb);
-    }
-
-    if (elem_to_remove == l->end) {
-        return gl_delete_last_elem(l, remove_data_cb);
-    }
-
-    if (elem_to_remove->prec == NULL) {
-        logger_error("previous element is NULL whereas it should not be");
-        assert(false);
-        return -1;
-    }
-    if (elem_to_remove->suiv  == NULL) {
-        logger_error("next element is NULL whereas it should not be");
-        assert(false);
-        return -1;
-    }
-
-    elem_to_remove->prec->suiv = elem_to_remove->suiv;
-    elem_to_remove->suiv->prec = elem_to_remove->prec;
-
-    if (l->nbre_elem == 0) {
-        logger_fatal("'nbre_elem' is equal to 0 and so cannot be decreased, "
-                     "but an element has just been removed");
-    }
-    (l->nbre_elem)--;
+    RETHROW(gl_remove_elem(l, elem_to_remove));
 
     /* remove_data_cb can be NULL as data can contain a data detained by
      * someone else */
@@ -331,7 +338,7 @@ int gl_delete_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
 
     p_free((void **)&elem_to_remove);
 
-    return -1;
+    return 0;
 }
 
 int gl_delete_elem_n(generic_liste_t *l, int const n,
