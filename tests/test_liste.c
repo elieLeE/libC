@@ -83,11 +83,11 @@ static void test_add_and_remove_element(void)
     gl_add_elem_last(&l, get_new_int(1));
     gl_add_elem_first(&l, get_new_int(2));
     gl_add_elem_last(&l, get_new_int(3));
-    gl_remove_first_elem(&l, remove_element);
+    gl_delete_first_elem(&l, remove_element);
     gl_add_elem_last(&l, get_new_int(4));
     gl_add_elem_first(&l, get_new_int(5));
-    gl_remove_last_elem(&l, remove_element);
-    gl_remove_first_elem(&l, remove_element);
+    gl_delete_last_elem(&l, remove_element);
+    gl_delete_first_elem(&l, remove_element);
     gl_add_elem_first(&l, get_new_int(6));
 
     check_list_data(&l, expected_vals, 3);
@@ -147,9 +147,9 @@ static void test_remove_element(void)
     gl_add_elem_sorted(&l, get_new_int(5), cmp_elem_increasing);
     gl_add_elem_sorted(&l, get_new_int(6), cmp_elem_increasing);
 
-    gl_remove_elem_n(&l, 2, remove_element);
-    gl_remove_last_elem(&l, remove_element);
-    gl_remove_first_elem(&l, remove_element);
+    gl_delete_elem_n(&l, 2, remove_element);
+    gl_delete_last_elem(&l, remove_element);
+    gl_delete_first_elem(&l, remove_element);
 
     check_list_data(&l, expected_vals, 3);
 

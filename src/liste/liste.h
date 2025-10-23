@@ -59,13 +59,13 @@ void gl_add_elem_last(generic_liste_t *l, void *e);
 void gl_add_elem_sorted(generic_liste_t *l, void *e,
                         int (*cmp_data_cb)(void const *d1, void const *d2));
 
-int gl_remove_first_elem(generic_liste_t *l,
+int gl_delete_first_elem(generic_liste_t *l,
                          void (*remove_data)(void *data));
-int gl_remove_last_elem(generic_liste_t *l,
+int gl_delete_last_elem(generic_liste_t *l,
                         void (*remove_data)(void *data));
-int gl_remove_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
+int gl_delete_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
                    void (*remove_data_cb)(void *data));
-int gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
+int gl_delete_elem_n(generic_liste_t *l, unsigned int const n,
                      void (*remove_data)(void *data));
 
 //void gl_remove_elem_adrr_data(generic_liste_t *l, void *d);

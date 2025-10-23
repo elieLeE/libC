@@ -127,10 +127,12 @@ gl_add_elem_sorted(generic_liste_t *l, void *data,
 }
 
 /* }}} */
-/* {{{ Removing methods */
+/* {{{ Deleting methods */
+
+/* Methods here deleting element from the list. */
 
 int
-gl_remove_first_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
+gl_delete_first_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
 {
     generic_elem_liste_t *p;
 
@@ -166,7 +168,7 @@ gl_remove_first_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
     return 0;
 }
 
-int gl_remove_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
+int gl_delete_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
 {
     generic_elem_liste_t *p;
 
@@ -202,7 +204,7 @@ int gl_remove_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
     return 0;
 }
 
-int gl_remove_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
+int gl_delete_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
                    void (*remove_data_cb)(void *data))
 {
     if (elem_to_remove == NULL) {
@@ -212,11 +214,11 @@ int gl_remove_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
     }
 
     if (elem_to_remove == l->first) {
-        return gl_remove_first_elem(l, remove_data_cb);
+        return gl_delete_first_elem(l, remove_data_cb);
     }
 
     if (elem_to_remove == l->end) {
-        return gl_remove_last_elem(l, remove_data_cb);
+        return gl_delete_last_elem(l, remove_data_cb);
     }
 
     if (elem_to_remove->prec == NULL) {
@@ -250,7 +252,7 @@ int gl_remove_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
     return -1;
 }
 
-int gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
+int gl_delete_elem_n(generic_liste_t *l, unsigned int const n,
                       void (*remove_data_cb)(void *data))
 {
     unsigned int count = 0;
@@ -263,7 +265,7 @@ int gl_remove_elem_n(generic_liste_t *l, unsigned int const n,
 
     gl_for_each(p, l->first) {
         if (count == n) {
-            return gl_remove_elem(l, p, remove_data_cb);
+            return gl_delete_elem(l, p, remove_data_cb);
         }
         count++;
     }
@@ -342,7 +344,7 @@ void gl_visu(const generic_liste_t *l, void (*visuElement)(void const *data),
 void gl_free(generic_liste_t *l, void (*free_data_cb)(void *data))
 {
     while (!gl_is_empty(l)) {
-        assert(gl_remove_first_elem(l, free_data_cb) == 0);
+        assert(gl_delete_first_elem(l, free_data_cb) == 0);
     }
     l->first = NULL;
     l->end = NULL;
