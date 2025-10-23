@@ -56,23 +56,23 @@ void gl_add_elem_last(generic_liste_t *l, void *data)
 }
 
 void gl_add_elem_sorted(generic_liste_t *l, void *data,
-                        int (*cmp_elem)(void const *d1, void const *d2))
+                        int (*cmp_data_cb)(void const *d1, void const *d2))
 {
-    if (cmp_elem == NULL) {
-        logger_fatal("cmp_elem is NULL");
+    if (cmp_data_cb == NULL) {
+        logger_fatal("cmp_data_cb is NULL");
     }
 
     if (gl_is_empty(l)) {
         gl_add_elem_first(l, data);
-    } else if (cmp_elem(l->first->data, data) >= 0) {
+    } else if (cmp_data_cb(l->first->data, data) >= 0) {
         gl_add_elem_first(l, data);
-    } else if (cmp_elem(l->end->data, data) <= 0) {
+    } else if (cmp_data_cb(l->end->data, data) <= 0) {
         gl_add_elem_last(l, data);
     } else {
         generic_elem_liste_t *n;
 
         gl_for_each(p, l->first) {
-            if (cmp_elem(p->suiv->data, data) >= 0) {
+            if (cmp_data_cb(p->suiv->data, data) >= 0) {
                 n = p;
                 break;
             }
@@ -294,10 +294,10 @@ void gl_visu(const generic_liste_t *l, void (*visuElement)(void const *data),
     }
 }
 
-void gl_free(generic_liste_t *l, void (*remove_data_cb)(void *data))
+void gl_free(generic_liste_t *l, void (*free_data_cb)(void *data))
 {
     while (!gl_is_empty(l)) {
-        assert(gl_remove_first_elem(l, remove_data_cb) == 0);
+        assert(gl_remove_first_elem(l, free_data_cb) == 0);
     }
     l->first = NULL;
     l->end = NULL;

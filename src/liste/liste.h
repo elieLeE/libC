@@ -51,7 +51,7 @@ void gl_add_elem_last(generic_liste_t *l, void *e);
  * If you want to sort it decreasing, just return opposite value in 'cmp_cb'
  */
 void gl_add_elem_sorted(generic_liste_t *l, void *e,
-                        int (*compar_elem)(void const *d1, void const *d2));
+                        int (*cmp_data_cb)(void const *d1, void const *d2));
 
 int gl_remove_first_elem(generic_liste_t *l,
                          void (*remove_data)(void *data));
@@ -73,6 +73,6 @@ void gl_fusion(generic_liste_t *l, bool sens_croissant);
 void gl_visu(const generic_liste_t *l, void (*visuelem)(void const *data),
              char const *sep);
 
-void gl_free(generic_liste_t *l, void (*remove_data)(void *data));
+void gl_free(generic_liste_t *l, void (*free_data_cb)(void *data));
 
 #endif
