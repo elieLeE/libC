@@ -60,6 +60,8 @@ void gl_add_elem_last(generic_liste_t *l, void *e);
 void gl_add_elem_sorted(generic_liste_t *l, void *e,
                         int (*cmp_data_cb)(void const *d1, void const *d2));
 
+gl_elem_t *gl_take_first_elem(generic_liste_t *l);
+
 int gl_delete_first_elem(generic_liste_t *l,
                          void (*remove_data)(void *data));
 int gl_delete_last_elem(generic_liste_t *l,
