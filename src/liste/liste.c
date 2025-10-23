@@ -298,78 +298,52 @@ gl_elem_t *gl_take_elem_n(generic_liste_t *l, int const n)
 
 /* Methods here deleting element from the list. */
 
-int
-gl_delete_first_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
+static void gl_free_elem(gl_elem_t *p, void (*free_data_cb)(void *data))
 {
-    generic_elem_liste_t *p;
-
-    if (gl_is_empty(l)) {
-        logger_warning("can not remove first element of the list as the list "
-                       "is empty");
-        return -1;
+    /* free_data_cb can be NULL as data can contain a data detained by
+     * someone else */
+    if (free_data_cb != NULL) {
+        free_data_cb(p->data);
     }
+    p_free((void **)&p);
+}
 
-int gl_delete_first_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
+int gl_delete_first_elem(generic_liste_t *l, void (*free_data_cb)(void *data))
 {
     gl_elem_t *elem;
 
     elem = RETHROW_PN(gl_take_first_elem(l));
-
-    /* remove_data_cb can be NULL as data can contain a data detained by
-     * someone else */
-    if (remove_data_cb != NULL) {
-        remove_data_cb (elem->data);
-    }
-    p_free((void **)&elem);
+    gl_free_elem(elem, free_data_cb);
 
     return 0;
 }
 
-int gl_delete_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
+int gl_delete_last_elem(generic_liste_t *l, void (*free_data_cb)(void *data))
 {
     generic_elem_liste_t *p;
 
     p = RETHROW_PN(gl_take_last_elem(l));
-
-    /* remove_data_cb can be NULL as data can contain a data detained by
-     * someone else */
-    if (remove_data_cb != NULL) {
-        (*remove_data_cb)(p->data);
-    }
-    p_free((void **)&p);
+    gl_free_elem(p, free_data_cb);
 
     return 0;
 }
 
 int gl_delete_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
-                   void (*remove_data_cb)(void *data))
+                   void (*free_data_cb)(void *data))
 {
     RETHROW(gl_remove_elem(l, elem_to_remove));
-
-    /* remove_data_cb can be NULL as data can contain a data detained by
-     * someone else */
-    if (remove_data_cb != NULL) {
-        (*remove_data_cb)(elem_to_remove->data);
-    }
-
-    p_free((void **)&elem_to_remove);
+    gl_free_elem(elem_to_remove, free_data_cb);
 
     return 0;
 }
 
 int gl_delete_elem_n(generic_liste_t *l, int const n,
-                      void (*remove_data_cb)(void *data))
+                      void (*free_data_cb)(void *data))
 {
     gl_elem_t *elem;
 
     elem = RETHROW_PN(gl_take_elem_n(l, n));
-
-    /* remove_data_cb can be NULL as data can contain a data detained by
-     * someone else */
-    if (remove_data_cb != NULL) {
-        remove_data_cb(elem->data);
-    }
-    p_free((void **)&elem);
+    gl_free_elem(elem, free_data_cb);
 
     return 0;
 }
