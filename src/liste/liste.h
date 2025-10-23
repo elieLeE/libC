@@ -40,6 +40,12 @@ generic_elem_liste_t *
 gl_get_elem_data(generic_liste_t *l, const void *searching_data,
                  int (*cmp_cb)(const void *, const void *));
 
+void gl_insert_elem_first(generic_liste_t *l, gl_elem_t *elem);
+void
+gl_insert_elem_next(generic_liste_t *l, gl_elem_t *prev, gl_elem_t *elem);
+void gl_insert_elem_sorted(generic_liste_t *l, gl_elem_t *elem,
+                           int (*cmp_data_cb)(void const *d1, void const *d2));
+
 void gl_add_elem_first(generic_liste_t* l, void *e);
 void gl_add_elem_last(generic_liste_t *l, void *e);
 /* Add a new element and sorted it.

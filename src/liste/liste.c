@@ -9,8 +9,77 @@
 
 /* TODO: this file has be coded a long time ago and needs some refactoring */
 
+/* {{{ Inserting methods */
+
+/* Methods here do not create elements. They just insert them */
+
+void gl_insert_elem_first(generic_liste_t *l, gl_elem_t *elem)
+{
+    elem->suiv = l->first;
+    elem->prec = NULL;
+
+    if (gl_is_empty(l)) {
+        l->end = elem;
+    } else {
+        l->first->prec = elem;
+    }
+
+    l->first = elem;
+    (l->nbre_elem)++;
+}
+
+void gl_insert_elem_next(generic_liste_t *l, gl_elem_t *prev, gl_elem_t *elem)
+{
+    if (gl_is_empty(l)) {
+        gl_insert_elem_first(l, elem);
+        return;
+    }
+
+    elem->suiv = prev->suiv;
+    elem->prec = prev;
+
+    if (prev->suiv != NULL) {
+        prev->suiv->prec = elem;
+    }
+    prev->suiv = elem;
+
+    if (l->end == prev) {
+        l->end = elem;
+    }
+
+    (l->nbre_elem)++;
+}
+
+void gl_insert_elem_sorted(generic_liste_t *l, gl_elem_t *elem,
+                           int (*cmp_data_cb)(void const *d1, void const *d2))
+{
+    if (cmp_data_cb == NULL) {
+        logger_fatal("cmp_data_cb is NULL");
+    }
+
+    if (gl_is_empty(l)) {
+        gl_insert_elem_first(l, elem);
+    } else if (cmp_data_cb(l->first->data, elem->data) >= 0) {
+        gl_insert_elem_first(l, elem);
+    } else if (cmp_data_cb(l->end->data, elem->data) <= 0) {
+        gl_insert_elem_next(l, l->end, elem);
+    } else {
+        generic_elem_liste_t *next_elem;
+
+        gl_for_each(p, l->first) {
+            if (cmp_data_cb(p->data, elem->data) >= 0) {
+                next_elem = p;
+                break;
+            }
+        }
+        gl_insert_elem_next(l, next_elem->prec, elem);
+    }
+}
+
 /* }}} */
 /* {{{ Adding methods */
+
+/* Methods here create elements and insert them by calling insert methods */
 
 static gl_elem_t *create_new_elem(void *data)
 {
@@ -23,34 +92,19 @@ static gl_elem_t *create_new_elem(void *data)
 
 void gl_add_elem_first(generic_liste_t *l, void *data)
 {
-    generic_elem_liste_t *new = create_new_elem(data);
+    generic_elem_liste_t *new;
 
-    new->suiv = l->first;
-    new->prec = NULL;
-
-    if (gl_is_empty(l)) {
-        l->end = new;
-    } else {
-        l->first->prec = new;
-    }
-
-    l->first = new;
-    (l->nbre_elem)++;
+    new = create_new_elem(data);
+    gl_insert_elem_first(l, new);
 }
 
 static void
 gl_add_elem_next(generic_liste_t *l, generic_elem_liste_t *e, void *data)
 {
-    generic_elem_liste_t *new = create_new_elem(data);
+    generic_elem_liste_t *new;
 
-    new->suiv = e->suiv;
-    new->prec = e;
-    if (e->suiv != NULL) {
-        e->suiv->prec = new;
-    }
-    e->suiv = new;
-
-    (l->nbre_elem)++;
+    new = create_new_elem(data);
+    gl_insert_elem_next(l, e, new);
 }
 
 void gl_add_elem_last(generic_liste_t *l, void *data)
@@ -59,35 +113,17 @@ void gl_add_elem_last(generic_liste_t *l, void *data)
         gl_add_elem_first(l, data);
     } else {
         gl_add_elem_next(l, l->end, data);
-
-        l->end = l->end->suiv;
     }
 }
 
-void gl_add_elem_sorted(generic_liste_t *l, void *data,
-                        int (*cmp_data_cb)(void const *d1, void const *d2))
+void
+gl_add_elem_sorted(generic_liste_t *l, void *data,
+                   int (*cmp_data_cb)(void const *d1, void const *d2))
 {
-    if (cmp_data_cb == NULL) {
-        logger_fatal("cmp_data_cb is NULL");
-    }
+    gl_elem_t *new;
 
-    if (gl_is_empty(l)) {
-        gl_add_elem_first(l, data);
-    } else if (cmp_data_cb(l->first->data, data) >= 0) {
-        gl_add_elem_first(l, data);
-    } else if (cmp_data_cb(l->end->data, data) <= 0) {
-        gl_add_elem_last(l, data);
-    } else {
-        generic_elem_liste_t *n;
-
-        gl_for_each(p, l->first) {
-            if (cmp_data_cb(p->suiv->data, data) >= 0) {
-                n = p;
-                break;
-            }
-        }
-        gl_add_elem_next(l, n, data);
-    }
+    new = create_new_elem(data);
+    gl_insert_elem_sorted(l, new, cmp_data_cb);
 }
 
 /* }}} */
