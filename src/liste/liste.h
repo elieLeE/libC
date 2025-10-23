@@ -23,10 +23,10 @@ typedef struct generic_liste_t {
 } generic_liste_t;
 
 /* Here, head has to be a generic_elem_liste_t */
-#define gl_for_each(_p, _head) \
+#define gl_for_each(_p, _head)                                                \
     for (generic_elem_liste_t *_p = _head; _p != NULL; _p = _p->suiv)
 
-#define gl_for_each_rev(_p, _head) \
+#define gl_for_each_rev(_p, _head)                                            \
     for (generic_elem_liste_t *_p = _head; _p != NULL; _p = _p->prev)
 
 void gl_init(generic_liste_t *l);
