@@ -277,6 +277,22 @@ int gl_remove_elem(generic_liste_t *l, gl_elem_t *elem)
     return 0;
 }
 
+gl_elem_t *gl_take_elem_n(generic_liste_t *l, int const n)
+{
+    gl_elem_t *elem;
+
+    if (l->nbre_elem < n) {
+        logger_error("index %d given to 'gl_remove_elem_n' is too big, "
+                     "the size of the list is %d", n, l->nbre_elem);
+        return NULL;
+    }
+
+    elem = RETHROW_P(gl_get_elem_n(l, n));
+    RETHROW_NP(gl_remove_elem(l, elem));
+
+    return elem;
+}
+
 /* }}} */
 /* {{{ Deleting methods */
 
@@ -344,23 +360,18 @@ int gl_delete_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
 int gl_delete_elem_n(generic_liste_t *l, int const n,
                       void (*remove_data_cb)(void *data))
 {
-    int count = 0;
+    gl_elem_t *elem;
 
-    if (l->nbre_elem < n) {
-        logger_error("index %d given to 'gl_remove_elem_n' is too big, "
-                     "the size of the list is %d", n, l->nbre_elem);
-        return -1;
+    elem = RETHROW_PN(gl_take_elem_n(l, n));
+
+    /* remove_data_cb can be NULL as data can contain a data detained by
+     * someone else */
+    if (remove_data_cb != NULL) {
+        remove_data_cb(elem->data);
     }
+    p_free((void **)&elem);
 
-    gl_for_each(p, l->first) {
-        if (count == n) {
-            return gl_delete_elem(l, p, remove_data_cb);
-        }
-        count++;
-    }
-
-    logger_error("element at the position %d has not been found", n);
-    return -1;
+    return 0;
 }
 
 /* }}} */
