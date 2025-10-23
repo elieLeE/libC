@@ -5,16 +5,26 @@
 #include "liste.h"
 #include "../mem/mem.h"
 #include "../logger/logger.h"
+#include "../macros.h"
 
 /* TODO: this file has be coded a long time ago and needs some refactoring */
 
+/* }}} */
 /* {{{ Adding methods */
+
+static gl_elem_t *create_new_elem(void *data)
+{
+    gl_elem_t *elem = p_calloc(sizeof(*elem));
+
+    elem->data = data;
+
+    return elem;
+}
 
 void gl_add_elem_first(generic_liste_t *l, void *data)
 {
-    generic_elem_liste_t *new = p_calloc(sizeof(*new));
+    generic_elem_liste_t *new = create_new_elem(data);
 
-    new->data = data;
     new->suiv = l->first;
     new->prec = NULL;
 
@@ -31,9 +41,8 @@ void gl_add_elem_first(generic_liste_t *l, void *data)
 static void
 gl_add_elem_next(generic_liste_t *l, generic_elem_liste_t *e, void *data)
 {
-    generic_elem_liste_t *new = p_calloc(sizeof(*new));
+    generic_elem_liste_t *new = create_new_elem(data);
 
-    new->data = data;
     new->suiv = e->suiv;
     new->prec = e;
     if (e->suiv != NULL) {
