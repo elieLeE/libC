@@ -209,6 +209,35 @@ gl_elem_t *gl_take_first_elem(generic_liste_t *l)
     return elem;
 }
 
+gl_elem_t *gl_take_last_elem(generic_liste_t *l)
+{
+    generic_elem_liste_t *elem;
+
+    if (gl_is_empty(l)) {
+        logger_warning("can not remove first element of the list as the list "
+                       "is empty");
+        return NULL;
+    }
+
+    elem = l->end;
+
+    l->end = l->end->prec;
+
+    if (l->nbre_elem == 0) {
+        logger_fatal("'nbre_elem' is equal to 0 and so cannot be decreased, "
+                     "but an element has just been removed");
+    }
+    (l->nbre_elem)--;
+
+    if (gl_is_empty(l)) {
+        l->end = NULL;
+    } else {
+        l->end->suiv = NULL;
+    }
+
+    return elem;
+}
+
 /* }}} */
 /* {{{ Deleting methods */
 
@@ -245,21 +274,7 @@ int gl_delete_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
 {
     generic_elem_liste_t *p;
 
-    if (gl_is_empty(l)) {
-        logger_warning("can not remove first element of the list as the list "
-                       "is empty");
-        return -1;
-    }
-
-    p = l->end;
-
-    l->end = l->end->prec;
-
-    if (l->nbre_elem == 0) {
-        logger_fatal("'nbre_elem' is equal to 0 and so cannot be decreased, "
-                     "but an element has just been removed");
-    }
-    (l->nbre_elem)--;
+    p = RETHROW_PN(gl_take_last_elem(l));
 
     /* remove_data_cb can be NULL as data can contain a data detained by
      * someone else */
@@ -267,12 +282,6 @@ int gl_delete_last_elem(generic_liste_t *l, void (*remove_data_cb)(void *data))
         (*remove_data_cb)(p->data);
     }
     p_free((void **)&p);
-
-    if (gl_is_empty(l)) {
-        l->end = NULL;
-    } else {
-        l->end->suiv = NULL;
-    }
 
     return 0;
 }
