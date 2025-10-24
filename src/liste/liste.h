@@ -45,7 +45,7 @@ void gl_init(generic_liste_t *l);
 bool gl_is_empty(const generic_liste_t *l);
 bool gl_is_elem_empty(const generic_elem_liste_t *e);
 
-bool gl_contains_data(generic_liste_t *l, const void *searching_data,
+bool gl_contains_data(const generic_liste_t *l, const void *searching_data,
                       int (*cmp_cb)(const void *, const void *));
 generic_elem_liste_t *
 gl_get_elem_data(generic_liste_t *l, const void *searching_data,

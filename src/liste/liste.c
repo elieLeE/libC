@@ -417,10 +417,16 @@ bool gl_is_elem_empty(const generic_elem_liste_t *e)
     return (e == NULL);
 }
 
-bool gl_contains_data(generic_liste_t *l, const void *searching_data,
-                 int (*cmp_cb)(const void *, const void *))
+bool gl_contains_data(const generic_liste_t *l, const void *searching_data,
+                      int (*cmp_cb)(const void *, const void *))
 {
-    return gl_get_elem_data(l, searching_data, cmp_cb) != NULL;
+    gl_for_each(elem, l->first) {
+        if (cmp_cb(elem->data, searching_data) == 0) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /* XXX: maybe this method is not necessary. TO REMOVE ? */
