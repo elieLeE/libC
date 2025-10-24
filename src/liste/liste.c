@@ -7,11 +7,11 @@
 #include "../logger/logger.h"
 #include "../macros.h"
 
-/* TODO: this file has be coded a long time ago and needs some refactoring */
+/* TODO: this file has be coded a long time ago and needs some refactoring. */
 
 /* {{{ Inserting methods */
 
-/* Methods here do not create elements. They just insert them */
+/* Methods here do not create elements. They just insert them. */
 
 void gl_insert_elem_first(generic_liste_t *l, gl_elem_t *elem)
 {
@@ -79,7 +79,7 @@ void gl_insert_elem_sorted(generic_liste_t *l, gl_elem_t *elem,
 /* }}} */
 /* {{{ Adding methods */
 
-/* Methods here create elements and insert them by calling insert methods */
+/* Methods here create elements and insert them by calling insert methods. */
 
 static gl_elem_t *create_new_elem(void *data)
 {
@@ -182,8 +182,8 @@ gl_get_elem_data(generic_liste_t *l, const void *searching_data,
 /* }}} */
 /* {{{ Taking methods */
 
-/* Methods here remove element from the list but without delete them.
- * So, by calling them, user becomes responsible of the memory of the element
+/* Methods here remove element from the list but without deleting them.
+ * So, by calling them, user becomes responsible of the memory of the element.
  */
 
 gl_elem_t *gl_take_first_elem(generic_liste_t *l)
@@ -355,7 +355,7 @@ int gl_delete_elem_n(generic_liste_t *l, int const n,
 }
 
 /* }}} */
-/* {{{ Sorting methods */
+/* {{{ Sorting methods. */
 
 static int
 gl_insertion_sort(generic_liste_t *l,

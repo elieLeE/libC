@@ -74,11 +74,15 @@ gl_elem_t *
 gl_add_elem_sorted(generic_liste_t *l, void *e,
                    int (*cmp_data_cb)(void const *d1, void const *d2));
 
+/* Warning: these methods remove elements from the list and returns it (except
+ * 'gl_remove_elem' that just removes the elements). So, these elements are
+ * not freed ! The calling  method becomes responsible of theirs memory. */
 gl_elem_t *gl_take_first_elem(generic_liste_t *l);
 gl_elem_t *gl_take_last_elem(generic_liste_t *l);
 int gl_remove_elem(generic_liste_t *l, gl_elem_t *elem);
 gl_elem_t *gl_take_elem_n(generic_liste_t *l, int const n);
 
+/* The following methods removes and free the elements. */
 int gl_delete_first_elem(generic_liste_t *l,
                          void (*remove_data)(void *data));
 int gl_delete_last_elem(generic_liste_t *l,
