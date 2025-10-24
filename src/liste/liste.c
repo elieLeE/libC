@@ -356,7 +356,6 @@ gl_insertion_sort(generic_liste_t *l,
                   int (*cmp_data_cb)(void const *d1, void const *d2))
 {
     generic_liste_t l_sorted;
-    gl_elem_t *p;
 
     if (gl_is_empty(l) || l->nbre_elem == 1) {
         return 0;
@@ -365,7 +364,8 @@ gl_insertion_sort(generic_liste_t *l,
     gl_init(&l_sorted);
 
     do {
-        p = gl_take_first_elem(l);
+        gl_elem_t *p = gl_take_first_elem(l);
+
         if (p == NULL) {
             logger_error("got NULL element when sorting the list");
             return -1;
