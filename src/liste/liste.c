@@ -149,8 +149,8 @@ generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, int n)
     }
 
     if (l->nbre_elem < n) {
-        logger_error("index got (%d) in 'gl_get_elem_n' is greater length "
-                     "of the list (%d)", n, l->nbre_elem);
+        logger_error("index got (%d) in 'gl_get_elem_n' is greater then the "
+                     "length of the list (%d)", n, l->nbre_elem);
         return NULL;
     }
 
