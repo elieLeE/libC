@@ -287,12 +287,6 @@ gl_elem_t *gl_take_elem_n(generic_liste_t *l, int const n)
 {
     gl_elem_t *elem;
 
-    if (l->nbre_elem < n) {
-        logger_error("index %d given to 'gl_remove_elem_n' is too big, "
-                     "the size of the list is %d", n, l->nbre_elem);
-        return NULL;
-    }
-
     elem = RETHROW_P(gl_get_elem_n(l, n));
     RETHROW_NP(gl_remove_elem(l, elem));
 
