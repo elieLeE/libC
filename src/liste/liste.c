@@ -90,33 +90,37 @@ static gl_elem_t *create_new_elem(void *data)
     return elem;
 }
 
-void gl_add_elem_first(generic_liste_t *l, void *data)
+gl_elem_t *gl_add_elem_first(generic_liste_t *l, void *data)
 {
     generic_elem_liste_t *new;
 
     new = create_new_elem(data);
     gl_insert_elem_first(l, new);
+
+    return new;
 }
 
-static void
+gl_elem_t *
 gl_add_elem_next(generic_liste_t *l, generic_elem_liste_t *e, void *data)
 {
     generic_elem_liste_t *new;
 
     new = create_new_elem(data);
     gl_insert_elem_next(l, e, new);
+
+    return new;
 }
 
-void gl_add_elem_last(generic_liste_t *l, void *data)
+gl_elem_t *gl_add_elem_last(generic_liste_t *l, void *data)
 {
     if (gl_is_empty(l)) {
-        gl_add_elem_first(l, data);
+        return gl_add_elem_first(l, data);
     } else {
-        gl_add_elem_next(l, l->end, data);
+        return gl_add_elem_next(l, l->end, data);
     }
 }
 
-void
+gl_elem_t *
 gl_add_elem_sorted(generic_liste_t *l, void *data,
                    int (*cmp_data_cb)(void const *d1, void const *d2))
 {
@@ -124,6 +128,8 @@ gl_add_elem_sorted(generic_liste_t *l, void *data,
 
     new = create_new_elem(data);
     gl_insert_elem_sorted(l, new, cmp_data_cb);
+
+    return new;
 }
 
 /* }}} */
