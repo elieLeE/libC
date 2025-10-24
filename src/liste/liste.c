@@ -355,17 +355,56 @@ int gl_delete_elem_n(generic_liste_t *l, int const n,
 }
 
 /* }}} */
-/* {{{ Trie methods */
+/* {{{ Sorting methods */
 
-/*void gl_trie_fusion(generic_liste_t *l, bool sensCroissant)
-{}
+static int
+gl_insertion_sort(generic_liste_t *l,
+                  int (*cmp_data_cb)(void const *d1, void const *d2))
+{
+    generic_liste_t l_sorted;
+    gl_elem_t *p;
 
-void gl_division(generic_liste_t *l)
-{}
+    if (gl_is_empty(l) || l->nbre_elem == 1) {
+        return 0;
+    }
 
-void gl_fusion(generic_liste_t *l, bool sensCroissant)
-{}
-*/
+    gl_init(&l_sorted);
+
+    do {
+        p = gl_take_first_elem(l);
+        if (p == NULL) {
+            logger_error("got NULL element when sorting the list");
+            return -1;
+        }
+        gl_insert_elem_sorted(&l_sorted, p, cmp_data_cb);
+    } while (!gl_is_empty(l));
+
+    l->first = l_sorted.first;
+    l->end = l_sorted.end;
+    l->nbre_elem = l_sorted.nbre_elem;
+
+    return 0;
+}
+
+int gl_sort(generic_liste_t *l, gl_sort_algo_t algo,
+            int (*cmp_data_cb)(void const *d1, void const *d2))
+{
+    if (algo < 0 || algo > ALGO_MAX) {
+        logger_fatal("cannot sort the list - algo given is wrong: %d",
+                     algo);
+    }
+    switch (algo) {
+    case INSERTION_SORT:
+        return gl_insertion_sort(l, cmp_data_cb);
+        break;
+
+    default:
+        logger_fatal("no sort algorithm associated to %d", algo);
+        break;
+    }
+
+    return -1;
+}
 
 /* }}} */
 

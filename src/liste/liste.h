@@ -10,6 +10,12 @@
 
 #include <stdbool.h>
 
+typedef enum gl_sort_algo_t {
+    INSERTION_SORT,
+
+    ALGO_MAX,  /* do not use this value */
+} gl_sort_algo_t;
+
 typedef struct generic_elem_liste_t {
     struct generic_elem_liste_t *prec, *suiv;
     void *data;
@@ -77,13 +83,10 @@ int gl_delete_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
 int gl_delete_elem_n(generic_liste_t *l, int const n,
                      void (*remove_data)(void *data));
 
-//void gl_remove_elem_adrr_data(generic_liste_t *l, void *d);
 //void gl_remove_elem_doublons(generic_liste_t *l);
-//void gl_remove_elem_val_data(generic_liste_t *l, void *data);
 
-void gl_trie_fusion(generic_liste_t *l, bool sens_croissant);
-void gl_division(generic_liste_t *l);
-void gl_fusion(generic_liste_t *l, bool sens_croissant);
+int gl_sort(generic_liste_t *l, gl_sort_algo_t algo,
+            int (*cmp_data_cb)(void const *d1, void const *d2));
 
 void gl_visu(const generic_liste_t *l, void (*visuelem)(void const *data),
              char const *sep);
