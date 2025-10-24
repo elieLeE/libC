@@ -1,3 +1,6 @@
+#include <time.h>
+#include <stdlib.h>
+
 #include "../src/macros.h"
 
 #include "test_liste.h"
@@ -16,6 +19,8 @@ static void test_swap(void)
 
 int main()
 {
+    srand(time(NULL));
+
     BEGIN_TEST_MODULE("WITHOUT MODULE");
 
     CALL_TEST_FUNC(test_swap);

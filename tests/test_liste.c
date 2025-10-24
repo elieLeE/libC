@@ -4,6 +4,7 @@
 #include "../src/liste/liste.h"
 #include "../src/mem/mem.h"
 #include "../src/macros.h"
+#include "../libc.h"
 
 static int *get_new_int(int val)
 {
@@ -26,6 +27,28 @@ static void check_list_data(const generic_liste_t *l,
         ASSERT(i < val_count, "i: %d, val_count: %d", i, val_count);
         ASSERT_EQUAL((*(int *) (elem->data)), expected_vals[i]);
         i++;
+    }
+}
+
+static void
+check_list_sorting(const generic_liste_t *l, bool is_increasing_list)
+{
+    int previous_val = *(int *)l->first->data;
+
+    gl_for_each(elem, l->first->suiv) {
+        int current_data = *(int *) elem->data;
+
+        if (is_increasing_list) {
+            ASSERT(current_data >= previous_val,
+                   "list seems not having well sorted - "
+                   "current : %d, previous: %d", current_data, previous_val);
+        } else {
+            ASSERT(current_data <= previous_val,
+                   "list seems not having well sorted - "
+                   "current : %d, previous: %d", current_data, previous_val);
+        }
+
+        previous_val = current_data;
     }
 }
 
@@ -109,6 +132,8 @@ static void test_add_element_trie(void)
     gl_add_elem_sorted(&l, &expected_vals[3], cmp_elem_increasing);
     gl_add_elem_sorted(&l, &expected_vals[0], cmp_elem_increasing);
 
+    gl_get_elem_n(&l, 3);
+
     check_list_data(&l, expected_vals, 6);
 
     gl_free(&l, NULL);
@@ -157,23 +182,60 @@ static void test_remove_element(void)
 }
 
 __attr_unused__
-static void test_triage_liste(void)
+static void swap_data(void **d1, void **d2)
+{
+    int *p;
+
+    p = *d1;
+    *d1 = *d2;
+    *d2 = p;
+}
+
+static void remove_data(void *data)
+{
+    p_free(&(data));
+}
+
+static void test_insertion_sort_increasing_list(void)
 {
     generic_liste_t l;
-    int tab[6] = {1, 2, 3, 4, 5, 6};
 
     gl_init(&l);
 
-    gl_add_elem_sorted(&l, &tab[4], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[0], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[1], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[5], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[3], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &tab[2], cmp_elem_decreasing);
+    for (int i = 0; i < 1000; i++) {
+        int *data = p_calloc(sizeof(int));
 
-    check_list_data(&l, tab, 6);
+        *data = rand() % 10000;
 
-    gl_free(&l, NULL);
+        gl_add_elem_first(&l, data);
+    }
+
+    gl_sort(&l, INSERTION_SORT, cmp_elem_increasing);
+
+    check_list_sorting(&l, true);
+
+    gl_free(&l, remove_data);
+}
+
+static void test_insertion_sort_decreasing_list(void)
+{
+    generic_liste_t l;
+
+    gl_init(&l);
+
+    for (int i = 0; i < 1000; i++) {
+        int *data = p_calloc(sizeof(int));
+
+        *data = rand() % 10000;
+
+        gl_add_elem_first(&l, data);
+    }
+
+    gl_sort(&l, INSERTION_SORT, cmp_elem_decreasing);
+
+    check_list_sorting(&l, false);
+
+    gl_free(&l, remove_data);
 }
 
 void run_tests_liste(void)
@@ -184,6 +246,8 @@ void run_tests_liste(void)
     CALL_TEST_FUNC(test_add_and_remove_element);
     CALL_TEST_FUNC(test_add_element_trie);
     CALL_TEST_FUNC(test_remove_element);
+    CALL_TEST_FUNC(test_insertion_sort_increasing_list);
+    CALL_TEST_FUNC(test_insertion_sort_decreasing_list);
 
     END_TEST_MODULE();
 }
