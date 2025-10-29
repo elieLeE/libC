@@ -47,8 +47,9 @@ FILE *ouv_fichier(char const *name, char const *mode)
     FILE* f = fopen(name, mode);
 
     if (f == NULL) {
-        fprintf(stderr, "impossible d'ouvrir le fichier %s\n", name);
-        exit(0);
+        logger_error("impossible d'ouvrir le fichier %s: %s\n",
+                     name, strerror(errno));
+        return NULL;
     }
     return f;
 }
