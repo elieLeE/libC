@@ -19,7 +19,10 @@ read_n_carac_and_flush(unsigned long max_length, FILE *stream, char *data_read)
 {
     size_t data_read_length;
 
-    fgets(data_read, max_length, stream);
+    if (fgets(data_read, max_length, stream) == NULL) {
+        logger_error("error when reading characters: %s", strerror(errno));
+        return -1;
+    }
 
     if (ferror(stream) != 0) {
         logger_error("error detected when reading characters: %s",
