@@ -10,3 +10,10 @@ void upper_string(char *str)
     }
 }
 
+void lower_string(char *str)
+{
+    for (unsigned int i = 0; i < strlen(str); i++) {
+        str[i] = tolower(str[i]);
+    }
+}
+
