@@ -40,7 +40,7 @@
     ({                                                                        \
         __auto_type _res = _exp;                                              \
         if (_res == NULL) {                                                   \
-            return _res;                                                      \
+            return NULL;                                                      \
         }                                                                     \
         _res;                                                                 \
     })
