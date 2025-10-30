@@ -17,16 +17,20 @@ static void test_swap(void)
     ASSERT_EQUAL(b, 5);
 }
 
-int main()
+static void run_without_modules_tests(void)
 {
-    srand(time(NULL));
-
     BEGIN_TEST_MODULE("WITHOUT MODULE");
 
     CALL_TEST_FUNC(test_swap);
 
     END_TEST_MODULE();
+}
 
+int main()
+{
+    srand(time(NULL));
+
+    run_without_modules_tests();
     run_tests_liste();
     run_tests_io();
 
