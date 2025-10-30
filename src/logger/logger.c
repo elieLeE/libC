@@ -53,7 +53,7 @@ logger_log_(const char *file, int line, int level, const char *txt)
     time_t now;
     struct tm *time_infos;
     static char time_buf[50];
-    size_t rc;
+    int rc;
     const char *txt_fmt;
     const char *level_txt;
 
@@ -81,7 +81,22 @@ logger_log_(const char *file, int line, int level, const char *txt)
                   time_infos->tm_mday, time_infos->tm_mon + 1,
                   time_infos->tm_year + 1900, time_infos->tm_hour,
                   time_infos->tm_min);
-    snprintf(time_buf + rc, sizeof(time_buf) - rc, ".%06ld", now / 1000);
+    if (rc < 0) {
+        /* can not use logger_* method here as the error could come for these
+         * methods */
+        printf("writing data in buffer has failed; %d, %s/%d",
+               rc, __FILE__, __LINE__);
+        abort();
+    }
+
+    rc = snprintf(time_buf + rc, sizeof(time_buf) - rc, ".%06ld", now / 1000);
+    if (rc < 0) {
+        /* can not use logger_* method here as the error could come for these
+         * methods */
+        printf("writing data in buffer has failed; %d, %s/%d",
+               rc, __FILE__, __LINE__);
+        abort();
+    }
 
     level_txt = get_level_str(level);
     txt_fmt = get_fmt_text_log(level);
@@ -102,12 +117,21 @@ void logger_log(const char *file, int line, int level, const char *fmt, ...)
 {
     static char buf[200];
     va_list va;
+    int res;
 
     p_clear(buf, 200);
 
     va_start(va, fmt);
-    vsnprintf(buf, sizeof(buf), fmt, va);
+    res = vsnprintf(buf, sizeof(buf), fmt, va);
     va_end(va);
+
+    if (res < 0) {
+        /* can not use logger_* method here as the error could come for these
+         * methods */
+        printf("writing data in buffer has failed; %d, %s/%d",
+               res, __FILE__, __LINE__);
+        abort();
+    }
 
     logger_log_(file, line, level, buf);
 }
@@ -117,10 +141,19 @@ void _logger_assert_failed(const char *file, int line, const char *fmt, ...)
 {
     char buf[100] = "ASSERT FAILED => ";
     va_list va;
+    int res;
 
     va_start(va, fmt);
-    vsnprintf(buf + strlen(buf), sizeof(buf), fmt, va);
+    res = vsnprintf(buf + strlen(buf), sizeof(buf), fmt, va);
     va_end(va);
+
+    if (res < 0) {
+        /* can not use logger_* method here as the error could come for these
+         * methods */
+        printf("writing data in buffer has failed; %d, %s/%d",
+               res, __FILE__, __LINE__);
+        abort();
+    }
 
     logger_log_(file, line, LOGGER_ERROR, buf);
 }
