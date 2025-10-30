@@ -363,7 +363,7 @@ gl_insertion_sort(generic_liste_t *l,
 
     gl_init(&l_sorted);
 
-    do {
+    while (!gl_is_empty(l)) {
         gl_elem_t *p = gl_take_first_elem(l);
 
         if (p == NULL) {
@@ -371,7 +371,7 @@ gl_insertion_sort(generic_liste_t *l,
             return -1;
         }
         gl_insert_elem_sorted(&l_sorted, p, cmp_data_cb);
-    } while (!gl_is_empty(l));
+    }
 
     l->first = l_sorted.first;
     l->end = l_sorted.end;
