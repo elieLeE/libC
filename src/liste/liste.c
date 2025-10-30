@@ -83,7 +83,7 @@ void gl_insert_elem_sorted(generic_liste_t *l, gl_elem_t *elem,
 
 static gl_elem_t *create_new_elem(void *data)
 {
-    gl_elem_t *elem = p_calloc(sizeof(*elem));
+    gl_elem_t *elem = RETHROW_P(p_calloc(sizeof(*elem)));
 
     elem->data = data;
 
@@ -94,7 +94,7 @@ gl_elem_t *gl_add_elem_first(generic_liste_t *l, void *data)
 {
     generic_elem_liste_t *new;
 
-    new = create_new_elem(data);
+    new = RETHROW_P(create_new_elem(data));
     gl_insert_elem_first(l, new);
 
     return new;
@@ -105,7 +105,7 @@ gl_add_elem_next(generic_liste_t *l, generic_elem_liste_t *e, void *data)
 {
     generic_elem_liste_t *new;
 
-    new = create_new_elem(data);
+    new = RETHROW_P(create_new_elem(data));
     gl_insert_elem_next(l, e, new);
 
     return new;
@@ -126,7 +126,7 @@ gl_add_elem_sorted(generic_liste_t *l, void *data,
 {
     gl_elem_t *new;
 
-    new = create_new_elem(data);
+    new = RETHROW_P(create_new_elem(data));
     gl_insert_elem_sorted(l, new, cmp_data_cb);
 
     return new;
