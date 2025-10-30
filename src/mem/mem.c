@@ -1,22 +1,21 @@
 #include <string.h>
 
 #include "mem.h"
+#include "../logger/logger.h"
 
 void* p_calloc(size_t const taille)
 {
     void *p;
 
     if (taille <= 0) {
-        fprintf(stderr, "taille <= 0, fichier %s, ligne %d\n",
-                __FILE__, __LINE__);
-        exit(0);
+        logger_error("cannot allocate a negative size: %ld", taille);
+        return NULL;
     }
 
     p = calloc(1, taille);
     if (p == NULL) {
-        fprintf(stderr, "allocation incorrecte, fichier %s, ligne %d\n",
-                __FILE__, __LINE__);
-        exit(0);
+        logger_error("allocation has failed");
+        return NULL;
     }
     return p;
 }
@@ -24,16 +23,14 @@ void* p_calloc(size_t const taille)
 void* p_realloc(void *p, size_t const taille)
 {
     if (taille <= 0) {
-        fprintf(stderr, "taille <= 0, fichier %s, ligne %d\n",
-                __FILE__, __LINE__);
-        exit(0);
+        logger_error("cannot allocate a negative size: %ld", taille);
+        return NULL;
     }
 
     p = realloc(p, taille);
     if (p == NULL) {
-        fprintf(stderr, "allocation incorrecte, fichier %s, ligne %d\n",
-                __FILE__, __LINE__);
-        exit(0);
+        logger_error("allocation has failed");
+        return NULL;
     }
     return p;
 }
@@ -43,19 +40,26 @@ void _p_clear(void *p, size_t size)
     memset(p, 0, size);
 }
 
-void** alloc_tab_2d(int const lig, int const col, size_t const tailleType)
+void** alloc_tab_2d(int const lig, int const col, size_t const type_size)
 {
     int i, t;
     void **tab;
 
-    if ((tailleType <= 0) || (lig <= 0) || (col <= 0)) {
-        fprintf(stderr, "taille, lig ou col <= 0, fichier %s, ligne %d\n",
-                __FILE__, __LINE__);
-        exit(0);
+    if (type_size <= 0) {
+        logger_error("cannot allocate a negative size: %ld", type_size);
+        return NULL;
+    }
+    if (lig <= 0) {
+        logger_error("cannot allocate a negative size: %d", lig);
+        return NULL;
+    }
+    if (col <= 0) {
+        logger_error("cannot allocate a negative size: %d", col);
+        return NULL;
     }
 
     tab = p_calloc(lig * sizeof(void *));
-    t = col * tailleType;
+    t = col * type_size;
     for (i = 0; i < lig; i++) {
         tab[i] = p_calloc(t);
     }
@@ -67,9 +71,9 @@ void free_tab_2d(void **matrice, int const lig)
     int i;
 
     if (lig <= 0) {
-        fprintf(stderr, "lig <= 0, fichier %s, ligne %d\n",
-                __FILE__, __LINE__);
-        exit(0);
+        logger_error("cannot free an array with a negative line number: %d",
+                     lig);
+        return;
     }
 
     for (i = 0; i < lig; i++) {
