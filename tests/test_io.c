@@ -58,12 +58,13 @@ void test_lecture_matrice()
     fermer_fichier(&f);
 }
 
-void run_tests_io(void)
+module_tests_t *get_all_tests_io(void)
 {
-    BEGIN_TEST_MODULE("IO");
+    module_tests_t *module_tests = RETHROW_P(p_calloc(sizeof(module_tests_t)));
 
-    CALL_TEST_FUNC(test_lecture_simple);
-    CALL_TEST_FUNC(test_lecture_matrice);
+    set_module_name(module_tests, "WITHOUT MODULE");
+    ADD_TEST_TO_MODULE(module_tests, test_lecture_simple);
+    ADD_TEST_TO_MODULE(module_tests, test_lecture_matrice);
 
-    END_TEST_MODULE();
+    return module_tests;
 }

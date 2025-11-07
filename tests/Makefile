@@ -8,12 +8,13 @@
 #$* : nom du fichier sans le suffixe
 
 CC=gcc
-CFLAGS=-std=c99 -Wextra -Wall -g# -ansi -pedantic
+CFLAGS=-std=gnu2x -Wextra -Wall -g# -ansi -pedantic
 LDFLAGS=
 EXEC=test
 LIB_C=../src/
 SRC= $(wildcard *.c $(LIB_C)/liste/*.c $(LIB_C)/mem/mem.c\
-	 $(LIB_C)/logger/logger.c $(LIB_C)/io/io.c)
+	 $(LIB_C)/logger/logger.c $(LIB_C)/io/io.c\
+	 $(LIB_C)/test_helper/test_helper.c)
 OBJ= $(SRC:.c=.o)
 INCLUDE=-I. -I../../src/liste/
 

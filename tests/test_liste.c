@@ -238,16 +238,17 @@ static void test_insertion_sort_decreasing_list(void)
     gl_free(&l, remove_data);
 }
 
-void run_tests_liste(void)
+module_tests_t *get_all_tests_liste(void)
 {
-    BEGIN_TEST_MODULE("LISTE");
+    module_tests_t *module_tests = RETHROW_P(p_calloc(sizeof(module_tests_t)));
 
-    CALL_TEST_FUNC(test_get_elem_data);
-    CALL_TEST_FUNC(test_add_and_remove_element);
-    CALL_TEST_FUNC(test_add_element_trie);
-    CALL_TEST_FUNC(test_remove_element);
-    CALL_TEST_FUNC(test_insertion_sort_increasing_list);
-    CALL_TEST_FUNC(test_insertion_sort_decreasing_list);
+    set_module_name(module_tests, "LISTE");
+    ADD_TEST_TO_MODULE(module_tests, test_get_elem_data);
+    ADD_TEST_TO_MODULE(module_tests, test_add_and_remove_element);
+    ADD_TEST_TO_MODULE(module_tests, test_add_element_trie);
+    ADD_TEST_TO_MODULE(module_tests, test_remove_element);
+    ADD_TEST_TO_MODULE(module_tests, test_insertion_sort_increasing_list);
+    ADD_TEST_TO_MODULE(module_tests, test_insertion_sort_decreasing_list);
 
-    END_TEST_MODULE();
+    return module_tests;
 }
