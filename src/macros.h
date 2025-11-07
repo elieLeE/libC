@@ -87,28 +87,5 @@
     } while(0);
 
 /* }}} */
-/* {{{ For test */
-
-#define CALL_TEST_FUNC(_func)                                                 \
-    do {                                                                      \
-        logger_test_start(#_func);                                            \
-        _func();                                                              \
-        logger_test_ok(#_func);                                               \
-    } while (0)
-
-#define BEGIN_TEST_MODULE(_module_name)                                       \
-    {                                                                         \
-        const char *__module_name = _module_name;                             \
-        do {                                                                  \
-            logger_test_begin_module(__module_name);                          \
-        } while(0)
-
-#define END_TEST_MODULE()                                                     \
-        do {                                                                  \
-            logger_test_end_module(__module_name);                            \
-        } while(0);                                                           \
-    }
-
-/* }}} */
 
 #endif
