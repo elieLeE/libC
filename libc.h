@@ -13,6 +13,4 @@
 #include "src/math/prime.h"
 #include "src/math/nbre.h"
 
-#include "src/tab/tab.h"
-
 #endif
