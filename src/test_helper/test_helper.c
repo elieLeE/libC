@@ -59,8 +59,9 @@ static int run_all_tests_of_module(const module_tests_t *module_test,
                 run_test(elem->data);
                 return 0;
             }
+        } else {
+            run_test(elem->data);
         }
-        run_test(elem->data);
     }
 
     logger_test_end_module(module_test->name);
