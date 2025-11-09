@@ -91,7 +91,9 @@ int main(int argc, char **argv)
 
     gl_init(&modules_tests);
 
-    get_all_tests(&modules_tests);
+    if (get_all_tests(&modules_tests) < 0) {
+        logger_error("error when getting the tests callback");
+    }
     run_all_modules_tests(&modules_tests, module_name, test_name);
 
     free_all_module_test(&modules_tests);
