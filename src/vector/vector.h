@@ -26,4 +26,14 @@ typedef generic_vector_data_t(void) __vector_void_t;
 
 #define gv_t(_name) generic_vector_##_name##_t
 
+#define gv_init(_gvec)                                                        \
+    ({  __auto_type __gvec = (_gvec);                                         \
+        p_clear(__gvec, 1);                                                   \
+   })
+
+#define gv_free(_gvec, free_data_cb) \
+    ({  __auto_type __gvec = (_gvec);                                         \
+        p_free((void **)&(__gvec->tab));                                      \
+    })
+
 #endif
