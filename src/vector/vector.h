@@ -30,6 +30,9 @@ typedef generic_vector_data_t(void) __vector_void_t;
 
 #define gv_t(_name) generic_vector_##_name##_t
 
+#define gv_for_each_pos(_pos, _gvec)                                          \
+    for (int _pos = 0; _pos < (_gvec)->len; _pos++)
+
 void *gv_grow(__vector_void_t *vec, int extra, int size_elem);
 
 #define gv_init(_gvec)                                                        \
