@@ -2,6 +2,7 @@
 #define __VECTOR_H__
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "../mem/mem.h"
 
@@ -35,5 +36,16 @@ typedef generic_vector_data_t(void) __vector_void_t;
     ({  __auto_type __gvec = (_gvec);                                         \
         p_free((void **)&(__gvec->tab));                                      \
     })
+
+generic_vector_t(int8, int8_t);
+generic_vector_t(uint8, uint8_t);
+generic_vector_t(int16, int16_t);
+generic_vector_t(uint16, uint16_t);
+generic_vector_t(int32, int32_t);
+generic_vector_t(uint32, uint32_t);
+generic_vector_t(int64, int64_t);
+generic_vector_t(uint64, uint64_t);
+generic_vector_t(double, double);
+generic_vector_t(string, char *);
 
 #endif
