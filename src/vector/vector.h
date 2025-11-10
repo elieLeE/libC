@@ -43,6 +43,14 @@ void *gv_grow(__vector_void_t *vec, int extra, int size_elem);
         gv_grow(&__gvec->vec, _size, gv_size(__gvec));                        \
    })
 
+#define gv_add_elem_last(_gvec, _val)                                         \
+    ({  __auto_type __val = (_val);                                           \
+        __auto_type __gvec = (_gvec);                                         \
+        gv_type(__gvec) *__elem = gv_grow(&__gvec->vec, 1, gv_size(__gvec));  \
+        *__elem = __val;                                                      \
+        __gvec->len++;                                                        \
+    })
+
 #define gv_free(_gvec, free_data_cb) \
     ({  __auto_type __gvec = (_gvec);                                         \
         p_free((void **)&(__gvec->tab));                                      \
