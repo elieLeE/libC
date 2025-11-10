@@ -14,12 +14,11 @@ EXEC=test
 LIB_C=../src/
 SRC= $(wildcard *.c $(LIB_C)/liste/*.c $(LIB_C)/mem/mem.c\
 	 $(LIB_C)/logger/logger.c $(LIB_C)/io/io.c\
-	 $(LIB_C)/test_helper/test_helper.c)
+	 $(LIB_C)/test_helper/test_helper.c $(LIB_C)/vector/vector.c)
 OBJ= $(SRC:.c=.o)
 INCLUDE=-I. -I../../src/liste/
 
 all: $(EXEC) cleanSimple
-
 
 debug: CFLAGS += -DDDebug -g
 debug: LDFLAGS += -DDDebug -g
