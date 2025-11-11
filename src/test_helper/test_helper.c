@@ -104,12 +104,12 @@ static void free_module_test(void *_module_tests)
 {
     module_tests_t *module_tests = _module_tests;
 
-    gl_free(&module_tests->tests, free_test_data);
+    gl_wipe(&module_tests->tests, free_test_data);
     p_free((void **)&module_tests->name);
     p_free((void **)&module_tests);
 }
 
 void free_all_module_test(generic_liste_t *modules_tests)
 {
-    gl_free(modules_tests, free_module_test);
+    gl_wipe(modules_tests, free_module_test);
 }

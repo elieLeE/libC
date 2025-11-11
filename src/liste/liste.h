@@ -100,6 +100,6 @@ int gl_sort(generic_liste_t *l, gl_sort_algo_t algo,
 void gl_visu(const generic_liste_t *l, void (*visuelem)(void const *data),
              char const *sep);
 
-void gl_free(generic_liste_t *l, void (*free_data_cb)(void *data));
+void gl_wipe(generic_liste_t *l, void (*free_data_cb)(void *data));
 
 #endif

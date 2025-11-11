@@ -91,7 +91,7 @@ static void test_get_elem_data(void)
 
     ASSERT((elem != NULL), "elem has not been found");
 
-    gl_free(&l, remove_element);
+    gl_wipe(&l, remove_element);
 
     ASSERT(gl_is_empty(&l), "list should be empty");
 }
@@ -115,7 +115,7 @@ static void test_add_and_remove_element(void)
 
     check_list_data(&l, expected_vals, 3);
 
-    gl_free(&l, remove_element);
+    gl_wipe(&l, remove_element);
 }
 
 static void test_add_element_trie(void)
@@ -136,7 +136,7 @@ static void test_add_element_trie(void)
 
     check_list_data(&l, expected_vals, 6);
 
-    gl_free(&l, NULL);
+    gl_wipe(&l, NULL);
 
     ASSERT_EQUAL(l.nbre_elem, 0);
     ASSERT(l.first == NULL, "first elem of the list should be NULL");
@@ -155,7 +155,7 @@ static void test_add_element_trie(void)
 
     check_list_data(&l, expected_vals, 6);
 
-    gl_free(&l, NULL);
+    gl_wipe(&l, NULL);
 }
 
 static void test_remove_element(void)
@@ -178,7 +178,7 @@ static void test_remove_element(void)
 
     check_list_data(&l, expected_vals, 3);
 
-    gl_free(&l, remove_element);
+    gl_wipe(&l, remove_element);
 }
 
 __attr_unused__
@@ -214,7 +214,7 @@ static void test_insertion_sort_increasing_list(void)
 
     check_list_sorting(&l, true);
 
-    gl_free(&l, remove_data);
+    gl_wipe(&l, remove_data);
 }
 
 static void test_insertion_sort_decreasing_list(void)
@@ -235,7 +235,7 @@ static void test_insertion_sort_decreasing_list(void)
 
     check_list_sorting(&l, false);
 
-    gl_free(&l, remove_data);
+    gl_wipe(&l, remove_data);
 }
 
 module_tests_t *get_all_tests_liste(void)

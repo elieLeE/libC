@@ -447,7 +447,7 @@ void gl_visu(const generic_liste_t *l, void (*visuElement)(void const *data),
     }
 }
 
-void gl_free(generic_liste_t *l, void (*free_data_cb)(void *data))
+void gl_wipe(generic_liste_t *l, void (*free_data_cb)(void *data))
 {
     while (!gl_is_empty(l)) {
         assert(gl_delete_first_elem(l, free_data_cb) == 0);
