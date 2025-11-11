@@ -102,5 +102,6 @@ void gl_visu(const generic_liste_t *l, void (*visuelem)(void const *data),
              char const *sep);
 
 void gl_wipe(generic_liste_t *l, void (*free_data_cb)(void *data));
+void gl_delete(generic_liste_t *l, void (*free_data_cb)(void *data));
 
 #endif

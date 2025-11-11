@@ -465,3 +465,8 @@ void gl_wipe(generic_liste_t *l, void (*free_data_cb)(void *data))
     l->end = NULL;
 }
 
+void gl_delete(generic_liste_t *l, void (*free_data_cb)(void *data))
+{
+    gl_wipe(l, free_data_cb);
+    p_free((void **)&l);
+}
