@@ -407,6 +407,15 @@ void gl_init(generic_liste_t *l)
     p_clear(l, 1);
 }
 
+generic_liste_t *gl_new(void)
+{
+    generic_liste_t *l;
+
+    l = RETHROW_P(p_calloc(sizeof(generic_liste_t)));
+
+    return l;
+}
+
 bool gl_is_empty(const generic_liste_t *l)
 {
     return (l->first == NULL);

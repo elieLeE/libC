@@ -40,6 +40,7 @@ typedef struct generic_liste_t {
          _p = _p->suiv)
 
 
+generic_liste_t *gl_new();
 void gl_init(generic_liste_t *l);
 
 bool gl_is_empty(const generic_liste_t *l);
