@@ -260,12 +260,12 @@ int gl_remove_elem(generic_liste_t *l, gl_elem_t *elem)
         return gl_take_last_elem(l) == NULL ? -1 : 0;
     }
 
-    if (elem == NULL) {
+    if (elem->prec == NULL) {
         logger_error("previous element is NULL whereas it should not be");
         assert(false);
         return -1;
     }
-    if (elem  == NULL) {
+    if (elem->suiv == NULL) {
         logger_error("next element is NULL whereas it should not be");
         assert(false);
         return -1;
