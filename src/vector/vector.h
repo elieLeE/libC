@@ -51,6 +51,9 @@ void *_gv_grow(__vector_void_t *vec, int extra, size_t size_elem);
         p_clear(__gvec, 1);                                                   \
     } while (0)
 
+#define gv_new(_name)                                                         \
+    (gv_t(_name) *)p_calloc(sizeof(gv_t(_name)))                              \
+
 #define gv_init_size(_gvec, _size)                                            \
     do {                                                                      \
         __auto_type __gvec = (_gvec);                                         \
