@@ -11,7 +11,7 @@ bool is_prime(unsigned long n)
     unsigned long i;
 
     if (n <= 1) {
-        fprintf(stderr, "n <= 1, fichier %s, ligne %d\n", __FILE__, __LINE__);
+        logger_error("calling 'is_prime' with a no positive number: %ld", n);
         return false;
     }
 
@@ -87,10 +87,9 @@ get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
     }
 
     if (j >= size_tab_out && i < lim) {
-        fprintf(stderr, "the array has fully been filled before reaching to "
-                "the asked limit (last index: %ld, last number tested: %ld, "
-                "limit: %ld, array size: %d, file: %s, line: %d\n",
-                j, i, lim, size_tab_out, __FILE__, __LINE__);
+        logger_error("the array has fully been filled before reaching to "
+                     "the asked limit (last index: %ld, last number tested: %ld, "
+                     "limit: %ld, array size: %d", j, i, lim, size_tab_out);
     }
     free(tab_bool);
 
@@ -128,9 +127,8 @@ int get_all_n_first_primes(unsigned long count_asked,
         return 0;
     }
 
-    fprintf(stderr, "array have been full filled before getting "
-            "the %ld° prime, file '%s', line '%d'",
-            count_asked, __FILE__, __LINE__);
+    logger_error("array have been full filled before getting the %ld° prime",
+            count_asked);
     return -1;
 }
 
