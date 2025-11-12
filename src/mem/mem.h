@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void* p_malloc(size_t const taille);
 void* p_calloc(size_t const taille);
 void* p_realloc(void *p, size_t const taille);
 

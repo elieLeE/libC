@@ -3,6 +3,23 @@
 #include "mem.h"
 #include "../logger/logger.h"
 
+void* p_malloc(size_t const taille)
+{
+    void *p;
+
+    if (taille <= 0) {
+        logger_error("cannot allocate a negative size: %ld", taille);
+        return NULL;
+    }
+
+    p = malloc(taille);
+    if (p == NULL) {
+        logger_error("allocation has failed");
+        return NULL;
+    }
+    return p;
+}
+
 void* p_calloc(size_t const taille)
 {
     void *p;
