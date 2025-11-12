@@ -93,7 +93,7 @@ get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
     }
     free(tab_bool);
 
-    return j - 1;
+    return j;
 }
 
 int get_all_n_first_primes(unsigned long count_asked,
