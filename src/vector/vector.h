@@ -14,9 +14,6 @@
 
 typedef generic_vector_data_t(void) __vector_void_t;
 
-#define gv_size(_vec) sizeof(_vec->tab[0])
-#define gv_type(_vec) typeof(_vec->tab[0])
-
 /* len is the number of elements in the vector.
  * size if the size of the vector. Indeed, when elements are removed,
  * the array is not automatically reallocated.
@@ -29,6 +26,9 @@ typedef generic_vector_data_t(void) __vector_void_t;
     } generic_vector_##_name##_t;
 
 #define gv_t(_name) generic_vector_##_name##_t
+
+#define __gv_size(_vec) sizeof(_vec->tab[0])
+#define __gv_type(_vec) typeof(_vec->tab[0])
 
 #define gv_for_each_pos(_pos, _gvec)                                          \
     for (int _pos = 0; _pos < (_gvec)->len; _pos++)
@@ -49,10 +49,10 @@ void *gv_grow(__vector_void_t *vec, int extra, int size_elem);
     } while (0)
 
 #define gv_add_elem_last(_gvec, _val)                                         \
-    ({  __auto_type __val = (_val);                                           \
-        __auto_type __gvec = (_gvec);                                         \
-        gv_type(__gvec) *__elem = gv_grow(&__gvec->vec, 1, gv_size(__gvec));  \
-        *__elem = __val;                                                      \
+    ({  __auto_type __gvec = (_gvec);                                         \
+        __gv_type(__gvec) *__elem = gv_grow(&__gvec->vec, 1,                  \
+                                            __gv_size(__gvec));               \
+        *__elem = _val;                                                       \
     })
 
 #define gv_free(_gvec, free_data_cb) \
