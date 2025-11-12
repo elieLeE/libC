@@ -1,6 +1,7 @@
 #include "vector.h"
 
 #include "../mem/mem.h"
+#include "../macros.h"
 
 static void *gv_extend(__vector_void_t *vec, int extra, int size_elem)
 {
@@ -9,7 +10,7 @@ static void *gv_extend(__vector_void_t *vec, int extra, int size_elem)
     if (vec->len + extra >= vec->size) {
         int new_size = vec->size + extra;
 
-        vec->tab = p_realloc(vec->tab, new_size * size_elem);
+        vec->tab = RETHROW_P(p_realloc(vec->tab, new_size * size_elem));
         vec->size = new_size;
     }
 
