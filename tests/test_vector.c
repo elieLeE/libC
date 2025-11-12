@@ -10,11 +10,11 @@ static void test_fill_vector(void)
 
     gv_init(&vector);
 
-    gv_add_elem_last(&vector, 1);
-    gv_add_elem_last(&vector, 2);
-    gv_add_elem_last(&vector, 3);
-    gv_add_elem_last(&vector, 4);
-    gv_add_elem_last(&vector, 5);
+    gv_add(&vector, 1);
+    gv_add(&vector, 2);
+    gv_add(&vector, 3);
+    gv_add(&vector, 4);
+    gv_add(&vector, 5);
 
     ASSERT_EQUAL(vector.len, 5);
 
@@ -73,11 +73,11 @@ static void test_new_and_delete_vector(void)
 
     vector = gv_new(int32);
 
-    gv_add_elem_last(vector, 1);
-    gv_add_elem_last(vector, 2);
-    gv_add_elem_last(vector, 3);
-    gv_add_elem_last(vector, 4);
-    gv_add_elem_last(vector, 5);
+    gv_add(vector, 1);
+    gv_add(vector, 2);
+    gv_add(vector, 3);
+    gv_add(vector, 4);
+    gv_add(vector, 5);
 
     ASSERT_EQUAL(vector->len, 5);
 
@@ -96,17 +96,17 @@ static void test_reset_vector(void)
 
     gv_init(&vector);
 
-    gv_add_elem_last(&vector, 1);
-    gv_add_elem_last(&vector, 2);
-    gv_add_elem_last(&vector, 3);
-    gv_add_elem_last(&vector, 4);
-    gv_add_elem_last(&vector, 5);
+    gv_add(&vector, 1);
+    gv_add(&vector, 2);
+    gv_add(&vector, 3);
+    gv_add(&vector, 4);
+    gv_add(&vector, 5);
 
     gv_clear(&vector, NULL);
 
-    gv_add_elem_last(&vector, 6);
-    gv_add_elem_last(&vector, 7);
-    gv_add_elem_last(&vector, 8);
+    gv_add(&vector, 6);
+    gv_add(&vector, 7);
+    gv_add(&vector, 8);
 
     ASSERT_EQUAL(vector.len, 3);
     ASSERT_EQUAL(vector.size, 5);
