@@ -24,4 +24,19 @@ void _p_free(void **p);
         _p_free(_p);                                                          \
     } while (0)
 
+#define CREATE_GENERIC_INIT(_type_, _prefix_)                                 \
+    static inline _type_ *_prefix_##_init(_type_ *p) {                        \
+        p_clear(p, 1);                                                        \
+        return p;                                                             \
+    }
+
+#define CREATE_GENERIC_NEW(_type_, _prefix_)                                  \
+    static inline _type_ *_prefix_##_new(void) {                              \
+        return _prefix_##_init((_type_ *)p_malloc(sizeof(_type_))); }
+
+#define CREATE_GENERIC_NEW_INIT(_type_, _prefix_)                             \
+    CREATE_GENERIC_INIT(_type_, _prefix_);                                    \
+    static inline _type_ *_prefix_##_new(void) {                              \
+        return _prefix_##_init((_type_ *)p_malloc(sizeof(_type_))); }
+
 #endif
