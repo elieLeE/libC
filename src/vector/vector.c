@@ -2,7 +2,7 @@
 
 #include "../mem/mem.h"
 
-void *gv_grow(__vector_void_t *vec, int extra, int size_elem)
+static void *gv_extend(__vector_void_t *vec, int extra, int size_elem)
 {
     void *res;
 
@@ -19,3 +19,15 @@ void *gv_grow(__vector_void_t *vec, int extra, int size_elem)
 
     return res;
 }
+
+void *gv_grow(__vector_void_t *vec, int extra, int size_elem)
+{
+    void *res;
+
+    res = gv_extend(vec, extra, size_elem);
+
+    vec->len++;
+
+    return res;
+}
+
