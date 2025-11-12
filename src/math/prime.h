@@ -13,7 +13,7 @@ typedef struct prime_factor_t {
 } prime_factor_t;
 
 bool is_prime(unsigned long n);
-unsigned int
+long
 get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
                        unsigned long *out);
 int get_all_n_first_primes(unsigned long count_asked,

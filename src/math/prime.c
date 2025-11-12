@@ -4,6 +4,7 @@
 
 #include "prime.h"
 #include "../mem/mem.h"
+#include "../macros.h"
 
 bool is_prime(unsigned long n)
 {
@@ -62,14 +63,14 @@ static void fill_tab_prime_bool(unsigned int lim, bool out[])
     }
 }
 
-unsigned int
+long
 get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
                        unsigned long *out)
 {
     unsigned long i, j;
     bool *tab_bool;
 
-    tab_bool = p_calloc(lim * sizeof(bool));
+    tab_bool = RETHROW_PN(p_calloc(lim * sizeof(bool)));
 
     fill_tab_prime_bool(lim, tab_bool);
 
