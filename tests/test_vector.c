@@ -26,6 +26,97 @@ static void test_fill_vector(void)
     gv_wipe(&vector, NULL);
 }
 
+generic_vector_t(int_p, int *);
+
+static void free_elem(void **elem)
+{
+    p_free(elem);
+}
+
+static void add_new_elem_and_set(gv_t(int_p) *vec, int val)
+{
+    int **a_p = NULL;
+
+    a_p = gv_grow(vec, 1);
+    *a_p = p_calloc(sizeof(int));
+    **a_p = val;
+}
+
+static void test_fill_pointer_vector(void)
+{
+    int idx_tab = 0;
+    gv_t(int_p) vector;
+    int32_t tab[5] = {1, 2, 3, 4, 5};
+
+    gv_init(&vector);
+
+    add_new_elem_and_set(&vector, 1);
+    add_new_elem_and_set(&vector, 2);
+    add_new_elem_and_set(&vector, 3);
+    add_new_elem_and_set(&vector, 4);
+    add_new_elem_and_set(&vector, 5);
+
+    ASSERT_EQUAL(vector.len, 5);
+
+    gv_for_each_pos(pos, &vector) {
+        ASSERT_EQUAL(*(vector.tab[pos]), tab[idx_tab]);
+        idx_tab++;
+    }
+    gv_wipe(&vector, free_elem);
+}
+
+static void test_new_and_delete_vector(void)
+{
+    int idx_tab = 0;
+    gv_t(int32) *vector;
+    int32_t tab[5]= {1, 2, 3, 4, 5};
+
+    vector = gv_new(int32);
+
+    gv_add_elem_last(vector, 1);
+    gv_add_elem_last(vector, 2);
+    gv_add_elem_last(vector, 3);
+    gv_add_elem_last(vector, 4);
+    gv_add_elem_last(vector, 5);
+
+    ASSERT_EQUAL(vector->len, 5);
+
+    gv_for_each_pos(pos, vector) {
+        ASSERT_EQUAL(vector->tab[pos], tab[idx_tab]);
+        idx_tab++;
+    }
+    gv_delete(vector, NULL);
+}
+
+static void test_reset_vector(void)
+{
+    int idx_tab = 0;
+    gv_t(int32) vector;
+    int32_t tab[5] = {6, 7, 8};
+
+    gv_init(&vector);
+
+    gv_add_elem_last(&vector, 1);
+    gv_add_elem_last(&vector, 2);
+    gv_add_elem_last(&vector, 3);
+    gv_add_elem_last(&vector, 4);
+    gv_add_elem_last(&vector, 5);
+
+    gv_clear(&vector, NULL);
+
+    gv_add_elem_last(&vector, 6);
+    gv_add_elem_last(&vector, 7);
+    gv_add_elem_last(&vector, 8);
+
+    ASSERT_EQUAL(vector.len, 3);
+    ASSERT_EQUAL(vector.size, 5);
+
+    gv_for_each_pos(pos, &vector) {
+        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        idx_tab++;
+    }
+    gv_wipe(&vector, NULL);
+}
 
 module_tests_t *get_all_tests_vector(void)
 {
@@ -33,6 +124,9 @@ module_tests_t *get_all_tests_vector(void)
 
     set_module_name(module_tests, "VECTOR");
     ADD_TEST_TO_MODULE(module_tests, test_fill_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_fill_pointer_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_new_and_delete_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_reset_vector);
 
     return module_tests;
 }
