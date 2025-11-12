@@ -68,8 +68,16 @@ void *_gv_grow(__vector_void_t *vec, int extra, size_t size_elem);
         *__elem = _val;                                                       \
     })
 
+void _gv_clear(__vector_void_t *vec, int size_elem,
+              void (*free_data_cb)(void **));
 void _gv_wipe(__vector_void_t *vec, int size_elem,
               void (*free_data_cb)(void **));
+
+#define gv_clear(_gvec, free_data_cb)                                         \
+    _gv_clear(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb)
+
+#define gv_wipe(_gvec, free_data_cb)                                          \
+    _gv_wipe(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb)
 
 #define gv_delete(_gvec, free_data_cb)                                        \
     do {                                                                      \

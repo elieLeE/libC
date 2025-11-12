@@ -40,6 +40,17 @@ _gv_free_tab(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
 }
 
 void
+_gv_clear(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
+{
+    if (free_data_cb != NULL) {
+        _gv_free_tab(vec, size_elem, free_data_cb);
+    }
+    p_clear(vec->tab, size_elem * vec->size);
+
+    vec->len = 0;
+}
+
+void
 _gv_wipe(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
 {
     if (free_data_cb != NULL) {
