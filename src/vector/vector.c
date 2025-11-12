@@ -3,7 +3,7 @@
 #include "../mem/mem.h"
 #include "../macros.h"
 
-static void *gv_extend(__vector_void_t *vec, int extra, int size_elem)
+void *__gv_extend(__vector_void_t *vec, int extra, size_t size_elem)
 {
     void *res;
 
@@ -25,11 +25,39 @@ void *__gv_grow(__vector_void_t *vec, int extra, size_t size_elem)
 {
     void *res;
 
-    res = gv_extend(vec, extra, size_elem);
+    res = __gv_extend(vec, extra, size_elem);
 
     vec->len++;
 
     return res;
+}
+
+void *__gv_create_empty_spot(__vector_void_t *vec, size_t size_elem, int pos)
+{
+    if (pos < 0) {
+        logger_error("position indicated in '_gv_create_empty_spot' "
+                     "is wrong: %d", pos);
+        return NULL;
+    }
+    if (pos >= vec->size) {
+        logger_error("position indicated in '_gv_create_empty_spot' (%d) "
+                     "is bigger than the size of the vector (%d)",
+                     pos, vec->size);
+        return NULL;
+    }
+    if (pos >= vec->len) {
+        logger_warning("position indicated in '_gv_create_empty_spot' (%d) "
+                     "is bigger than the length of the vector (%d) - "
+                     "new element is added at the end",
+                     pos, vec->len);
+        /* we have checked that pos < vec->size above */
+        return vec->tab + size_elem * vec->len;
+    }
+
+    memmove(vec->tab + size_elem * (pos + 1), vec->tab + size_elem * pos,
+            (vec->len - pos) * size_elem);
+
+    return vec->tab + size_elem * pos;
 }
 
 static void

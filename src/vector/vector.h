@@ -11,7 +11,6 @@
  * gv_add_sorted
  * gv_remove_*
  * gv_sort => use qsort
- * gv_insert
  * gv_find / gv_contains
  * gv_shuffle
  * gv_for_each
@@ -45,6 +44,7 @@ typedef generic_vector_data_t(void) __vector_void_t;
     for (int _pos = 0; _pos < (_gvec)->len; _pos++)
 
 void *__gv_grow(__vector_void_t *vec, int extra, size_t size_elem);
+void *__gv_extend(__vector_void_t *vec, int extra, size_t size_elem);
 
 #define gv_grow(_gvec, extra)                                                 \
     ({                                                                        \
@@ -78,6 +78,26 @@ void *__gv_grow(__vector_void_t *vec, int extra, size_t size_elem);
                                               __gv_size(__gvec));             \
         *__elem = _val;                                                       \
     })
+
+void *__gv_create_empty_spot(__vector_void_t *vec, size_t size_elem, int pos);
+
+#define __set_elem_at_new_spot(__gvec, _val, _pos)                            \
+    do {                                                                      \
+        __elem =__gv_create_empty_spot(&__gvec->vec, __gv_size(__gvec),       \
+                                       _pos);                                 \
+        if (__elem != NULL) {                                                 \
+            *__elem = _val;                                                   \
+            __gvec->len++;                                                    \
+        }                                                                     \
+    } while(0)
+
+#define gv_insert_elem_at_pos(_gvec, _val, _pos)                              \
+    do {                                                                      \
+        __auto_type __gvec = (_gvec);                                         \
+        __gv_type(__gvec) *__elem;                                            \
+        __gv_extend(&__gvec->vec, 1, __gv_size(__gvec));                      \
+        __set_elem_at_new_spot(__gvec, _val, _pos);                           \
+    } while(0)
 
 void _gv_clear(__vector_void_t *vec, int size_elem,
               void (*free_data_cb)(void **));
