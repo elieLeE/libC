@@ -68,10 +68,15 @@ void *_gv_grow(__vector_void_t *vec, int extra, size_t size_elem);
         *__elem = _val;                                                       \
     })
 
-#define gv_free(_gvec, free_data_cb) \
-    ({  __auto_type __gvec = (_gvec);                                         \
-        p_free((void **)&(__gvec->tab));                                      \
-    })
+void _gv_wipe(__vector_void_t *vec, int size_elem,
+              void (*free_data_cb)(void **));
+
+#define gv_delete(_gvec, free_data_cb)                                        \
+    do {                                                                      \
+        _gv_wipe(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb);            \
+        p_free((void **)&(_gvec));                                            \
+    } while (0)
+
 
 generic_vector_t(int8, int8_t);
 generic_vector_t(uint8, uint8_t);
