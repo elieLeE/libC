@@ -36,15 +36,17 @@ typedef generic_vector_data_t(void) __vector_void_t;
 void *gv_grow(__vector_void_t *vec, int extra, int size_elem);
 
 #define gv_init(_gvec)                                                        \
-    ({  __auto_type __gvec = (_gvec);                                         \
+    do {                                                                      \
+        __auto_type __gvec = (_gvec);                                         \
         p_clear(__gvec, 1);                                                   \
-   })
+    } while (0)
 
 #define gv_init_size(_gvec, _size)                                            \
-    ({  __auto_type __gvec = (_gvec);                                         \
+    do {                                                                      \
+        __auto_type __gvec = (_gvec);                                         \
         p_clear(__gvec, 1);                                                   \
         gv_grow(&__gvec->vec, _size, gv_size(__gvec));                        \
-   })
+    } while (0)
 
 #define gv_add_elem_last(_gvec, _val)                                         \
     ({  __auto_type __val = (_val);                                           \
