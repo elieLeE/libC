@@ -5,6 +5,17 @@
 #include <stdint.h>
 
 #include "../mem/mem.h"
+#include "../../libc.h"
+
+/* TODO
+ * gv_add_sorted
+ * gv_remove_*
+ * gv_sort => use qsort
+ * gv_insert
+ * gv_find / gv_contains
+ * gv_shuffle
+ * gv_for_each
+ */
 
 #define generic_vector_data_t(_type)                                          \
     struct {                                                                  \

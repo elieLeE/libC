@@ -4,6 +4,9 @@
 #define __attr_unused__  __attribute__((unused))
 #define __attr_nonnull__  __attribute__((nonnull))
 
+#ifndef typeof
+#define typeof __typeof__
+#endif
 
 #include "src/io/io.h"
 #include "src/mem/mem.h"
