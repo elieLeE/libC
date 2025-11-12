@@ -10,6 +10,8 @@
 
 #include <stdbool.h>
 
+#include "../mem/mem.h"
+
 typedef enum gl_sort_algo_t {
     INSERTION_SORT,
 
@@ -39,9 +41,7 @@ typedef struct generic_liste_t {
     for (generic_elem_liste_t *_p = _head; _p != NULL && _p != _stop;\
          _p = _p->suiv)
 
-
-generic_liste_t *gl_new();
-void gl_init(generic_liste_t *l);
+CREATE_GENERIC_NEW_INIT(generic_liste_t, gl);
 
 bool gl_is_empty(const generic_liste_t *l);
 bool gl_is_elem_empty(const generic_elem_liste_t *e);
