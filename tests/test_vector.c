@@ -37,7 +37,7 @@ static void add_new_elem_and_set(gv_t(int_p) *vec, int val)
 {
     int **a_p = NULL;
 
-    a_p = gv_grow(vec, 1);
+    a_p = gv_grow1(vec);
     *a_p = p_calloc(sizeof(int));
     **a_p = val;
 }
