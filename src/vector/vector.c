@@ -3,36 +3,36 @@
 #include "../mem/mem.h"
 #include "../macros.h"
 
-void *__gv_extend(__vector_void_t *vec, int extra, size_t size_elem)
+void *__gv_extend(__vector_void_t *vec, int extra)
 {
     void *res;
 
     if (vec->len + extra >= vec->size) {
         int new_size = vec->size + extra;
 
-        vec->tab = RETHROW_P(p_realloc(vec->tab, new_size * size_elem));
+        vec->tab = RETHROW_P(p_realloc(vec->tab, new_size * vec->__size_elem));
         vec->size = new_size;
     }
 
-    res = vec->tab + vec->len * size_elem;
+    res = vec->tab + vec->len * vec->__size_elem;
 
     p_clear(res, extra);
 
     return res;
 }
 
-void *__gv_grow(__vector_void_t *vec, int extra, size_t size_elem)
+void *__gv_grow(__vector_void_t *vec, int extra)
 {
     void *res;
 
-    res = __gv_extend(vec, extra, size_elem);
+    res = __gv_extend(vec, extra);
 
     vec->len++;
 
     return res;
 }
 
-void *__gv_create_empty_spot(__vector_void_t *vec, size_t size_elem, int pos)
+void *__gv_create_empty_spot(__vector_void_t *vec, int pos)
 {
     if (pos < 0) {
         logger_error("position indicated in '_gv_create_empty_spot' "
@@ -51,13 +51,14 @@ void *__gv_create_empty_spot(__vector_void_t *vec, size_t size_elem, int pos)
                      "new element is added at the end",
                      pos, vec->len);
         /* we have checked that pos < vec->size above */
-        return vec->tab + size_elem * vec->len;
+        return vec->tab + vec->__size_elem * vec->len;
     }
 
-    memmove(vec->tab + size_elem * (pos + 1), vec->tab + size_elem * pos,
-            (vec->len - pos) * size_elem);
+    memmove(vec->tab + vec->__size_elem * (pos + 1),
+            vec->tab + vec->__size_elem * pos,
+            (vec->len - pos) * vec->__size_elem);
 
-    return vec->tab + size_elem * pos;
+    return vec->tab + vec->__size_elem * pos;
 }
 
 /* This methods suppose that that array is sorted. It will stop at the first
@@ -66,17 +67,17 @@ void *__gv_create_empty_spot(__vector_void_t *vec, size_t size_elem, int pos)
  * to sort them by decreasing order, implement a method that will return > 0
  * when the first element is below than the second one.
  */
-int __gv_search_spot(__vector_void_t *vec, size_t size_elem, void *elem,
+int __gv_search_spot(__vector_void_t *vec, void *elem,
                      int (*cmp_data_cb)(const void *d1, const void *d2))
 {
     if (vec->len == 0) {
         return 0;
     }
-    if (cmp_data_cb(vec->tab + (vec->len - 1) * size_elem, elem) < 0) {
+    if (cmp_data_cb(vec->tab + (vec->len - 1) * vec->__size_elem, elem) < 0) {
         return vec->len;
     }
     gv_for_each_pos(pos, vec) {
-        if (cmp_data_cb(vec->tab + (pos * size_elem), elem) > 0) {
+        if (cmp_data_cb(vec->tab + (pos * vec->__size_elem), elem) > 0) {
             return pos;
         }
     }
@@ -85,30 +86,27 @@ int __gv_search_spot(__vector_void_t *vec, size_t size_elem, void *elem,
     return -1;
 }
 
-static void __gv_free_tab(__vector_void_t *vec, int size_elem,
-                          void (*free_data_cb)(void **))
+static void __gv_free_tab(__vector_void_t *vec, void (*free_data_cb)(void **))
 {
     gv_for_each_pos(pos, vec) {
-        free_data_cb(vec->tab + pos * size_elem);
+        free_data_cb(vec->tab + pos * vec->__size_elem);
     }
 }
 
-void
-__gv_clear(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
+void __gv_clear(__vector_void_t *vec, void (*free_data_cb)(void **))
 {
     if (free_data_cb != NULL) {
-        __gv_free_tab(vec, size_elem, free_data_cb);
+        __gv_free_tab(vec, free_data_cb);
     }
-    p_clear(vec->tab, size_elem * vec->size);
+    p_clear(vec->tab, vec->__size_elem * vec->size);
 
     vec->len = 0;
 }
 
-void
-__gv_wipe(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
+void __gv_wipe(__vector_void_t *vec, void (*free_data_cb)(void **))
 {
     if (free_data_cb != NULL) {
-        __gv_free_tab(vec, size_elem, free_data_cb);
+        __gv_free_tab(vec, free_data_cb);
     }
 
     vec->len = 0;
