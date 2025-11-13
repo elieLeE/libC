@@ -20,7 +20,7 @@ static void *gv_extend(__vector_void_t *vec, int extra, int size_elem)
     return res;
 }
 
-void *_gv_grow(__vector_void_t *vec, int extra, size_t size_elem)
+void *__gv_grow(__vector_void_t *vec, int extra, size_t size_elem)
 {
     void *res;
 

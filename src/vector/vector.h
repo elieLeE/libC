@@ -44,13 +44,13 @@ typedef generic_vector_data_t(void) __vector_void_t;
 #define gv_for_each_pos(_pos, _gvec)                                          \
     for (int _pos = 0; _pos < (_gvec)->len; _pos++)
 
-void *_gv_grow(__vector_void_t *vec, int extra, size_t size_elem);
+void *__gv_grow(__vector_void_t *vec, int extra, size_t size_elem);
 
 #define gv_grow(_gvec, extra)                                                 \
     ({                                                                        \
         __auto_type __gvec = _gvec;                                           \
-        __gv_type(__gvec) *__elem = _gv_grow(&(__gvec)->vec, extra,           \
-                                             __gv_size((__gvec)));            \
+        __gv_type(__gvec) *__elem = __gv_grow(&(__gvec)->vec, extra,          \
+                                              __gv_size((__gvec)));           \
         __elem;                                                               \
     })
 
@@ -74,8 +74,8 @@ void *_gv_grow(__vector_void_t *vec, int extra, size_t size_elem);
 
 #define gv_add_elem_last(_gvec, _val)                                         \
     ({  __auto_type __gvec = (_gvec);                                         \
-        __gv_type(__gvec) *__elem = _gv_grow(&__gvec->vec, 1,                 \
-                                             __gv_size(__gvec));              \
+        __gv_type(__gvec) *__elem = __gv_grow(&__gvec->vec, 1,                \
+                                              __gv_size(__gvec));             \
         *__elem = _val;                                                       \
     })
 
