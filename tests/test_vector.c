@@ -29,6 +29,38 @@ static void test_fill_vector(void)
     gv_wipe(&vector, NULL);
 }
 
+static void test_vector_add_and_remove_elem(void)
+{
+    int idx_tab = 0;
+    gv_t(int32) vector;
+    int32_t tab[8] = {11, 10, 4, 12};
+
+    gv_init(&vector);
+
+    gv_add(&vector, 1);
+    gv_add(&vector, 2);
+    gv_insert_elem_at_pos(&vector, 10, 1);
+    gv_remove(&vector, 2);
+    gv_add(&vector, 3);
+    gv_add(&vector, 4);
+    gv_add(&vector, 5);
+    gv_remove(&vector, 2);
+    gv_remove(&vector, 0);
+    gv_insert_elem_at_pos(&vector, 11, 0);
+    gv_insert_elem_at_pos(&vector, 12, 4);
+    gv_remove(&vector, 3);
+
+    ASSERT_EQUAL(vector.len, 4);
+    ASSERT_EQUAL(vector.size, 6);
+
+    gv_for_each_pos(pos, &vector) {
+        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        idx_tab++;
+    }
+
+    gv_wipe(&vector, NULL);
+}
+
 static int cmp_elem(const void *_d1, const void *_d2)
 {
     const int *d1 = _d1;
@@ -278,6 +310,7 @@ module_tests_t *get_all_tests_vector(void)
 
     set_module_name(module_tests, "VECTOR");
     ADD_TEST_TO_MODULE(module_tests, test_fill_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_vector_add_and_remove_elem);
     ADD_TEST_TO_MODULE(module_tests, test_fill_vector_sorting);
     ADD_TEST_TO_MODULE(module_tests, test_sort_vector_simple);
     ADD_TEST_TO_MODULE(module_tests, test_sort_vector_increasing);
