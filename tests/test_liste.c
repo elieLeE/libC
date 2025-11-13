@@ -181,16 +181,6 @@ static void test_remove_element(void)
     gl_wipe(&l, remove_element);
 }
 
-__attr_unused__
-static void swap_data(void **d1, void **d2)
-{
-    int *p;
-
-    p = *d1;
-    *d1 = *d2;
-    *d2 = p;
-}
-
 static void remove_data(void *data)
 {
     p_free(&(data));
