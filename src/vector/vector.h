@@ -8,12 +8,10 @@
 #include "../../libc.h"
 
 /* TODO
- * gv_add_sorted
  * gv_remove_*
  * gv_sort => use qsort
  * gv_find / gv_contains
  * gv_shuffle
- * gv_for_each
  */
 
 #define generic_vector_data_t(_type)                                          \
@@ -97,6 +95,18 @@ void *__gv_create_empty_spot(__vector_void_t *vec, size_t size_elem, int pos);
         __gv_type(__gvec) *__elem;                                            \
         __gv_extend(&__gvec->vec, 1, __gv_size(__gvec));                      \
         __set_elem_at_new_spot(__gvec, _val, _pos);                           \
+    } while(0)
+
+int __gv_search_spot(__vector_void_t *vec, size_t size_elem, void *elem,
+                     int (*cmp_data_cb)(const void *d1, const void *d2));
+
+#define gv_insert_elem_sorted(_gvec, _val_p, cmp_data_cb)                     \
+    do {                                                                      \
+        int __pos;                                                            \
+        __auto_type __gvec = (_gvec);                                         \
+        __pos = __gv_search_spot(&__gvec->vec, __gv_size(__gvec),             \
+                                _val_p, cmp_data_cb);                         \
+        gv_insert_elem_at_pos(_gvec, *_val_p, __pos);                         \
     } while(0)
 
 void _gv_clear(__vector_void_t *vec, int size_elem,

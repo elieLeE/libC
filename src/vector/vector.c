@@ -68,6 +68,31 @@ _gv_free_tab(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
     }
 }
 
+/* This methods suppose that that array is sorted. It will stop at the first
+ * elem below than the one given as argument.
+ * Moreover, by default elements are sorted by increasing order. If you wants
+ * to sort them by decreasing order, implement a method that will return > 0
+ * when the first element is below than the second one.
+ */
+int __gv_search_spot(__vector_void_t *vec, size_t size_elem, void *elem,
+                     int (*cmp_data_cb)(const void *d1, const void *d2))
+{
+    if (vec->len == 0) {
+        return 0;
+    }
+    if (cmp_data_cb(vec->tab + (vec->len - 1) * size_elem, elem) < 0) {
+        return vec->len;
+    }
+    gv_for_each_pos(pos, vec) {
+        if (cmp_data_cb(vec->tab + (pos * size_elem), elem) > 0) {
+            return pos;
+        }
+    }
+
+    logger_error("No sport have been found in '_gv_search_spot'");
+    return -1;
+}
+
 void
 _gv_clear(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
 {
