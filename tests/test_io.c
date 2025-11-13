@@ -60,7 +60,7 @@ void test_lecture_matrice()
 
 module_tests_t *get_all_tests_io(void)
 {
-    module_tests_t *module_tests = RETHROW_P(p_calloc(sizeof(module_tests_t)));
+    module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "IO");
     ADD_TEST_TO_MODULE(module_tests, test_lecture_simple);

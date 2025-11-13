@@ -99,7 +99,7 @@ static void test_get_all_n_first_primes(void)
 
 module_tests_t *get_all_tests_prime(void)
 {
-    module_tests_t *module_tests = RETHROW_P(p_calloc(sizeof(module_tests_t)));
+    module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "PRIMES");
     ADD_TEST_TO_MODULE(module_tests, test_is_prime);

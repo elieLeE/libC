@@ -14,6 +14,8 @@ typedef struct module_tests_t {
     generic_liste_t tests;
 } module_tests_t;
 
+CREATE_GENERIC_NEW_INIT(module_tests_t, module_tests)
+
 void init_module_test(module_tests_t *module_test);
 
 int set_module_name(module_tests_t *module_test, const char *name);

@@ -181,7 +181,7 @@ static void test_reset_vector(void)
 
 module_tests_t *get_all_tests_vector(void)
 {
-    module_tests_t *module_tests = RETHROW_P(p_calloc(sizeof(module_tests_t)));
+    module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "VECTOR");
     ADD_TEST_TO_MODULE(module_tests, test_fill_vector);

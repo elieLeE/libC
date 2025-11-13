@@ -230,7 +230,7 @@ static void test_insertion_sort_decreasing_list(void)
 
 module_tests_t *get_all_tests_liste(void)
 {
-    module_tests_t *module_tests = RETHROW_P(p_calloc(sizeof(module_tests_t)));
+    module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "LISTE");
     ADD_TEST_TO_MODULE(module_tests, test_get_elem_data);

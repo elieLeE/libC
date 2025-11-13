@@ -28,7 +28,7 @@ static void test_swap(void)
 
 static module_tests_t *get_all_tests_without_modules(void)
 {
-    module_tests_t *module_tests = RETHROW_P(p_calloc(sizeof(module_tests_t)));
+    module_tests_t *module_tests = module_tests_new();
 
     set_module_name(module_tests, "WITHOUT MODULE");
     ADD_TEST_TO_MODULE(module_tests, test_swap);
