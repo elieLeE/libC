@@ -81,7 +81,7 @@ int __gv_search_spot(__vector_void_t *vec, size_t size_elem, void *elem,
         }
     }
 
-    logger_error("No sport have been found in '_gv_search_spot'");
+    logger_error("No spot have been found in '_gv_search_spot'");
     return -1;
 }
 
