@@ -86,6 +86,27 @@ int __gv_search_spot(__vector_void_t *vec, void *elem,
     return -1;
 }
 
+int __gv_remove_elem_n(__vector_void_t *vec, int pos)
+{
+    if (pos < 0) {
+        logger_error("pos is wrong: %d", pos);
+        return -1;
+    }
+    if (pos > vec->len -1) {
+        logger_error("pos (%d) is bigger then the length of the vector (%d)",
+                     pos, vec->len);
+        return -1;
+    }
+    if (pos < vec->len - 1) {
+        memmove(vec->tab + vec->__size_elem * pos,
+                vec->tab + vec->__size_elem * (pos + 1),
+                vec->__size_elem * (vec->len - pos - 1));
+    }
+    vec->len--;
+
+    return 0;
+}
+
 static void __gv_free_tab(__vector_void_t *vec, void (*free_data_cb)(void **))
 {
     gv_for_each_pos(pos, vec) {

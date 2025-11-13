@@ -10,7 +10,6 @@
 #include "../macros.h"
 
 /* TODO
- * gv_remove_*
  * gv_find / gv_contains
  * gv_shuffle
  */
@@ -117,6 +116,12 @@ int __gv_search_spot(__vector_void_t *vec, void *elem,
         __pos = __gv_search_spot(&__gvec->vec, &__val, cmp_data_cb);          \
         gv_insert_elem_at_pos(_gvec, _val, __pos);                            \
     } while(0)
+
+/* Warning, this method decreases the length of the vector, eventually move the
+ * data in order that the elements from the first one to the 'vec->length are
+ * the elements of the vector, but the new "empty" spot are not reset ! */
+int __gv_remove_elem_n(__vector_void_t *vec, int pos);
+#define gv_remove(_gvec, _pos) __gv_remove_elem_n(&(_gvec)->vec, _pos);
 
 static inline void
 __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
