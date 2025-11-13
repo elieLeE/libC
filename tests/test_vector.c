@@ -149,6 +149,34 @@ static void test_new_and_delete_vector(void)
     gv_delete(vector, NULL);
 }
 
+static void test_vector_init_size(void)
+{
+    int idx_tab = 0;
+    gv_t(int32) vector;
+    int32_t tab[8] = {11, 1, 10, 2, 3, 4, 5, 12};
+
+    gv_init_size(&vector, 10);
+
+    gv_add(&vector, 1);
+    gv_add(&vector, 2);
+    gv_insert_elem_at_pos(&vector, 10, 1);
+    gv_add(&vector, 3);
+    gv_add(&vector, 4);
+    gv_add(&vector, 5);
+    gv_insert_elem_at_pos(&vector, 11, 0);
+    gv_insert_elem_at_pos(&vector, 12, 7);
+
+    ASSERT_EQUAL(vector.len, 8);
+    ASSERT_EQUAL(vector.size, 10);
+
+    gv_for_each_pos(pos, &vector) {
+        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        idx_tab++;
+    }
+
+    gv_wipe(&vector, NULL);
+}
+
 static void test_reset_vector(void)
 {
     int idx_tab = 0;
@@ -189,6 +217,7 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests, test_sort_vector);
     ADD_TEST_TO_MODULE(module_tests, test_fill_pointer_vector);
     ADD_TEST_TO_MODULE(module_tests, test_new_and_delete_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_vector_init_size);
     ADD_TEST_TO_MODULE(module_tests, test_reset_vector);
 
     return module_tests;
