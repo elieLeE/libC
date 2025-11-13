@@ -69,11 +69,11 @@ static void test_sort_vector(void)
 
     gv_init(&vector);
 
-    gv_add(&vector, tab[2]);
-    gv_add(&vector, tab[0]);
-    gv_add(&vector, tab[4]);
-    gv_add(&vector, tab[3]);
-    gv_add(&vector, tab[1]);
+    gv_add(&vector, 3);
+    gv_add(&vector, 1);
+    gv_add(&vector, 5);
+    gv_add(&vector, 4);
+    gv_add(&vector, 2);
 
     gv_sort(&vector, cmp_elem);
 
