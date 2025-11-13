@@ -6,17 +6,20 @@ static void test_fill_vector(void)
 {
     int idx_tab = 0;
     gv_t(int32) vector;
-    int32_t tab[5] = {1, 2, 3, 4, 5};
+    int32_t tab[8] = {11, 1, 10, 2, 3, 4, 5, 12};
 
     gv_init(&vector);
 
     gv_add(&vector, 1);
     gv_add(&vector, 2);
+    gv_insert_elem_at_pos(&vector, 10, 1);
     gv_add(&vector, 3);
     gv_add(&vector, 4);
     gv_add(&vector, 5);
+    gv_insert_elem_at_pos(&vector, 11, 0);
+    gv_insert_elem_at_pos(&vector, 12, 7);
 
-    ASSERT_EQUAL(vector.len, 5);
+    ASSERT_EQUAL(vector.len, 8);
 
     gv_for_each_pos(pos, &vector) {
         ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
