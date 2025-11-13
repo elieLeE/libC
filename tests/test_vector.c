@@ -61,6 +61,32 @@ static void test_fill_vector_sorting(void)
     gv_wipe(&vector, NULL);
 }
 
+static void test_sort_vector(void)
+{
+    int idx_tab = 0;
+    gv_t(int32) vector;
+    int32_t tab[5] = {1, 2, 3, 4, 5};
+
+    gv_init(&vector);
+
+    gv_add(&vector, tab[2]);
+    gv_add(&vector, tab[0]);
+    gv_add(&vector, tab[4]);
+    gv_add(&vector, tab[3]);
+    gv_add(&vector, tab[1]);
+
+    gv_sort(&vector, cmp_elem);
+
+    ASSERT_EQUAL(vector.len, 5);
+
+    gv_for_each_pos(pos, &vector) {
+        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        idx_tab++;
+    }
+
+    gv_wipe(&vector, NULL);
+}
+
 generic_vector_t(int_p, int *);
 
 static void free_elem(void **elem)
@@ -160,6 +186,7 @@ module_tests_t *get_all_tests_vector(void)
     set_module_name(module_tests, "VECTOR");
     ADD_TEST_TO_MODULE(module_tests, test_fill_vector);
     ADD_TEST_TO_MODULE(module_tests, test_fill_vector_sorting);
+    ADD_TEST_TO_MODULE(module_tests, test_sort_vector);
     ADD_TEST_TO_MODULE(module_tests, test_fill_pointer_vector);
     ADD_TEST_TO_MODULE(module_tests, test_new_and_delete_vector);
     ADD_TEST_TO_MODULE(module_tests, test_reset_vector);
