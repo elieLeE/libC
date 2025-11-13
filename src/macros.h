@@ -88,4 +88,6 @@
 
 /* }}} */
 
+#define unconst_cast(type_t, p)  ({ const type_t *__p = (p); (type_t *)__p; })
+
 #endif
