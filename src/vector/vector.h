@@ -109,20 +109,20 @@ int __gv_search_spot(__vector_void_t *vec, size_t size_elem, void *elem,
         gv_insert_elem_at_pos(_gvec, *_val_p, __pos);                         \
     } while(0)
 
-void _gv_clear(__vector_void_t *vec, int size_elem,
-              void (*free_data_cb)(void **));
-void _gv_wipe(__vector_void_t *vec, int size_elem,
-              void (*free_data_cb)(void **));
+void __gv_clear(__vector_void_t *vec, int size_elem,
+                void (*free_data_cb)(void **));
+void __gv_wipe(__vector_void_t *vec, int size_elem,
+               void (*free_data_cb)(void **));
 
 #define gv_clear(_gvec, free_data_cb)                                         \
-    _gv_clear(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb)
+    __gv_clear(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb)
 
 #define gv_wipe(_gvec, free_data_cb)                                          \
-    _gv_wipe(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb)
+    __gv_wipe(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb)
 
 #define gv_delete(_gvec, free_data_cb)                                        \
     do {                                                                      \
-        _gv_wipe(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb);            \
+        __gv_wipe(&(_gvec)->vec, __gv_size((_gvec)), free_data_cb);           \
         p_free((void **)&(_gvec));                                            \
     } while (0)
 

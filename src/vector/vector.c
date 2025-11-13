@@ -60,14 +60,6 @@ void *__gv_create_empty_spot(__vector_void_t *vec, size_t size_elem, int pos)
     return vec->tab + size_elem * pos;
 }
 
-static void
-_gv_free_tab(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
-{
-    gv_for_each_pos(pos, vec) {
-        free_data_cb(vec->tab + pos * size_elem);
-    }
-}
-
 /* This methods suppose that that array is sorted. It will stop at the first
  * elem below than the one given as argument.
  * Moreover, by default elements are sorted by increasing order. If you wants
@@ -93,11 +85,19 @@ int __gv_search_spot(__vector_void_t *vec, size_t size_elem, void *elem,
     return -1;
 }
 
+static void __gv_free_tab(__vector_void_t *vec, int size_elem,
+                          void (*free_data_cb)(void **))
+{
+    gv_for_each_pos(pos, vec) {
+        free_data_cb(vec->tab + pos * size_elem);
+    }
+}
+
 void
-_gv_clear(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
+__gv_clear(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
 {
     if (free_data_cb != NULL) {
-        _gv_free_tab(vec, size_elem, free_data_cb);
+        __gv_free_tab(vec, size_elem, free_data_cb);
     }
     p_clear(vec->tab, size_elem * vec->size);
 
@@ -105,10 +105,10 @@ _gv_clear(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
 }
 
 void
-_gv_wipe(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
+__gv_wipe(__vector_void_t *vec, int size_elem, void (*free_data_cb)(void **))
 {
     if (free_data_cb != NULL) {
-        _gv_free_tab(vec, size_elem, free_data_cb);
+        __gv_free_tab(vec, size_elem, free_data_cb);
     }
 
     vec->len = 0;
