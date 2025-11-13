@@ -15,6 +15,7 @@
 #include "test_io.h"
 #include "test_prime.h"
 #include "test_vector.h"
+#include "test_tab_helper.h"
 
 static void test_swap(void)
 {
@@ -54,6 +55,9 @@ static int get_all_tests(generic_liste_t *modules_tests)
     gl_add_elem_last(modules_tests, module_tests);
 
     module_tests = RETHROW_PN(get_all_tests_vector());
+    gl_add_elem_last(modules_tests, module_tests);
+
+    module_tests = RETHROW_PN(get_all_tests_tab_helper());
     gl_add_elem_last(modules_tests, module_tests);
 
     return 0;
