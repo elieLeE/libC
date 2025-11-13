@@ -1,5 +1,5 @@
-#ifndef _SHARED_SWAP_H_
-#define _SHARED_SWAP_H_
+#ifndef __MACROS_H_
+#define __MACROS_H_
 
 #include <string.h>
 #include <stdio.h>
