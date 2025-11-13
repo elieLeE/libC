@@ -55,13 +55,13 @@ void *__gv_extend(__vector_void_t *vec, int extra, size_t size_elem);
 #define gv_grow1(_vec) gv_grow((_vec), 1)
 
 #define gv_init(_gvec)                                                        \
-    do {                                                                      \
-        __auto_type __gvec = (_gvec);                                         \
+    ({  __auto_type __gvec = (_gvec);                                         \
         p_clear(__gvec, 1);                                                   \
-    } while (0)
+        __gvec;                                                               \
+    })
 
 #define gv_new(_name)                                                         \
-    (gv_t(_name) *)p_calloc(sizeof(gv_t(_name)))                              \
+    gv_init((gv_t(_name) *)p_malloc(sizeof(gv_t(_name))))                     \
 
 #define gv_init_size(_gvec, _size)                                            \
     do {                                                                      \
