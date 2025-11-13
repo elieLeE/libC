@@ -7,6 +7,7 @@
 
 #include "../mem/mem.h"
 #include "../../libc.h"
+#include "../macros.h"
 
 /* TODO
  * gv_remove_*
@@ -18,6 +19,7 @@
     struct {                                                                  \
         _type *tab;                                                           \
         int len, size;                                                        \
+        const size_t __size_elem;                                             \
     }
 
 typedef generic_vector_data_t(void) __vector_void_t;
@@ -54,9 +56,18 @@ void *__gv_extend(__vector_void_t *vec, int extra, size_t size_elem);
 
 #define gv_grow1(_vec) gv_grow((_vec), 1)
 
+static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
+{
+    size_t *size_elem_p;
+
+    size_elem_p = unconst_cast(size_t, &vec->__size_elem);
+    *size_elem_p = size_elem;
+}
+
 #define gv_init(_gvec)                                                        \
     ({  __auto_type __gvec = (_gvec);                                         \
         p_clear(__gvec, 1);                                                   \
+        __gv_set_size_elem(&__gvec->vec, __gv_size(__gvec));                  \
         __gvec;                                                               \
     })
 
@@ -67,6 +78,7 @@ void *__gv_extend(__vector_void_t *vec, int extra, size_t size_elem);
     do {                                                                      \
         __auto_type __gvec = (_gvec);                                         \
         p_clear(__gvec, 1);                                                   \
+        __gv_set_size_elem(&__gvec->vec, __gv_size(__gvec));                  \
         __gv_extend(&__gvec->vec, _size, __gv_size(__gvec));                  \
     } while (0)
 
