@@ -8,6 +8,7 @@
 #include <getopt.h>
 
 #include "../src/macros.h"
+#include "../src/utils.h"
 #include "../src/test_helper/test_helper.h"
 
 #include "test_liste.h"

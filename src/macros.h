@@ -8,13 +8,6 @@
 
 #include "logger/logger.h"
 
-#define SWAP(_type, _a, _b)                                                   \
-    do {                                                                      \
-        _type _c = *_b;                                                       \
-        *_b = *_a;                                                            \
-        *_a = _c;                                                             \
-    } while(0)
-
 #define MAX(_a, _b)                                                           \
      _a > _b ? _a : _b;
 
