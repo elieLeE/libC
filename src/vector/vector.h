@@ -33,7 +33,7 @@ typedef generic_vector_data_t(void) __vector_void_t;
         __vector_void_t vec;                                                  \
     } generic_vector_##_name##_t;
 
-#define gv_t(_name) generic_vector_##_name##_t
+#define gv_t(_name_) generic_vector_##_name_##_t
 
 #define __gv_size(_vec) sizeof(_vec->tab[0])
 #define __gv_type(_vec) typeof(_vec->tab[0])
