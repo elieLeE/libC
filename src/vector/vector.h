@@ -3,13 +3,13 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "../mem/mem.h"
 #include "../../libc.h"
 
 /* TODO
  * gv_remove_*
- * gv_sort => use qsort
  * gv_find / gv_contains
  * gv_shuffle
  */
@@ -108,6 +108,19 @@ int __gv_search_spot(__vector_void_t *vec, size_t size_elem, void *elem,
                                 _val_p, cmp_data_cb);                         \
         gv_insert_elem_at_pos(_gvec, *_val_p, __pos);                         \
     } while(0)
+
+static inline void
+__gv_sort(__vector_void_t *vec, size_t size_elem,
+          int (*cmp_data_cb)(const void *, const void *))
+{
+    qsort(vec->tab, vec->len, size_elem, cmp_data_cb);
+}
+
+#define gv_sort(_gvec, cmp_data_cb)                                           \
+    do {                                                                      \
+        __auto_type __gvec = (_gvec);                                         \
+        __gv_sort(&__gvec->vec, __gv_size(__gvec), cmp_data_cb);              \
+    } while (0)
 
 void __gv_clear(__vector_void_t *vec, int size_elem,
                 void (*free_data_cb)(void **));
