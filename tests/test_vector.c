@@ -45,11 +45,11 @@ static void test_fill_vector_sorting(void)
 
     gv_init(&vector);
 
-    gv_insert_elem_sorted(&vector, &tab[2], cmp_elem);
-    gv_insert_elem_sorted(&vector, &tab[0], cmp_elem);
-    gv_insert_elem_sorted(&vector, &tab[4], cmp_elem);
-    gv_insert_elem_sorted(&vector, &tab[3], cmp_elem);
-    gv_insert_elem_sorted(&vector, &tab[1], cmp_elem);
+    gv_insert_elem_sorted(&vector, 3, cmp_elem);
+    gv_insert_elem_sorted(&vector, 1, cmp_elem);
+    gv_insert_elem_sorted(&vector, 5, cmp_elem);
+    gv_insert_elem_sorted(&vector, 4, cmp_elem);
+    gv_insert_elem_sorted(&vector, 2, cmp_elem);
 
     ASSERT_EQUAL(vector.len, 5);
 
