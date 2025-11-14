@@ -61,7 +61,7 @@ static void test_fill_vector_sorting(void)
     gv_wipe(&vector, NULL);
 }
 
-static void test_sort_vector(void)
+static void test_sort_vector_simple(void)
 {
     int idx_tab = 0;
     gv_t(int32) vector;
@@ -83,6 +83,71 @@ static void test_sort_vector(void)
         ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
         idx_tab++;
     }
+
+    gv_wipe(&vector, NULL);
+}
+
+static void
+check_vector_sorting(const gv_t(int32) *vector, bool is_increasing_vector)
+{
+    int previous_val = vector->tab[0];
+
+    for (int i = 1; i < vector->len; i++) {
+        int current_data = vector->tab[i];
+
+        if (is_increasing_vector) {
+            ASSERT(current_data >= previous_val,
+                   "vector seems not having well sorted - "
+                   "current : %d, previous: %d", current_data, previous_val);
+        } else {
+            ASSERT(current_data <= previous_val,
+                   "vector seems not having well sorted - "
+                   "current : %d, previous: %d", current_data, previous_val);
+        }
+
+        previous_val = current_data;
+    }
+}
+
+static void test_sort_vector_increasing(void)
+{
+    gv_t(int32) vector;
+
+    gv_init_size(&vector, 1000);
+
+    for (int i = 0; i < 1000; i++) {
+        int tmp = rand() % 10000;
+
+        gv_add(&vector, tmp);
+    }
+
+    gv_sort(&vector, cmp_elem);
+
+    check_vector_sorting(&vector, true);
+
+    gv_wipe(&vector, NULL);
+}
+
+static int cmp_elem_decreasing_order(const void *d1, const void *d2)
+{
+    return - cmp_elem(d1, d2);
+}
+
+static void test_sort_vector_decreasing(void)
+{
+    gv_t(int32) vector;
+
+    gv_init_size(&vector, 1000);
+
+    for (int i = 0; i < 1000; i++) {
+        int tmp = rand() % 10000;
+
+        gv_add(&vector, tmp);
+    }
+
+    gv_sort(&vector, cmp_elem_decreasing_order);
+
+    check_vector_sorting(&vector, false);
 
     gv_wipe(&vector, NULL);
 }
@@ -214,7 +279,9 @@ module_tests_t *get_all_tests_vector(void)
     set_module_name(module_tests, "VECTOR");
     ADD_TEST_TO_MODULE(module_tests, test_fill_vector);
     ADD_TEST_TO_MODULE(module_tests, test_fill_vector_sorting);
-    ADD_TEST_TO_MODULE(module_tests, test_sort_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_sort_vector_simple);
+    ADD_TEST_TO_MODULE(module_tests, test_sort_vector_increasing);
+    ADD_TEST_TO_MODULE(module_tests, test_sort_vector_decreasing);
     ADD_TEST_TO_MODULE(module_tests, test_fill_pointer_vector);
     ADD_TEST_TO_MODULE(module_tests, test_new_and_delete_vector);
     ADD_TEST_TO_MODULE(module_tests, test_vector_init_size);
