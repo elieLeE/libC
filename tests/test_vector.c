@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "test_vector.h"
 #include "../src/vector/vector.h"
 #include "../src/macros.h"
@@ -279,6 +281,33 @@ static void test_vector_init_size(void)
     gv_wipe(&vector, NULL);
 }
 
+static void test_vector_shuffle(void)
+{
+    gv_t(int32) vector;
+    int expected_tab[10] = {5, 8, 1, 9, 6, 4, 10, 3, 7, 2};
+
+    gv_init_size(&vector, 10);
+
+    /* set the seed to 0 in order to have always the same number from 'rand'
+     * method and so be able to check the shuffle algorithm */
+    srand(0);
+
+    for (int i = 1; i <= 10; i++) {
+        gv_add(&vector, i);
+    }
+    gv_shuffle(&vector);
+
+    /* As the seed of the rand is always set to 0 in this test, the shuffle of
+     * the tab will be always the same */
+    for (int i = 0; i < 10; i++) {
+        ASSERT_EQUAL(vector.tab[i], expected_tab[i]);
+    }
+    printf("\n");
+
+    /* reset the seed */
+    srand(time(NULL));
+}
+
 static void test_reset_vector(void)
 {
     int idx_tab = 0;
@@ -324,6 +353,7 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests, test_new_and_delete_vector);
     ADD_TEST_TO_MODULE(module_tests, test_vector_init_size);
     ADD_TEST_TO_MODULE(module_tests, test_reset_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_vector_shuffle);
 
     return module_tests;
 }

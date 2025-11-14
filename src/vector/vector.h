@@ -8,10 +8,10 @@
 #include "../mem/mem.h"
 #include "../../libc.h"
 #include "../macros.h"
+#include "../tab_helper/tab_helper.h"
 
 /* TODO
  * gv_find / gv_contains
- * gv_shuffle
  */
 
 #define generic_vector_data_t(_type)                                          \
@@ -133,6 +133,12 @@ __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
     do {                                                                      \
         __auto_type __gvec = (_gvec);                                         \
         __gv_sort(&__gvec->vec, cmp_data_cb);                                 \
+    } while (0)
+
+#define gv_shuffle(_gvec)                                                     \
+    do {                                                                      \
+        __auto_type __gvec = (_gvec);                                         \
+        shuffle_tab(__gvec->vec.tab, __gvec->len, __gvec->__size_elem);       \
     } while (0)
 
 void __gv_clear(__vector_void_t *vec, void (*free_data_cb)(void **));
