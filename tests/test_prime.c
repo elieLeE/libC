@@ -4,7 +4,6 @@
 #include "../src/math/prime.h"
 #include "../src/mem/mem.h"
 #include "../src/macros.h"
-#include "../libc.h"
 
 static void test_is_prime(void)
 {

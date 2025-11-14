@@ -1,10 +1,8 @@
 #include "test_liste.h"
 
-#include "../libc.h"
 #include "../src/liste/liste.h"
 #include "../src/mem/mem.h"
 #include "../src/macros.h"
-#include "../libc.h"
 
 static int *get_new_int(int val)
 {

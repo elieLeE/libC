@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #include "../mem/mem.h"
-#include "../../libc.h"
+#include "../attributes.h"
 #include "../macros.h"
 #include "../tab_helper/tab_helper.h"
 
