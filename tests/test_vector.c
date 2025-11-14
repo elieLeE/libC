@@ -338,6 +338,93 @@ static void test_reset_vector(void)
     gv_wipe(&vector, NULL);
 }
 
+static void test_vector_find_and_contains(void)
+{
+    gv_t(int32) vector;
+
+    gv_init(&vector);
+
+    gv_add(&vector, 1);
+    gv_add(&vector, 5);
+    gv_add(&vector, 4);
+    gv_add(&vector, 2);
+    gv_add(&vector, 3);
+
+    ASSERT((!(gv_contains(&vector, 10, cmp_elem))), "elem '10' has not been found");
+    ASSERT(gv_contains(&vector, 2, cmp_elem), "elem '2' has not been found");
+    ASSERT_EQUAL(gv_find(&vector, 1, cmp_elem), 0);
+    ASSERT_EQUAL(gv_find(&vector, 2, cmp_elem), 3);
+    ASSERT_EQUAL(gv_find(&vector, 3, cmp_elem), 4);
+    ASSERT_EQUAL(gv_find(&vector, 4, cmp_elem), 2);
+    ASSERT_EQUAL(gv_find(&vector, 5, cmp_elem), 1);
+
+    gv_clear(&vector, NULL);
+
+    gv_add(&vector, 6);
+    gv_add(&vector, 7);
+    gv_add(&vector, 8);
+
+    for (int i = 0; i < 5; i++) {
+        ASSERT((!(gv_contains(&vector, i, cmp_elem))), "elem %d should not be present", i);
+    }
+    for (int i = 6; i <= 8; i++) {
+        ASSERT_EQUAL(gv_find(&vector, i, cmp_elem), i - 6);
+    }
+}
+
+static int cmp_elem_p(const void *_d1, const void *_d2)
+{
+    const int *d1 = *(int **)_d1;
+    const int *d2 = _d2;
+
+    return ((*d1) - (*d2));
+}
+
+static int cmp_elem_p2(const void *_d1, const void *_d2)
+{
+    const int *d1 = *(int **)_d1;
+    const int *d2 = *(int **)_d2;
+
+    return d1 == d2 ? 0: -1;
+}
+
+static void test_vector_find_with_pointer(void)
+{
+    gv_t(int_p) vector;
+    int *elem;
+    int tab[5] = {1, 2, 3, 4, 5};
+
+    gv_init(&vector);
+
+    gv_add(&vector, &tab[1]);
+    gv_add(&vector, &tab[0]);
+    gv_add(&vector, &tab[3]);
+    gv_add(&vector, &tab[2]);
+    gv_add(&vector, &tab[4]);
+
+    elem = p_calloc(sizeof(int));
+
+    for (int i = 1; i <= 5; i++) {
+        /* all depends on what the suer looks for: the value or 
+         * the memory space */
+        ASSERT(gv_contains(&vector, i, cmp_elem_p),
+               "elem %d has not been fond", i);
+
+        ASSERT(gv_contains(&vector, &tab[i - 1], cmp_elem_p2),
+               "pointer elem %d has not been fond", i);
+    }
+
+    for (int i = 1; i <= 5; i++) {
+        *elem = i;
+
+        ASSERT(gv_contains(&vector, (*elem), cmp_elem_p),
+               "elem %d has not been fond", i);
+
+        ASSERT((!(gv_contains(&vector, elem, cmp_elem_p2))),
+               "elem %d has not been fond", i);
+    }
+}
+
 module_tests_t *get_all_tests_vector(void)
 {
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
@@ -354,6 +441,8 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests, test_vector_init_size);
     ADD_TEST_TO_MODULE(module_tests, test_reset_vector);
     ADD_TEST_TO_MODULE(module_tests, test_vector_shuffle);
+    ADD_TEST_TO_MODULE(module_tests, test_vector_find_and_contains);
+    ADD_TEST_TO_MODULE(module_tests, test_vector_find_with_pointer);
 
     return module_tests;
 }

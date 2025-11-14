@@ -107,6 +107,17 @@ int __gv_remove_elem_n(__vector_void_t *vec, int pos)
     return 0;
 }
 
+int __gv_find(__vector_void_t *vec, void *elem,
+              int (*cmp_data_cb)(const void *, const void *))
+{
+    gv_for_each_pos(pos, vec) {
+        if (cmp_data_cb((vec->tab + pos * vec->__size_elem), elem) == 0) {
+            return pos;
+        }
+    }
+    return -1;
+}
+
 static void __gv_free_tab(__vector_void_t *vec, void (*free_data_cb)(void **))
 {
     gv_for_each_pos(pos, vec) {
