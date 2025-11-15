@@ -4,6 +4,13 @@
 #include "../src/mem/mem.h"
 #include "../src/macros.h"
 
+/* XXX: As the data in the list is a void *, I have to give to each element a
+ * pointer. For the tests here, I created new int but, obviously, that should
+ * not be done in real case. If user has really need a "list" of int, it
+ * should use the containers "vector" that will be much more faster.
+ * According to me, list will contain some elements from which the data memory
+ * is already kept by another part of the code */
+
 static int *get_new_int(int val)
 {
     int *p = p_calloc(sizeof(int));
