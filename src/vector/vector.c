@@ -16,7 +16,7 @@ void *__gv_extend(__vector_void_t *vec, int extra)
 
     res = vec->tab + vec->len * vec->__size_elem;
 
-    p_clear(res, extra);
+    p_clear(res, extra * vec->__size_elem);
 
     return res;
 }
