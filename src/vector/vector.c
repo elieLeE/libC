@@ -25,7 +25,7 @@ void *__gv_grow(__vector_void_t *vec, int extra)
 {
     void *res;
 
-    res = __gv_extend(vec, extra);
+    res = RETHROW_P(__gv_extend(vec, extra));
 
     vec->len++;
 
