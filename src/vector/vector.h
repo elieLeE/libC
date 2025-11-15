@@ -13,10 +13,12 @@
 /* TODO
  */
 
+/* These 'len' and 'size' elements should never be below 0 but it is hard to
+ * be absolutely sure about that so I have decided to keep them as signed */
 #define generic_vector_data_t(_type)                                          \
     struct {                                                                  \
         _type *tab;                                                           \
-        int len, size;                                                        \
+        long len, size;                                                       \
         const size_t __size_elem;                                             \
     }
 
@@ -39,7 +41,7 @@ typedef generic_vector_data_t(void) __vector_void_t;
 #define __gv_type(_vec) typeof(_vec->tab[0])
 
 #define gv_for_each_pos(_pos, _gvec)                                          \
-    for (int _pos = 0; _pos < (_gvec)->len; _pos++)
+    for (long _pos = 0; _pos < (_gvec)->len; _pos++)
 
 void *__gv_grow(__vector_void_t *vec, int extra);
 void *__gv_extend(__vector_void_t *vec, int extra);
@@ -85,7 +87,7 @@ static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
         *__elem = _val;                                                       \
     })
 
-void *__gv_create_empty_spot(__vector_void_t *vec, int pos);
+void *__gv_create_empty_spot(__vector_void_t *vec, long pos);
 
 #define __set_elem_at_new_spot(__gvec, _val, _pos)                            \
     do {                                                                      \
@@ -119,7 +121,7 @@ int __gv_search_spot(__vector_void_t *vec, void *elem,
 /* Warning, this method decreases the length of the vector, eventually move the
  * data in order that the elements from the first one to the 'vec->length are
  * the elements of the vector, but the new "empty" spot are not reset ! */
-int __gv_remove_elem_n(__vector_void_t *vec, int pos);
+int __gv_remove_elem_n(__vector_void_t *vec, long pos);
 #define gv_remove(_gvec, _pos) __gv_remove_elem_n(&(_gvec)->vec, _pos);
 
 static inline void

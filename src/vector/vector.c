@@ -32,22 +32,22 @@ void *__gv_grow(__vector_void_t *vec, int extra)
     return res;
 }
 
-void *__gv_create_empty_spot(__vector_void_t *vec, int pos)
+void *__gv_create_empty_spot(__vector_void_t *vec, long pos)
 {
     if (pos < 0) {
         logger_error("position indicated in '_gv_create_empty_spot' "
-                     "is wrong: %d", pos);
+                     "is wrong: %ld", pos);
         return NULL;
     }
     if (pos >= vec->size) {
-        logger_error("position indicated in '_gv_create_empty_spot' (%d) "
-                     "is bigger than the size of the vector (%d)",
+        logger_error("position indicated in '_gv_create_empty_spot' (%ld) "
+                     "is bigger than the size of the vector (%ld)",
                      pos, vec->size);
         return NULL;
     }
     if (pos >= vec->len) {
-        logger_warning("position indicated in '_gv_create_empty_spot' (%d) "
-                     "is bigger than the length of the vector (%d) - "
+        logger_warning("position indicated in '_gv_create_empty_spot' (%ld) "
+                     "is bigger than the length of the vector (%ld) - "
                      "new element is added at the end",
                      pos, vec->len);
         /* we have checked that pos < vec->size above */
@@ -86,14 +86,14 @@ int __gv_search_spot(__vector_void_t *vec, void *elem,
     return -1;
 }
 
-int __gv_remove_elem_n(__vector_void_t *vec, int pos)
+int __gv_remove_elem_n(__vector_void_t *vec, long pos)
 {
     if (pos < 0) {
-        logger_error("pos is wrong: %d", pos);
+        logger_error("pos is wrong: %ld", pos);
         return -1;
     }
     if (pos > vec->len -1) {
-        logger_error("pos (%d) is bigger then the length of the vector (%d)",
+        logger_error("pos (%ld) is bigger then the length of the vector (%ld)",
                      pos, vec->len);
         return -1;
     }
