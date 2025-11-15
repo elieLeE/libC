@@ -21,11 +21,11 @@ static void test_fill_vector(void)
     gv_insert_elem_at_pos(&vector, 11, 0);
     gv_insert_elem_at_pos(&vector, 12, 7);
 
-    ASSERT_EQUAL((int)vector.len, 8);
-    ASSERT_EQUAL((int)vector.size, 8);
+    ASSERT_EQUAL_INT((int)vector.len, 8);
+    ASSERT_EQUAL_INT((int)vector.size, 8);
 
     gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
         idx_tab++;
     }
 
@@ -53,11 +53,11 @@ static void test_vector_add_and_remove_elem(void)
     gv_insert_elem_at_pos(&vector, 12, 4);
     gv_remove(&vector, 3);
 
-    ASSERT_EQUAL((int)vector.len, 4);
-    ASSERT_EQUAL((int)vector.size, 6);
+    ASSERT_EQUAL_INT((int)vector.len, 4);
+    ASSERT_EQUAL_INT((int)vector.size, 6);
 
     gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
         idx_tab++;
     }
 
@@ -86,11 +86,11 @@ static void test_fill_vector_sorting(void)
     gv_insert_elem_sorted(&vector, 4, cmp_elem);
     gv_insert_elem_sorted(&vector, 2, cmp_elem);
 
-    ASSERT_EQUAL((int)vector.len, 5);
-    ASSERT_EQUAL((int)vector.size, 5);
+    ASSERT_EQUAL_INT((int)vector.len, 5);
+    ASSERT_EQUAL_INT((int)vector.size, 5);
 
     gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
         idx_tab++;
     }
 
@@ -113,11 +113,11 @@ static void test_sort_vector_simple(void)
 
     gv_sort(&vector, cmp_elem);
 
-    ASSERT_EQUAL((int)vector.len, 5);
-    ASSERT_EQUAL((int)vector.size, 5);
+    ASSERT_EQUAL_INT((int)vector.len, 5);
+    ASSERT_EQUAL_INT((int)vector.size, 5);
 
     gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
         idx_tab++;
     }
 
@@ -219,11 +219,11 @@ static void test_fill_pointer_vector(void)
     add_new_elem_and_set(&vector, 4);
     add_new_elem_and_set(&vector, 5);
 
-    ASSERT_EQUAL((int)vector.len, 5);
-    ASSERT_EQUAL((int)vector.size, 5);
+    ASSERT_EQUAL_INT((int)vector.len, 5);
+    ASSERT_EQUAL_INT((int)vector.size, 5);
 
     gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL(*(vector.tab[pos]), tab[idx_tab]);
+        ASSERT_EQUAL_INT(*(vector.tab[pos]), tab[idx_tab]);
         idx_tab++;
     }
     gv_wipe(&vector, free_elem);
@@ -243,11 +243,11 @@ static void test_new_and_delete_vector(void)
     gv_add(vector, 4);
     gv_add(vector, 5);
 
-    ASSERT_EQUAL((int)vector->len, 5);
-    ASSERT_EQUAL((int)vector->size, 5);
+    ASSERT_EQUAL_INT((int)vector->len, 5);
+    ASSERT_EQUAL_INT((int)vector->size, 5);
 
     gv_for_each_pos(pos, vector) {
-        ASSERT_EQUAL(vector->tab[pos], tab[idx_tab]);
+        ASSERT_EQUAL_INT(vector->tab[pos], tab[idx_tab]);
         idx_tab++;
     }
     gv_delete(vector, NULL);
@@ -270,11 +270,11 @@ static void test_vector_init_size(void)
     gv_insert_elem_at_pos(&vector, 11, 0);
     gv_insert_elem_at_pos(&vector, 12, 7);
 
-    ASSERT_EQUAL((int)vector.len, 8);
-    ASSERT_EQUAL((int)vector.size, 10);
+    ASSERT_EQUAL_INT((int)vector.len, 8);
+    ASSERT_EQUAL_INT((int)vector.size, 10);
 
     gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
         idx_tab++;
     }
 
@@ -303,7 +303,7 @@ static void test_vector_shuffle(void)
     /* As the seed of the rand is always set to 0 in this test, the shuffle of
      * the tab will be always the same */
     for (int i = 0; i < 10; i++) {
-        ASSERT_EQUAL(vector.tab[i], expected_tab[i]);
+        ASSERT_EQUAL_INT(vector.tab[i], expected_tab[i]);
     }
 
     gv_wipe(&vector, NULL);
@@ -329,11 +329,11 @@ static void test_reset_vector(void)
     gv_add(&vector, 7);
     gv_add(&vector, 8);
 
-    ASSERT_EQUAL((int)vector.len, 3);
-    ASSERT_EQUAL((int)vector.size, 5);
+    ASSERT_EQUAL_INT((int)vector.len, 3);
+    ASSERT_EQUAL_INT((int)vector.size, 5);
 
     gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL(vector.tab[pos], tab[idx_tab]);
+        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
         idx_tab++;
     }
     gv_wipe(&vector, NULL);
@@ -353,11 +353,11 @@ static void test_vector_find_and_contains(void)
 
     ASSERT((!(gv_contains(&vector, 10, cmp_elem))), "elem '10' has not been found");
     ASSERT(gv_contains(&vector, 2, cmp_elem), "elem '2' has not been found");
-    ASSERT_EQUAL(gv_find(&vector, 1, cmp_elem), 0);
-    ASSERT_EQUAL(gv_find(&vector, 2, cmp_elem), 3);
-    ASSERT_EQUAL(gv_find(&vector, 3, cmp_elem), 4);
-    ASSERT_EQUAL(gv_find(&vector, 4, cmp_elem), 2);
-    ASSERT_EQUAL(gv_find(&vector, 5, cmp_elem), 1);
+    ASSERT_EQUAL_INT(gv_find(&vector, 1, cmp_elem), 0);
+    ASSERT_EQUAL_INT(gv_find(&vector, 2, cmp_elem), 3);
+    ASSERT_EQUAL_INT(gv_find(&vector, 3, cmp_elem), 4);
+    ASSERT_EQUAL_INT(gv_find(&vector, 4, cmp_elem), 2);
+    ASSERT_EQUAL_INT(gv_find(&vector, 5, cmp_elem), 1);
 
     gv_clear(&vector, NULL);
 
@@ -369,7 +369,7 @@ static void test_vector_find_and_contains(void)
         ASSERT((!(gv_contains(&vector, i, cmp_elem))), "elem %d should not be present", i);
     }
     for (int i = 6; i <= 8; i++) {
-        ASSERT_EQUAL(gv_find(&vector, i, cmp_elem), i - 6);
+        ASSERT_EQUAL_INT(gv_find(&vector, i, cmp_elem), i - 6);
     }
 
     gv_wipe(&vector, NULL);

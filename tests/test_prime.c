@@ -106,16 +106,15 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(6, &primes, &primes_factors);
 
-    ASSERT_EQUAL(res, 2);
-    ASSERT_EQUAL((int)primes_factors.len, 2);
+    ASSERT_EQUAL_INT(res, 2);
+    ASSERT_EQUAL_INT((int)primes_factors.len, 2);
 
     ASSERT(primes_factors.tab[0].prime == 2,
            "expected: 2, obtained: %ld", primes_factors.tab[0].prime);
-    ASSERT_EQUAL(primes_factors.tab[0].iteration, 1);
+    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 1);
 
-    ASSERT(primes_factors.tab[1].prime == 3,
-           "expected: 2, obtained: %ld", primes_factors.tab[1].prime);
-    ASSERT_EQUAL(primes_factors.tab[1].iteration, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 3);
+    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
 
     /* }}} */
     /* {{{ Test with 4 */
@@ -124,12 +123,11 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(4, &primes, &primes_factors);
 
-    ASSERT_EQUAL(res, 1);
-    ASSERT_EQUAL((int)primes_factors.len, 1);
+    ASSERT_EQUAL_INT(res, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.len, 1);
 
-    ASSERT(primes_factors.tab[0].prime == 2,
-           "expected: 2, obtained: %ld", primes_factors.tab[0].prime);
-    ASSERT_EQUAL(primes_factors.tab[0].iteration, 2);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
+    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 2);
 
     /* }}} */
     /* {{{ Test with 53 */
@@ -138,12 +136,11 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(53, &primes, &primes_factors);
 
-    ASSERT_EQUAL(res, 1);
-    ASSERT_EQUAL((int)primes_factors.len, 1);
+    ASSERT_EQUAL_INT(res, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.len, 1);
 
-    ASSERT(primes_factors.tab[0].prime == 53,
-           "expected: 2, obtained: %ld", primes_factors.tab[0].prime);
-    ASSERT_EQUAL(primes_factors.tab[0].iteration, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 53);
+    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 1);
 
     /* }}} */
     /* {{{ Test with 63 */
@@ -152,16 +149,14 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(63, &primes, &primes_factors);
 
-    ASSERT_EQUAL(res, 2);
-    ASSERT_EQUAL((int)primes_factors.len, 2);
+    ASSERT_EQUAL_INT(res, 2);
+    ASSERT_EQUAL_INT((int)primes_factors.len, 2);
 
-    ASSERT(primes_factors.tab[0].prime == 3,
-           "expected: 2, obtained: %ld", primes_factors.tab[0].prime);
-    ASSERT_EQUAL(primes_factors.tab[0].iteration, 2);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 3);
+    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 2);
 
-    ASSERT(primes_factors.tab[1].prime == 7,
-           "expected: 2, obtained: %ld", primes_factors.tab[1].prime);
-    ASSERT_EQUAL(primes_factors.tab[1].iteration, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 7);
+    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
 
     /* }}} */
     /* {{{ Test with 735 */
@@ -170,20 +165,17 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(735, &primes, &primes_factors);
 
-    ASSERT_EQUAL(res, 3);
-    ASSERT_EQUAL((int)primes_factors.len, 3);
+    ASSERT_EQUAL_INT(res, 3);
+    ASSERT_EQUAL_INT((int)primes_factors.len, 3);
 
-    ASSERT(primes_factors.tab[0].prime == 3,
-           "expected: 2, obtained: %ld", primes_factors.tab[0].prime);
-    ASSERT_EQUAL(primes_factors.tab[0].iteration, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 3);
+    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 1);
 
-    ASSERT(primes_factors.tab[1].prime == 5,
-           "expected: 2, obtained: %ld", primes_factors.tab[1].prime);
-    ASSERT_EQUAL(primes_factors.tab[1].iteration, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 5);
+    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
 
-    ASSERT(primes_factors.tab[2].prime == 7,
-           "expected: 2, obtained: %ld", primes_factors.tab[2].prime);
-    ASSERT_EQUAL(primes_factors.tab[2].iteration, 2);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 7);
+    ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 2);
 
     /* }}} */
     /* {{{ Test with 845 */
@@ -192,16 +184,14 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(845, &primes, &primes_factors);
 
-    ASSERT_EQUAL(res, 2);
-    ASSERT_EQUAL((int)primes_factors.len, 2);
+    ASSERT_EQUAL_INT(res, 2);
+    ASSERT_EQUAL_INT((int)primes_factors.len, 2);
 
-    ASSERT(primes_factors.tab[0].prime == 5,
-           "expected: 2, obtained: %ld", primes_factors.tab[0].prime);
-    ASSERT_EQUAL(primes_factors.tab[0].iteration, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 5);
+    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 1);
 
-    ASSERT(primes_factors.tab[1].prime == 13,
-           "expected: 2, obtained: %ld", primes_factors.tab[1].prime);
-    ASSERT_EQUAL(primes_factors.tab[1].iteration, 2);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 13);
+    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 2);
 
     /* }}} */
     /* {{{ Test with 988 */
@@ -210,20 +200,17 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(988, &primes, &primes_factors);
 
-    ASSERT_EQUAL(res, 3);
-    ASSERT_EQUAL((int)primes_factors.len, 3);
+    ASSERT_EQUAL_INT(res, 3);
+    ASSERT_EQUAL_INT((int)primes_factors.len, 3);
 
-    ASSERT(primes_factors.tab[0].prime == 2,
-           "expected: 2, obtained: %ld", primes_factors.tab[0].prime);
-    ASSERT_EQUAL(primes_factors.tab[0].iteration, 2);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
+    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 2);
 
-    ASSERT(primes_factors.tab[1].prime == 13,
-           "expected: 2, obtained: %ld", primes_factors.tab[1].prime);
-    ASSERT_EQUAL(primes_factors.tab[1].iteration, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 13);
+    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
 
-    ASSERT(primes_factors.tab[2].prime == 19,
-           "expected: 2, obtained: %ld", primes_factors.tab[2].prime);
-    ASSERT_EQUAL(primes_factors.tab[2].iteration, 1);
+    ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 19);
+    ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 1);
 
     /* }}} */
 

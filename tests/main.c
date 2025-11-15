@@ -24,8 +24,8 @@ static void test_swap(void)
 
     SWAP(int, &a, &b);
 
-    ASSERT_EQUAL(a, 13);
-    ASSERT_EQUAL(b, 5);
+    ASSERT_EQUAL_INT(a, 13);
+    ASSERT_EQUAL_INT(b, 5);
 }
 
 static module_tests_t *get_all_tests_without_modules(void)

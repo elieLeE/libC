@@ -50,7 +50,7 @@ void test_lecture_matrice()
 
     for (int i = 0; i < lig; i++) {
         for (int j = 0; j < col; j++) {
-            ASSERT_EQUAL(mat[i][j], tab[i][j]);
+            ASSERT_EQUAL_INT(mat[i][j], tab[i][j]);
         }
     }
 
