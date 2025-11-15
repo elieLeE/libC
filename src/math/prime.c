@@ -106,40 +106,34 @@ void get_all_n_first_primes(long count_asked, gv_t(uint64) *out)
     }
 }
 
-unsigned int get_all_primes_factors_of_n(unsigned long n,
-                                         const unsigned long primes[],
-                                         unsigned int primes_tab_size,
-                                         unsigned int size_tab_out,
-                                         prime_factor_t out[])
+unsigned long
+get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
+                            gv_t(primes_factors) *out)
 {
-    unsigned int primes_factors_count = 0;
+    gv_for_each_pos(pos, primes) {
+        unsigned long current_prime = primes->tab[pos];
+        /* first search if n is in the tab ?? => if yes => just him and 1 */
 
-    for (unsigned int i = 0;
-         (i < primes_tab_size) && (i < size_tab_out); i++)
-    {
-        bool new_prime_factor_detected = false;
+        if (n % current_prime == 0) {
+            prime_factor_t *prime_factor;
 
-        while (n % primes[i] == 0) {
-            new_prime_factor_detected = true;
+            prime_factor = gv_grow1(out);
+            prime_factor->prime = current_prime;
+            prime_factor->iteration++;
 
-            out[primes_factors_count].prime = primes[i];
-            out[primes_factors_count].iteration++;
-
-            n = n / primes[i];
+            n = n / current_prime;
+            while (n % current_prime == 0) {
+                n = n / current_prime;
+                prime_factor->iteration++;
+            }
 
             if (n == 1) {
-                primes_factors_count++;
-
-                return primes_factors_count;
+                break;
             }
-        }
-
-        if (new_prime_factor_detected) {
-            primes_factors_count++;
         }
     }
 
-    return primes_factors_count;
+    return out->len;
 }
 
 static int
