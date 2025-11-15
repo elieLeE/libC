@@ -297,15 +297,16 @@ static void test_vector_shuffle(void)
     }
     gv_shuffle(&vector);
 
+    /* reset the seed */
+    srand(time(NULL));
+
     /* As the seed of the rand is always set to 0 in this test, the shuffle of
      * the tab will be always the same */
     for (int i = 0; i < 10; i++) {
         ASSERT_EQUAL(vector.tab[i], expected_tab[i]);
     }
-    printf("\n");
 
-    /* reset the seed */
-    srand(time(NULL));
+    gv_wipe(&vector, NULL);
 }
 
 static void test_reset_vector(void)
@@ -370,6 +371,8 @@ static void test_vector_find_and_contains(void)
     for (int i = 6; i <= 8; i++) {
         ASSERT_EQUAL(gv_find(&vector, i, cmp_elem), i - 6);
     }
+
+    gv_wipe(&vector, NULL);
 }
 
 static int cmp_elem_p(const void *_d1, const void *_d2)
@@ -423,6 +426,9 @@ static void test_vector_find_with_pointer(void)
         ASSERT((!(gv_contains(&vector, elem, cmp_elem_p2))),
                "elem %d has not been fond", i);
     }
+
+    gv_wipe(&vector, NULL);
+    p_free((void **)&elem);
 }
 
 module_tests_t *get_all_tests_vector(void)
