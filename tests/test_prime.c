@@ -2,7 +2,6 @@
 
 #include "test_prime.h"
 #include "../src/math/prime.h"
-#include "../src/mem/mem.h"
 #include "../src/macros.h"
 
 static void test_is_prime(void)
@@ -47,16 +46,14 @@ static void fill_25_first_primes(unsigned long *primes)
     /* }}} */
 }
 
-static void
-check_primes_number(unsigned long *primes_found,
-                    unsigned int primes_found_count,
-                    unsigned long *primes_for_checking,
-                    unsigned int primes_for_checking_count)
+static void check_primes_number(gv_t(uint64) *primes_found,
+                                unsigned long *primes_for_checking,
+                                int primes_for_checking_count)
 {
-    assert(primes_found_count == primes_for_checking_count && "assert");
+    assert(primes_found->len == primes_for_checking_count && "assert");
 
-    for (unsigned int i = 0; i < primes_found_count; i++) {
-        assert(primes_found[i] == primes_for_checking[i]);
+    gv_for_each_pos(pos, primes_found) {
+        assert(primes_found->tab[pos] == primes_for_checking[pos]);
     }
 }
 
@@ -72,8 +69,7 @@ static void test_get_all_primes_below_n(void)
 
     get_all_primes_below_n(lim, &primes_found);
 
-    check_primes_number(primes_found.tab, primes_found.len,
-                        primes_for_checking, 25);
+    check_primes_number(&primes_found, primes_for_checking, 25);
 
     gv_wipe(&primes_found, NULL);
 }
@@ -81,19 +77,18 @@ static void test_get_all_primes_below_n(void)
 static void test_get_all_n_first_primes(void)
 {
     unsigned int lim = 25;
-    unsigned long *primes_found;
     unsigned long primes_for_checking[25];
+    gv_t(uint64) primes_found;
 
-    primes_found = p_calloc(sizeof(long) * lim);
+    gv_init_size(&primes_found, 25);
 
     fill_25_first_primes(primes_for_checking);
 
-    ASSERT(get_all_n_first_primes(lim, lim, primes_found) == 0,
-           "get_all_n_first_primes has failed");
+    get_all_n_first_primes(lim, &primes_found);
 
-    check_primes_number(primes_found, 25, primes_for_checking, 25);
+    check_primes_number(&primes_found, primes_for_checking, 25);
 
-    p_free((void **)&primes_found);
+    gv_wipe(&primes_found, NULL);
 }
 
 module_tests_t *get_all_tests_prime(void)

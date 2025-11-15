@@ -82,40 +82,28 @@ long get_all_primes_below_n(unsigned long lim, gv_t(uint64) *out)
     return out->len;
 }
 
-int get_all_n_first_primes(unsigned long count_asked,
-                           unsigned int size_tab_out, unsigned long *out)
+void get_all_n_first_primes(long count_asked, gv_t(uint64) *out)
 {
-    unsigned int counter;
     unsigned long current_nber;
 
-    out[0] = 2;
+    gv_add(out, 2);
     current_nber = 3;
-    counter = 1;
 
-    while (counter < count_asked && counter < size_tab_out) {
+    while (out->len < count_asked) {
         bool current_nber_is_prime = true;
 
-        for (unsigned int i = 0; i < counter; i++) {
-            if (current_nber % out[i] == 0) {
+        gv_for_each_pos(pos, out) {
+            if (current_nber % out->tab[pos] == 0) {
                 current_nber_is_prime = false;
                 break;
             }
         }
 
         if (current_nber_is_prime) {
-            out[counter] = current_nber;
-            counter++;
+            gv_add(out, current_nber);
         }
         current_nber += 2;
     }
-
-    if (counter == count_asked) {
-        return 0;
-    }
-
-    logger_error("array have been full filled before getting the %ld° prime",
-            count_asked);
-    return -1;
 }
 
 unsigned int get_all_primes_factors_of_n(unsigned long n,
