@@ -7,7 +7,6 @@
 #include "../logger/logger.h"
 #include "../macros.h"
 
-/* TODO: this file has be coded a long time ago and needs some refactoring. */
 
 /* {{{ Inserting methods */
 
