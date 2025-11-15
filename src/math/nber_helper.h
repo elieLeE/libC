@@ -4,12 +4,13 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-unsigned int count_digits_in_nber(unsigned long n);
+__attribute__((const)) unsigned int count_digits_in_nber(unsigned long n);
 unsigned int get_digits_from_number(unsigned long n, unsigned char *out);
 int get_digits_iterations_from_number(unsigned long n, unsigned char *out);
 
+__attribute__((const))
 bool are_permutation_nbers(unsigned long n, unsigned long n2);
-bool is_nber_a_palindrome(unsigned long n);
+__attribute__((const)) bool is_nber_a_palindrome(unsigned long n);
 
 /* The two methods below supposes that all the digits are positives */
 unsigned long
@@ -22,7 +23,9 @@ bool is_a_increasing_number(unsigned char digits[], unsigned int max_idx);
 bool is_a_decreasing_number(unsigned char digits[], unsigned int max_idx);
 bool is_a_bouncy_number(unsigned char digits[], unsigned int max_idx);
 
+__attribute__((const))
 unsigned long get_triangle_nber_from_index(unsigned long idx);
+__attribute__((const))
 unsigned long get_next_triangle_nber(unsigned long previous_n,
                                      unsigned long idx);
 
