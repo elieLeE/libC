@@ -60,6 +60,9 @@ static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
     size_t *size_elem_p;
 
     size_elem_p = unconst_cast(size_t, &vec->__size_elem);
+    if (size_elem_p == NULL) {
+        logger_fatal("error when trying to set '__size_elem'");
+    }
     *size_elem_p = size_elem;
 }
 
