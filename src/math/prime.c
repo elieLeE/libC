@@ -136,6 +136,16 @@ get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
     return out->len;
 }
 
+unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors)
+{
+    unsigned long count = 1;
+
+    gv_for_each_pos(pos, primes_factors) {
+        count *= (primes_factors->tab[pos].iteration + 1);
+    }
+    return count;
+}
+
 static int
 get_first_diviseur_idx(unsigned long nbre, const unsigned long primes[],
                        unsigned int idx_max, unsigned int *out)
@@ -186,15 +196,3 @@ unsigned int get_phi(unsigned long n, const unsigned long primes[],
     // prime number.
     return n - 1;
 }
-
-unsigned int get_divisors_count(unsigned int primes_factors_count,
-                                prime_factor_t primes_factors[])
-{
-    unsigned count = 1;
-
-    for (unsigned int i = 0; i < primes_factors_count; i++) {
-        count *= (primes_factors[i].iteration + 1);
-    }
-    return count;
-}
-

@@ -231,6 +231,42 @@ static void test_get_all_primes_factors_of_n(void)
     gv_wipe(&primes_factors, NULL);
 }
 
+static void
+get_and_check_divisors_number_of_n(const gv_t(uint64) *primes, unsigned int n,
+                                   unsigned int expected_divisors_count)
+{
+    unsigned int obtained_divisors_count;
+    gv_t(primes_factors) primes_factors;
+
+    gv_init(&primes_factors);
+
+    get_all_primes_factors_of_n(n, primes, &primes_factors);
+    obtained_divisors_count = get_divisors_count(&primes_factors);
+
+    ASSERT(obtained_divisors_count == expected_divisors_count,
+           "failing for N = %d while getting divisors numbers; "
+           "obtained: %d, expected: %d",
+           n, obtained_divisors_count, expected_divisors_count);
+
+    gv_wipe(&primes_factors, NULL);
+}
+
+static void test_get_divisors_count(void)
+{
+    gv_t(uint64) primes;
+
+    gv_init_size(&primes, 200);
+
+    get_all_n_first_primes(200, &primes);
+
+    get_and_check_divisors_number_of_n(&primes, 12, 6);
+    get_and_check_divisors_number_of_n(&primes, 96, 12);
+    get_and_check_divisors_number_of_n(&primes, 117, 6);
+    get_and_check_divisors_number_of_n(&primes, 169, 3);
+    get_and_check_divisors_number_of_n(&primes, 174, 8);
+
+    gv_wipe(&primes, NULL);
+}
 
 module_tests_t *get_all_tests_prime(void)
 {
@@ -241,6 +277,7 @@ module_tests_t *get_all_tests_prime(void)
     ADD_TEST_TO_MODULE(module_tests, test_get_all_primes_below_n);
     ADD_TEST_TO_MODULE(module_tests, test_get_all_n_first_primes);
     ADD_TEST_TO_MODULE(module_tests, test_get_all_primes_factors_of_n);
+    ADD_TEST_TO_MODULE(module_tests, test_get_divisors_count);
 
     return module_tests;
 

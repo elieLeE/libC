@@ -29,11 +29,11 @@ unsigned long
 get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
                             gv_t(primes_factors) *out);
 
+__attribute__((nonnull))
+unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors);
+
 unsigned int get_phi(unsigned long n, const unsigned long primes[],
                      unsigned int idx_max, bool stop_on_firt_divisor);
-
-unsigned int get_divisors_count(unsigned int primes_factors_count,
-                                prime_factor_t primes_factors[]);
 
 #endif
 
