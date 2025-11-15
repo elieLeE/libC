@@ -62,37 +62,24 @@ static void fill_tab_prime_bool(unsigned int lim, bool out[])
     }
 }
 
-long
-get_all_primes_below_n(unsigned long lim, unsigned int size_tab_out,
-                       unsigned long *out)
+long get_all_primes_below_n(unsigned long lim, gv_t(uint64) *out)
 {
-    unsigned long i, j;
     bool *tab_bool;
 
     tab_bool = RETHROW_PN(p_calloc(lim * sizeof(bool)));
 
     fill_tab_prime_bool(lim, tab_bool);
 
-    j = 1;
-    out[0] = 2;
-    for (i = 3; i <= lim; i = i + 2) {
+    gv_add(out, 2);
+    for (unsigned long i = 3; i <= lim; i = i + 2) {
         if (!tab_bool[i]) {
-            if (j >= size_tab_out) {
-                break;
-            }
-            out[j] = i;
-            j++;
+            gv_add(out, i);
         }
     }
 
-    if (j >= size_tab_out && i < lim) {
-        logger_error("the array has fully been filled before reaching to "
-                     "the asked limit (last index: %ld, last number tested: %ld, "
-                     "limit: %ld, array size: %d", j, i, lim, size_tab_out);
-    }
     free(tab_bool);
 
-    return j;
+    return out->len;
 }
 
 int get_all_n_first_primes(unsigned long count_asked,

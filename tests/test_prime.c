@@ -63,19 +63,19 @@ check_primes_number(unsigned long *primes_found,
 static void test_get_all_primes_below_n(void)
 {
     unsigned int lim = 100;
-    unsigned long *primes_found;
+    gv_t(uint64) primes_found;
     unsigned long primes_for_checking[25];
-    unsigned int primes_count;
 
-    primes_found = p_calloc(sizeof(long) * lim);
+    gv_init_size(&primes_found, 25);
 
     fill_25_first_primes(primes_for_checking);
 
-    primes_count = get_all_primes_below_n(lim, lim, primes_found);
+    get_all_primes_below_n(lim, &primes_found);
 
-    check_primes_number(primes_found, primes_count, primes_for_checking, 25);
+    check_primes_number(primes_found.tab, primes_found.len,
+                        primes_for_checking, 25);
 
-    p_free((void **)&primes_found);
+    gv_wipe(&primes_found, NULL);
 }
 
 static void test_get_all_n_first_primes(void)
