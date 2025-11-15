@@ -1,6 +1,6 @@
 #include <stdbool.h>
 
-#include "nbre.h"
+#include "nber_helper.h"
 
 unsigned int count_digits_in_nber(unsigned long n)
 {
