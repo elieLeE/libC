@@ -51,7 +51,7 @@ static void fill_tab_prime_bool(unsigned int lim, bool out[])
 
         /* As i is an odd number, 2 * i will be an even number.
          * But all of them have already been checked on the previous loop.
-         * So, skip 2 * i and directly pass to " * i. */
+         * So, skip 2 * i and directly pass to 3 * i. */
         j = 3 * i;
         while (j < lim) {
             out[j] = true;
