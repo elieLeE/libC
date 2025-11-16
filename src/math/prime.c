@@ -212,3 +212,19 @@ get_phi_from_primes_factors(unsigned long n,
     return res;
 }
 
+void get_all_phi_from_1_to_n(long n, gv_t(int64) *phi)
+{
+    if (phi->len <= n) {
+        gv_extend(phi, n + 1 - phi->len);
+    }
+    for (long i = 0; i <= n; i++) {
+        phi->tab[i] = i;
+    }
+    for (long i = 2; i <= n; i++) {
+        if (phi->tab[i] == i) {
+            for (long j = i; j <= n; j += i) {
+                phi->tab[j] = phi->tab[j] * (i - 1) / i;
+            }
+        }
+    }
+}

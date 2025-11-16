@@ -287,6 +287,21 @@ static void test_get_phi_from_primes_factors(void)
     gv_wipe(&primes, NULL);
 }
 
+static void test_get_all_phi_from_1_to_n(void)
+{
+    gv_t(int64) phi;
+
+    gv_init_size(&phi, 200);
+
+    get_all_phi_from_1_to_n(200, &phi);
+
+    ASSERT_EQUAL_INT((int)phi.tab[10], 4);
+    ASSERT_EQUAL_INT((int)phi.tab[11], 10);
+    ASSERT_EQUAL_INT((int)phi.tab[32], 16);
+
+    gv_wipe(&phi, NULL);
+}
+
 module_tests_t *get_all_tests_prime(void)
 {
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
@@ -298,6 +313,7 @@ module_tests_t *get_all_tests_prime(void)
     ADD_TEST_TO_MODULE(module_tests, test_get_all_primes_factors_of_n);
     ADD_TEST_TO_MODULE(module_tests, test_get_divisors_count);
     ADD_TEST_TO_MODULE(module_tests, test_get_phi_from_primes_factors);
+    ADD_TEST_TO_MODULE(module_tests, test_get_all_phi_from_1_to_n);
 
     return module_tests;
 
