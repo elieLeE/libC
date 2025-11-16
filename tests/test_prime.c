@@ -255,6 +255,38 @@ static void test_get_divisors_count(void)
     gv_wipe(&primes, NULL);
 }
 
+static void check_phi_value_from_primes_facrors(unsigned long n,
+                                                const gv_t(uint64) *primes,
+                                                unsigned int expected_res)
+{
+    unsigned int phi;
+    gv_t(primes_factors) primes_factors;
+
+    gv_init(&primes_factors);
+
+    get_all_primes_factors_of_n(n, primes, &primes_factors);
+    phi = get_phi_from_primes_factors(n, &primes_factors);
+
+    ASSERT_EQUAL_INT(phi, expected_res);
+
+    gv_wipe(&primes_factors, NULL);
+}
+
+static void test_get_phi_from_primes_factors(void)
+{
+    gv_t(uint64) primes;
+
+    gv_init_size(&primes, 200);
+
+    get_all_n_first_primes(200, &primes);
+
+    check_phi_value_from_primes_facrors(10, &primes, 4);
+    check_phi_value_from_primes_facrors(11, &primes, 10);
+    check_phi_value_from_primes_facrors(32, &primes, 16);
+
+    gv_wipe(&primes, NULL);
+}
+
 module_tests_t *get_all_tests_prime(void)
 {
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
@@ -265,6 +297,7 @@ module_tests_t *get_all_tests_prime(void)
     ADD_TEST_TO_MODULE(module_tests, test_get_all_n_first_primes);
     ADD_TEST_TO_MODULE(module_tests, test_get_all_primes_factors_of_n);
     ADD_TEST_TO_MODULE(module_tests, test_get_divisors_count);
+    ADD_TEST_TO_MODULE(module_tests, test_get_phi_from_primes_factors);
 
     return module_tests;
 

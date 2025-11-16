@@ -196,3 +196,19 @@ unsigned int get_phi(unsigned long n, const unsigned long primes[],
     // prime number.
     return n - 1;
 }
+
+unsigned long
+get_phi_from_primes_factors(unsigned long n,
+                            const gv_t(primes_factors) *primes_factors)
+{
+    unsigned long res = n;
+
+    gv_for_each_pos(pos, primes_factors) {
+        unsigned long current_prime = primes_factors->tab[pos].prime;
+
+        res = res * (current_prime - 1) / current_prime;
+    }
+
+    return res;
+}
+

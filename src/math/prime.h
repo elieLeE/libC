@@ -35,5 +35,10 @@ unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors);
 unsigned int get_phi(unsigned long n, const unsigned long primes[],
                      unsigned int idx_max, bool stop_on_firt_divisor);
 
+__attribute__((nonnull))
+unsigned long
+get_phi_from_primes_factors(unsigned long n,
+                            const gv_t(primes_factors) *primes_factors);
+
 #endif
 
