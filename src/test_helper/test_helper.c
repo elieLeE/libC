@@ -35,17 +35,17 @@ static void run_test(test_t *test)
     logger_test_ok(test->name);
 }
 
-static int run_all_tests_of_module(const module_tests_t *module_test,
+static int run_all_tests_of_module(const module_tests_t *module_tests,
                                    const char *test_name)
 {
-    logger_test_begin_module(module_test->name);
+    logger_test_begin_module(module_tests->name);
 
-    gl_for_each(elem, module_test->tests.first) {
+    gl_for_each(elem, module_tests->tests.first) {
         test_t *test = elem->data;
 
         if (test->name == NULL) {
             logger_error("a test name is NULL in module %s",
-                         module_test->name);
+                         module_tests->name);
             return -1;
         }
 
@@ -64,7 +64,19 @@ static int run_all_tests_of_module(const module_tests_t *module_test,
         }
     }
 
-    logger_test_end_module(module_test->name);
+    logger_test_end_module(module_tests->name);
+
+    if (test_name != NULL) {
+        logger_error("the test '%s' has not been found", test_name);
+        printf("Here are the available tests in the module '%s' "
+               "(the case has none effec):\n",
+               module_tests->name);
+        gl_for_each(elem, module_tests->tests.first) {
+            module_tests_t *test = elem->data;
+
+            printf("'%s'\n", test->name);
+        }
+    }
 
     return 0;
 }
@@ -86,6 +98,16 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
             }
         } else {
             RETHROW(run_all_tests_of_module(elem->data, test_name));
+        }
+    }
+
+    if (module_name != NULL) {
+        logger_error("the module '%s' has not been found", module_name);
+        printf("Here are the available modules (the case has none effect):\n");
+        gl_for_each(elem, modules_tests->first) {
+            module_tests_t *m = elem->data;
+
+            printf("'%s'\n", m->name);
         }
     }
 
