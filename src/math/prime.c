@@ -146,57 +146,6 @@ unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors)
     return count;
 }
 
-static int
-get_first_diviseur_idx(unsigned long nbre, const unsigned long primes[],
-                       unsigned int idx_max, unsigned int *out)
-{
-    unsigned int i = 0;
-
-    while (primes[i] <= nbre && i <= idx_max) {
-        if (nbre % primes[i] == 0) {
-            *out = i;
-            return 0;
-        }
-        i++;
-    }
-    return -1;
-}
-
-unsigned int get_phi(unsigned long n, const unsigned long primes[],
-                     unsigned int idx_max, bool stop_on_firt_divisor)
-{
-    unsigned int debut;
-    double num = n * 1.0, denom = 1.0;
-
-    if (get_first_diviseur_idx(n, primes, idx_max, &debut) == 0) {
-        unsigned int i, divisor;
-        double other_divisor;
-
-        divisor = primes[debut];
-        other_divisor = ((double)n) / divisor;
-
-        num = num * (divisor - 1) * ((unsigned int)(other_divisor) - 1);
-        denom *= divisor * (unsigned int)other_divisor;
-
-        if (!stop_on_firt_divisor) {
-            for (i = debut + 1; (i * divisor <= n) & (i < idx_max); i++) {
-                divisor = primes[i];
-                other_divisor = ((double)n) / ((double)divisor);
-
-                if (floor(other_divisor) == other_divisor) {
-                    num = num * (divisor - 1) *
-                        ((unsigned int)(other_divisor) - 1);
-                    denom *= divisor * (unsigned int)other_divisor;
-                }
-            }
-        }
-        return (unsigned int)(num / denom);
-    }
-
-    // prime number.
-    return n - 1;
-}
-
 unsigned long
 get_phi_from_primes_factors(unsigned long n,
                             const gv_t(primes_factors) *primes_factors)
