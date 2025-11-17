@@ -13,6 +13,13 @@
 /* TODO
  */
 
+typedef enum gv_algo_search_t {
+    GV_SEQUENTIAL_SEARCH,
+    GV_DICHOTOMY_SEARCH,
+
+    GV_ALGO_MAX_SEARCH,
+} gv_algo_search_t;
+
 /* These 'len' and 'size' elements should never be below 0 but it is hard to
  * be absolutely sure about that so I have decided to keep them as signed */
 #define generic_vector_data_t(_type)                                          \
@@ -147,18 +154,18 @@ __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
         shuffle_tab(__gvec->vec.tab, __gvec->len, __gvec->__size_elem);       \
     } while (0)
 
-int __gv_find(const __vector_void_t *vec, void *elem,
-              int (*cmp_data_cb)(const void *, const void *d));
+long __gv_find(const __vector_void_t *vec, void *elem, gv_algo_search_t algo,
+               int (*cmp_data_cb)(const void *, const void *d));
 
-#define gv_find(_gvec, _elem, cmp_data_cb)                                    \
+#define gv_find(_gvec, _elem, algo, cmp_data_cb)                              \
     ({  __auto_type __gvec = (_gvec);                                         \
         __auto_type __elem = (_elem);                                         \
-        int __pos = __gv_find(&__gvec->vec, &__elem, cmp_data_cb);            \
+        long __pos = __gv_find(&__gvec->vec, &__elem, algo, cmp_data_cb);     \
         __pos;                                                                \
     })
 
-#define gv_contains(_gvec, _elem, cmp_data_cb)                                \
-    gv_find(_gvec, _elem, cmp_data_cb) >= 0
+#define gv_contains(_gvec, _elem, algo, cmp_data_cb)                          \
+    gv_find(_gvec, _elem, algo, cmp_data_cb) >= 0
 
 void __gv_clear(__vector_void_t *vec, void (*free_data_cb)(void **));
 void __gv_wipe(__vector_void_t *vec, void (*free_data_cb)(void **));

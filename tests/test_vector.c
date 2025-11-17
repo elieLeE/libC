@@ -339,7 +339,14 @@ static void test_reset_vector(void)
     gv_wipe(&vector, NULL);
 }
 
-static void test_vector_find_and_contains(void)
+static void check_pos_found_elem(gv_t(int32) *vector, long elem,
+                                 gv_algo_search_t algo, long pos_expected)
+{
+    long pos_obtained = gv_find(vector, elem, algo, cmp_elem);
+    ASSERT_EQUAL_LONG(pos_expected, pos_obtained);
+}
+
+static void test_vector_find_and_contains_sequential_algo(void)
 {
     gv_t(int32) vector;
 
@@ -351,13 +358,15 @@ static void test_vector_find_and_contains(void)
     gv_add(&vector, 2);
     gv_add(&vector, 3);
 
-    ASSERT((!(gv_contains(&vector, 10, cmp_elem))), "elem '10' has not been found");
-    ASSERT(gv_contains(&vector, 2, cmp_elem), "elem '2' has not been found");
-    ASSERT_EQUAL_INT(gv_find(&vector, 1, cmp_elem), 0);
-    ASSERT_EQUAL_INT(gv_find(&vector, 2, cmp_elem), 3);
-    ASSERT_EQUAL_INT(gv_find(&vector, 3, cmp_elem), 4);
-    ASSERT_EQUAL_INT(gv_find(&vector, 4, cmp_elem), 2);
-    ASSERT_EQUAL_INT(gv_find(&vector, 5, cmp_elem), 1);
+    ASSERT((!(gv_contains(&vector, 10, GV_SEQUENTIAL_SEARCH, cmp_elem))),
+           "elem '10' has not been found");
+    ASSERT(gv_contains(&vector, 2, GV_SEQUENTIAL_SEARCH, cmp_elem),
+           "elem '2' has not been found");
+    check_pos_found_elem(&vector, 1, GV_SEQUENTIAL_SEARCH, 0);
+    check_pos_found_elem(&vector, 2, GV_SEQUENTIAL_SEARCH, 3);
+    check_pos_found_elem(&vector, 3, GV_SEQUENTIAL_SEARCH, 4);
+    check_pos_found_elem(&vector, 4, GV_SEQUENTIAL_SEARCH, 2);
+    check_pos_found_elem(&vector, 5, GV_SEQUENTIAL_SEARCH, 1);
 
     gv_clear(&vector, NULL);
 
@@ -366,10 +375,11 @@ static void test_vector_find_and_contains(void)
     gv_add(&vector, 8);
 
     for (int i = 0; i < 5; i++) {
-        ASSERT((!(gv_contains(&vector, i, cmp_elem))), "elem %d should not be present", i);
+        ASSERT((!(gv_contains(&vector, i, GV_SEQUENTIAL_SEARCH, cmp_elem))),
+               "elem %d should not be present", i);
     }
     for (int i = 6; i <= 8; i++) {
-        ASSERT_EQUAL_INT(gv_find(&vector, i, cmp_elem), i - 6);
+        check_pos_found_elem(&vector, i, GV_SEQUENTIAL_SEARCH, i - 6);
     }
 
     gv_wipe(&vector, NULL);
@@ -410,20 +420,22 @@ static void test_vector_find_with_pointer(void)
     for (int i = 1; i <= 5; i++) {
         /* all depends on what the suer looks for: the value or 
          * the memory space */
-        ASSERT(gv_contains(&vector, i, cmp_elem_p),
+        ASSERT(gv_contains(&vector, i, GV_SEQUENTIAL_SEARCH, cmp_elem_p),
                "elem %d has not been fond", i);
 
-        ASSERT(gv_contains(&vector, &tab[i - 1], cmp_elem_p2),
+        ASSERT(gv_contains(&vector, &tab[i - 1], GV_SEQUENTIAL_SEARCH,
+                           cmp_elem_p2),
                "pointer elem %d has not been fond", i);
     }
 
     for (int i = 1; i <= 5; i++) {
         *elem = i;
 
-        ASSERT(gv_contains(&vector, (*elem), cmp_elem_p),
+        ASSERT(gv_contains(&vector, (*elem), GV_SEQUENTIAL_SEARCH, cmp_elem_p),
                "elem %d has not been fond", i);
 
-        ASSERT((!(gv_contains(&vector, elem, cmp_elem_p2))),
+        ASSERT((!(gv_contains(&vector, elem, GV_SEQUENTIAL_SEARCH,
+                              cmp_elem_p2))),
                "elem %d has not been fond", i);
     }
 
@@ -447,7 +459,8 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests, test_vector_init_size);
     ADD_TEST_TO_MODULE(module_tests, test_reset_vector);
     ADD_TEST_TO_MODULE(module_tests, test_vector_shuffle);
-    ADD_TEST_TO_MODULE(module_tests, test_vector_find_and_contains);
+    ADD_TEST_TO_MODULE(module_tests,
+                       test_vector_find_and_contains_sequential_algo);
     ADD_TEST_TO_MODULE(module_tests, test_vector_find_with_pointer);
 
     return module_tests;

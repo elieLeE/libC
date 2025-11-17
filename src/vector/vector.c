@@ -107,14 +107,35 @@ int __gv_remove_elem_n(__vector_void_t *vec, long pos)
     return 0;
 }
 
-int __gv_find(const __vector_void_t *vec, void *elem,
-              int (*cmp_data_cb)(const void *, const void *))
+static long gv_find_sequantial(const __vector_void_t *vec, void *elem,
+                               int (*cmp_data_cb)(const void *, const void *))
 {
     gv_for_each_pos(pos, vec) {
         if (cmp_data_cb((vec->tab + pos * vec->__size_elem), elem) == 0) {
             return pos;
         }
     }
+    return -1;
+}
+
+long __gv_find(const __vector_void_t *vec, void *elem, gv_algo_search_t algo,
+               int (*cmp_data_cb)(const void *, const void *d))
+{
+    if (algo < 0 || algo > GV_ALGO_MAX_SEARCH) {
+        logger_fatal("cannot search in the vector - algo given is wrong: %d",
+                     algo);
+    }
+
+    switch (algo) {
+    case GV_SEQUENTIAL_SEARCH:
+        return gv_find_sequantial(vec, elem, cmp_data_cb);
+        break;
+
+    default:
+        logger_fatal("no sort algorithm associated to %d", algo);
+        break;
+    }
+
     return -1;
 }
 
