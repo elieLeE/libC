@@ -118,6 +118,47 @@ static long gv_find_sequantial(const __vector_void_t *vec, void *elem,
     return -1;
 }
 
+static long
+gv_find_dichotomy_rec(const __vector_void_t *vec, void *elem, long min,
+                      long max, int (*cmp_data_cb)(const void *, const void *))
+{
+    long current_pos = (max + min) / 2;
+    int res;
+
+    if (min > max) {
+        return -1;
+    }
+
+    res = cmp_data_cb(vec->tab + current_pos * vec->__size_elem, elem);
+
+    if (res == 0) {
+        return current_pos;
+    } else if (res < 0) {
+        return gv_find_dichotomy_rec(vec, elem, current_pos + 1,
+                                     max, cmp_data_cb);
+    } else {
+        return gv_find_dichotomy_rec(vec, elem, min, current_pos - 1,
+                                     cmp_data_cb);
+    }
+
+    return -1;
+}
+
+static long
+gv_find_dichotomy(const __vector_void_t *vec, void *elem,
+                  int (*cmp_data_cb)(const void *, const void *))
+{
+    if (cmp_data_cb(vec->tab, elem) > 0) {
+        return -1;
+    }
+
+    if (cmp_data_cb(vec->tab + (vec->len - 1) * vec->__size_elem, elem) < 0) {
+        return -1;
+    }
+
+    return gv_find_dichotomy_rec(vec, elem, 0, vec->len, cmp_data_cb);
+}
+
 long __gv_find(const __vector_void_t *vec, void *elem, gv_algo_search_t algo,
                int (*cmp_data_cb)(const void *, const void *d))
 {
@@ -129,6 +170,10 @@ long __gv_find(const __vector_void_t *vec, void *elem, gv_algo_search_t algo,
     switch (algo) {
     case GV_SEQUENTIAL_SEARCH:
         return gv_find_sequantial(vec, elem, cmp_data_cb);
+        break;
+
+    case GV_DICHOTOMY_SEARCH:
+        return gv_find_dichotomy(vec, elem, cmp_data_cb);
         break;
 
     default:

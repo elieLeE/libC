@@ -385,6 +385,44 @@ static void test_vector_find_and_contains_sequential_algo(void)
     gv_wipe(&vector, NULL);
 }
 
+static void test_vector_find_and_contains_dichotomy_algo(void)
+{
+    gv_t(int32) vector;
+
+    gv_init(&vector);
+
+    gv_insert_elem_sorted(&vector, 0,   cmp_elem);
+    gv_insert_elem_sorted(&vector, 3,   cmp_elem);
+    gv_insert_elem_sorted(&vector, 9,   cmp_elem);
+    gv_insert_elem_sorted(&vector, 13,  cmp_elem);
+    gv_insert_elem_sorted(&vector, 21,  cmp_elem);
+    gv_insert_elem_sorted(&vector, 65,  cmp_elem);
+    gv_insert_elem_sorted(&vector, 66,  cmp_elem);
+    gv_insert_elem_sorted(&vector, 71,  cmp_elem);
+    gv_insert_elem_sorted(&vector, 99,  cmp_elem);
+    gv_insert_elem_sorted(&vector, 100, cmp_elem);
+    gv_insert_elem_sorted(&vector, 111, cmp_elem);
+
+    check_pos_found_elem(&vector, 0,   GV_DICHOTOMY_SEARCH, 0);
+    check_pos_found_elem(&vector, 3,   GV_DICHOTOMY_SEARCH, 1);
+    check_pos_found_elem(&vector, 9,   GV_DICHOTOMY_SEARCH, 2);
+    check_pos_found_elem(&vector, 13,  GV_DICHOTOMY_SEARCH, 3);
+    check_pos_found_elem(&vector, 21,  GV_DICHOTOMY_SEARCH, 4);
+    check_pos_found_elem(&vector, 65,  GV_DICHOTOMY_SEARCH, 5);
+    check_pos_found_elem(&vector, 66,  GV_DICHOTOMY_SEARCH, 6);
+    check_pos_found_elem(&vector, 71,  GV_DICHOTOMY_SEARCH, 7);
+    check_pos_found_elem(&vector, 99,  GV_DICHOTOMY_SEARCH, 8);
+    check_pos_found_elem(&vector, 100, GV_DICHOTOMY_SEARCH, 9);
+    check_pos_found_elem(&vector, 111, GV_DICHOTOMY_SEARCH, 10);
+
+    check_pos_found_elem(&vector, -1, GV_DICHOTOMY_SEARCH, -1);
+    check_pos_found_elem(&vector, 200, GV_DICHOTOMY_SEARCH, -1);
+    check_pos_found_elem(&vector, 10, GV_DICHOTOMY_SEARCH, -1);
+    check_pos_found_elem(&vector, 70, GV_DICHOTOMY_SEARCH, -1);
+
+    gv_wipe(&vector, NULL);
+}
+
 static int cmp_elem_p(const void *_d1, const void *_d2)
 {
     const int *d1 = *(int **)_d1;
@@ -461,6 +499,8 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests, test_vector_shuffle);
     ADD_TEST_TO_MODULE(module_tests,
                        test_vector_find_and_contains_sequential_algo);
+    ADD_TEST_TO_MODULE(module_tests,
+                       test_vector_find_and_contains_dichotomy_algo);
     ADD_TEST_TO_MODULE(module_tests, test_vector_find_with_pointer);
 
     return module_tests;
