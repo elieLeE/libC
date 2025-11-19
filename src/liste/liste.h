@@ -27,7 +27,7 @@ typedef generic_elem_liste_t gl_elem_t;
 
 typedef struct generic_liste_t {
     generic_elem_liste_t *first, *end;
-    int nbre_elem;
+    long nbre_elem;
 } generic_liste_t;
 
 /* Here, head has to be a generic_elem_liste_t */
@@ -51,7 +51,7 @@ bool gl_contains_data(const generic_liste_t *l, const void *searching_data,
 generic_elem_liste_t *
 gl_get_elem_data(generic_liste_t *l, const void *searching_data,
                  int (*cmp_cb)(const void *, const void *));
-generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, int n);
+generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, long n);
 
 void gl_insert_elem_first(generic_liste_t *l, gl_elem_t *elem);
 void
@@ -81,7 +81,7 @@ gl_add_elem_sorted(generic_liste_t *l, void *e,
 gl_elem_t *gl_take_first_elem(generic_liste_t *l);
 gl_elem_t *gl_take_last_elem(generic_liste_t *l);
 int gl_remove_elem(generic_liste_t *l, gl_elem_t *elem);
-gl_elem_t *gl_take_elem_n(generic_liste_t *l, int const n);
+gl_elem_t *gl_take_elem_n(generic_liste_t *l, long const n);
 
 /* The following methods removes and free the elements. */
 int gl_delete_first_elem(generic_liste_t *l,

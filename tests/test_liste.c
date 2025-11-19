@@ -26,7 +26,7 @@ static void check_list_data(const generic_liste_t *l,
 {
     int i = 0;
 
-    ASSERT_EQUAL_INT(l->nbre_elem, val_count);
+    ASSERT_EQUAL_INT((int)l->nbre_elem, val_count);
 
     gl_for_each(elem, l->first) {
         ASSERT(i < val_count, "i: %d, val_count: %d", i, val_count);
@@ -143,7 +143,7 @@ static void test_add_element_trie(void)
 
     gl_wipe(&l, NULL);
 
-    ASSERT_EQUAL_INT(l.nbre_elem, 0);
+    ASSERT_EQUAL_INT((int)l.nbre_elem, 0);
     ASSERT(l.first == NULL, "first elem of the list should be NULL");
     ASSERT(l.end == NULL, "last elem of the list should be NULL");
 
