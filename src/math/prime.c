@@ -167,7 +167,7 @@ void get_all_phi_from_1_to_n(long n, gv_t(int64) *phi)
         gv_extend(phi, n + 1 - phi->len);
     }
     for (long i = 0; i <= n; i++) {
-        phi->tab[i] = i;
+        gv_add(phi, i);
     }
     for (long i = 2; i <= n; i++) {
         if (phi->tab[i] == i) {

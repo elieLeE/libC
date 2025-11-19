@@ -295,6 +295,9 @@ static void test_get_all_phi_from_1_to_n(void)
 
     get_all_phi_from_1_to_n(200, &phi);
 
+    /* 0 is also added to the tab in order not to have always sub 1 in
+     * 'get_all_phi_from_1_to_n' method */
+    ASSERT_EQUAL_INT((int)phi.len, 201);
     ASSERT_EQUAL_INT((int)phi.tab[10], 4);
     ASSERT_EQUAL_INT((int)phi.tab[11], 10);
     ASSERT_EQUAL_INT((int)phi.tab[32], 16);
