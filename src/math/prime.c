@@ -33,9 +33,9 @@ bool is_prime(unsigned long n)
 }
 
 /* This methods is very efficient but needs an array with all numbers to lim */
-static void fill_tab_prime_bool(unsigned int lim, bool out[])
+static void fill_tab_prime_bool(unsigned long lim, bool out[])
 {
-    unsigned int i, j;
+    unsigned long i, j;
 
     i = 4;
     while (i < lim) {
