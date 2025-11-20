@@ -107,7 +107,7 @@ int __gv_remove_elem_n(__vector_void_t *vec, long pos)
     return 0;
 }
 
-int __gv_find(__vector_void_t *vec, void *elem,
+int __gv_find(const __vector_void_t *vec, void *elem,
               int (*cmp_data_cb)(const void *, const void *))
 {
     gv_for_each_pos(pos, vec) {

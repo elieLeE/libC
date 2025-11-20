@@ -147,7 +147,7 @@ __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
         shuffle_tab(__gvec->vec.tab, __gvec->len, __gvec->__size_elem);       \
     } while (0)
 
-int __gv_find(__vector_void_t *vec, void *elem,
+int __gv_find(const __vector_void_t *vec, void *elem,
               int (*cmp_data_cb)(const void *, const void *d));
 
 #define gv_find(_gvec, _elem, cmp_data_cb)                                    \
