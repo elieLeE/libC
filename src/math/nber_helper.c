@@ -14,19 +14,14 @@ unsigned int count_digits_in_nber(unsigned long n)
     return compt;
 }
 
-unsigned int get_digits_from_number(unsigned long n, unsigned char *out)
+void get_digits_from_number(unsigned long n, gv_t(uint8) *out)
 {
-    unsigned int i = 0;
-
     while (n >= 1) {
         unsigned long n2 = n / 10;
 
-        out[i] = (n - n2 * 10);
+        gv_add(out, (n - n2 * 10));
         n = n / 10;
-        i++;
     }
-
-    return i;
 }
 
 int get_digits_iterations_from_number(unsigned long n, unsigned char *out)
@@ -46,13 +41,17 @@ int get_digits_iterations_from_number(unsigned long n, unsigned char *out)
 
 bool is_nber_a_palindrome(unsigned long n)
 {
-    static unsigned char tab_digit[6];
+    gv_t(uint8) digits;
     unsigned int nbre_digits;
 
-    nbre_digits = get_digits_from_number(n, tab_digit);
+    gv_init(&digits);
 
-    for (unsigned int i = 0; i < nbre_digits / 2; i++) {
-        if (tab_digit[i] != tab_digit[nbre_digits - i - 1]) {
+    get_digits_from_number(n, &digits);
+
+    nbre_digits = digits.len;
+
+    for (unsigned int i = 0; i < digits.len / 2; i++) {
+        if (digits.tab[i] != digits.tab[nbre_digits - i - 1]) {
             return false;
         }
     }
@@ -62,6 +61,8 @@ bool is_nber_a_palindrome(unsigned long n)
 
 bool are_permutation_nbers(unsigned long n, unsigned long n2)
 {
+    /* do not use vector here as the size of the vector is absolute (digits
+     * are < 10) and it is more efficient */
     unsigned char digits_n[10] = {0};
     unsigned char digits_n2[10] = {0};
     unsigned int digits_count_n, digits_count_n2;

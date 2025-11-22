@@ -4,8 +4,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "../vector/vector.h"
+
 __attribute__((const)) unsigned int count_digits_in_nber(unsigned long n);
-unsigned int get_digits_from_number(unsigned long n, unsigned char *out);
+void get_digits_from_number(unsigned long n, gv_t(uint8) *out);
 int get_digits_iterations_from_number(unsigned long n, unsigned char *out);
 
 __attribute__((const))
