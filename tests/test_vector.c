@@ -391,6 +391,8 @@ static void test_vector_find_and_contains_dichotomy_algo(void)
 
     gv_init(&vector);
 
+    check_pos_found_elem(&vector, 1, GV_DICHOTOMY_SEARCH, -1);
+
     gv_insert_elem_sorted(&vector, 0,   cmp_elem);
     gv_insert_elem_sorted(&vector, 3,   cmp_elem);
     gv_insert_elem_sorted(&vector, 9,   cmp_elem);

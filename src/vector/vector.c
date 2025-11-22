@@ -151,6 +151,10 @@ static long
 gv_find_dichotomy(const __vector_void_t *vec, void *elem,
                   int (*cmp_data_cb)(const void *, const void *))
 {
+    if (vec->len == 0) {
+        return -1;
+    }
+
     if (cmp_data_cb(vec->tab, elem) > 0) {
         return -1;
     }
