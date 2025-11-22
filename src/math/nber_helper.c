@@ -87,9 +87,9 @@ unsigned long
 build_number_from_digits(const unsigned char digits[], unsigned int first_idx,
                          unsigned int last_idx)
 {
-    unsigned long n = 0;
+    unsigned long n = digits[first_idx];
 
-    for (unsigned int i = first_idx; i <= last_idx; i++) {
+    for (unsigned int i = first_idx + 1; i <= last_idx; i++) {
        n =  (n * 10) + digits[i];
     }
     return n;
@@ -98,9 +98,9 @@ build_number_from_digits(const unsigned char digits[], unsigned int first_idx,
 unsigned long build_number_from_digits_rev(const unsigned char digits[],
                                            int first_idx, int last_idx)
 {
-    unsigned long n = 0;
+    unsigned long n = digits[last_idx];
 
-    for (int i = last_idx; i >= first_idx; i--) {
+    for (int i = last_idx - 1; i >= first_idx; i--) {
        n =  (n * 10) + digits[i];
     }
     return n;
