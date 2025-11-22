@@ -12,11 +12,14 @@ void *__gv_extend(__vector_void_t *vec, int extra)
 
         vec->tab = RETHROW_P(p_realloc(vec->tab, new_size * vec->__size_elem));
         vec->size = new_size;
+
+        res = vec->tab + vec->len * vec->__size_elem;
+        p_clear(res, extra * vec->__size_elem);
+
+        return res;
     }
 
     res = vec->tab + vec->len * vec->__size_elem;
-
-    p_clear(res, extra * vec->__size_elem);
 
     return res;
 }
