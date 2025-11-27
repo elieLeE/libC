@@ -41,6 +41,7 @@ int get_digits_iterations_from_number(unsigned long n, unsigned char *out)
 
 bool is_nber_a_palindrome(unsigned long n)
 {
+    bool res = true;
     gv_t(uint8) digits;
     unsigned int nbre_digits;
 
@@ -52,11 +53,14 @@ bool is_nber_a_palindrome(unsigned long n)
 
     for (unsigned int i = 0; i < digits.len / 2; i++) {
         if (digits.tab[i] != digits.tab[nbre_digits - i - 1]) {
-            return false;
+            res = false;
+            break;
         }
     }
 
-    return true;
+    gv_wipe(&digits, NULL);
+
+    return res;
 }
 
 bool are_permutation_nbers(unsigned long n, unsigned long n2)
