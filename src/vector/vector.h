@@ -10,9 +10,6 @@
 #include "../macros.h"
 #include "../tab_helper/tab_helper.h"
 
-/* TODO
- */
-
 typedef enum gv_algo_search_t {
     GV_SEQUENTIAL_SEARCH,
     GV_DICHOTOMY_SEARCH,
@@ -166,6 +163,12 @@ long __gv_find(const __vector_void_t *vec, void *elem, gv_algo_search_t algo,
 
 #define gv_contains(_gvec, _elem, algo, cmp_data_cb)                          \
     gv_find(_gvec, _elem, algo, cmp_data_cb) >= 0
+
+/* This method only reset the len of the vector to 0. So, new elements will
+ * replace the old ones gradually but that needs test */
+void __gv_fast_clear(__vector_void_t *vec);
+#define gv_fast_clear(_gvec)                                                  \
+    __gv_fast_clear(&(_gvec)->vec)
 
 void __gv_clear(__vector_void_t *vec, void (*free_data_cb)(void **));
 void __gv_wipe(__vector_void_t *vec, void (*free_data_cb)(void **));

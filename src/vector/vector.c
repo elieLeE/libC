@@ -191,6 +191,11 @@ long __gv_find(const __vector_void_t *vec, void *elem, gv_algo_search_t algo,
     return -1;
 }
 
+void __gv_fast_clear(__vector_void_t *vec)
+{
+    vec->len = 0;
+}
+
 static void __gv_free_tab(__vector_void_t *vec, void (*free_data_cb)(void **))
 {
     gv_for_each_pos(pos, vec) {
