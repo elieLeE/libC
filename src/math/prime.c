@@ -135,6 +135,40 @@ get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
     return out->len;
 }
 
+static void
+get_all_divisors_of_n_from_prime_factors_rec(const gv_t(primes_factors) *in,
+                                             long basis, long first_pos,
+                                             gv_t(uint64) *out)
+{
+    for (int pos = first_pos; pos < in->len; pos++) {
+        prime_factor_t *current_prime_factor = &(in->tab[pos]);
+        long current_div = current_prime_factor->prime * basis;
+
+        for (unsigned int i = 0; i < current_prime_factor->iteration; i++) {
+            gv_add(out, current_div);
+            get_all_divisors_of_n_from_prime_factors_rec(in, current_div,
+                                                         pos + 1, out);
+            current_div *= current_prime_factor->prime;
+        }
+    }
+}
+
+void get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
+                                              gv_t(uint64) *out)
+{
+    gv_for_each_pos(pos, in) {
+        prime_factor_t *current_prime_factor = &(in->tab[pos]);
+        long current_div = current_prime_factor->prime;
+
+        for (unsigned int i = 0; i < current_prime_factor->iteration; i++) {
+            gv_add(out, current_div);
+            get_all_divisors_of_n_from_prime_factors_rec(in, current_div,
+                                                         pos + 1, out);
+            current_div *= current_prime_factor->prime;
+        }
+    }
+}
+
 unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors)
 {
     unsigned long count = 1;
