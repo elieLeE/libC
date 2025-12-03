@@ -240,7 +240,8 @@ static void test_get_all_primes_factors_of_n(void)
 }
 
 static void
-get_and_check_divisors_number_of_n(const gv_t(uint64) *primes, unsigned int n,
+static void
+get_and_check_divisors_count_of_n(const gv_t(uint64) *primes, unsigned int n,
                                    unsigned int expected_divisors_count)
 {
     unsigned int obtained_divisors_count;
@@ -267,11 +268,11 @@ static void test_get_divisors_count(void)
 
     get_all_n_first_primes(200, &primes);
 
-    get_and_check_divisors_number_of_n(&primes, 12, 6);
-    get_and_check_divisors_number_of_n(&primes, 96, 12);
-    get_and_check_divisors_number_of_n(&primes, 117, 6);
-    get_and_check_divisors_number_of_n(&primes, 169, 3);
-    get_and_check_divisors_number_of_n(&primes, 174, 8);
+    get_and_check_divisors_count_of_n(&primes, 12, 6);
+    get_and_check_divisors_count_of_n(&primes, 96, 12);
+    get_and_check_divisors_count_of_n(&primes, 117, 6);
+    get_and_check_divisors_count_of_n(&primes, 169, 3);
+    get_and_check_divisors_count_of_n(&primes, 174, 8);
 
     gv_wipe(&primes, NULL);
 }
