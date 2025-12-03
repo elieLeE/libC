@@ -100,7 +100,7 @@ static void test_get_all_primes_factors_of_n(void)
     gv_init_size(&primes, 200);
     gv_init(&primes_factors);
 
-    get_all_n_first_primes(200, &primes);
+    get_all_n_first_primes(1000, &primes);
 
     /* {{{ Test with 6 */
 
@@ -211,6 +211,27 @@ static void test_get_all_primes_factors_of_n(void)
 
     ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 19);
     ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 1);
+
+    /* }}} */
+    /* {{{ Test with 17640 */
+
+    gv_clear(&primes_factors, NULL);
+
+    get_all_primes_factors_of_n(17640, &primes, &primes_factors);
+
+    ASSERT_EQUAL_INT((int)primes_factors.len, 4);
+
+    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
+    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 3);
+
+    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 3);
+    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 2);
+
+    ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 5);
+    ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 1);
+
+    ASSERT_EQUAL_INT((int)primes_factors.tab[3].prime, 7);
+    ASSERT_EQUAL_INT(primes_factors.tab[3].iteration, 2);
 
     /* }}} */
 
