@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <math.h>
 
 #include "prime.h"
 #include "../mem/mem.h"
