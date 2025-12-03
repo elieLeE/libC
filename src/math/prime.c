@@ -119,7 +119,7 @@ get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
 
             prime_factor = gv_grow1(out);
             prime_factor->prime = current_prime;
-            prime_factor->iteration++;
+            prime_factor->iteration = 1;
 
             n = n / current_prime;
             while (n % current_prime == 0) {
