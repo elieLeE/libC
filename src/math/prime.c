@@ -109,6 +109,14 @@ unsigned long
 get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
                             gv_t(primes_factors) *out)
 {
+    if (n == 0) {
+        return 0;
+    }
+
+    if (n == 1) {
+        return 1;
+    }
+
     gv_for_each_pos(pos, primes) {
         unsigned long current_prime = primes->tab[pos];
         /* first search if n is in the tab ?? => if yes => just him and 1 */
