@@ -204,10 +204,18 @@ get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
 }
 
 unsigned long
-get_all_proper_divisors_sum_from_all_divisors(unsigned long n,
-                                              const gv_t(uint64) *divisors)
+get_proper_divisors_sum_from_all_divisors(unsigned long n,
+                                          const gv_t(uint64) *divisors)
 {
-    return get_all_elem_sum(divisors) - n;
+    unsigned long tmp;
+
+    tmp = get_all_elem_sum(divisors);
+    if (tmp <= n) {
+        logger_fatal("The sum of all divisors of N (%ld) is below N: %ld\n",
+                    n, tmp);
+    }
+
+    return tmp - n;
 }
 
 unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors)
