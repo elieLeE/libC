@@ -29,8 +29,8 @@ unsigned long
 get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
                             gv_t(primes_factors) *out);
 
-/* WARNING: 1 is never included as it is obvious. N is included because it will
- * too costly to avoid it */
+/* WARNING: N is included. */
+__attribute__((nonnull))
 void
 get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
                                          gv_t(uint64) *out);

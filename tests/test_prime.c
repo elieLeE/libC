@@ -276,6 +276,7 @@ static void test_get_all_divisors_of_n(void)
     /* {{{ Test with 220 */
     /* {{{ set expected_divisors */
 
+    gv_add(&expected_divisors, 1);
     gv_add(&expected_divisors, 2);
     gv_add(&expected_divisors, 4);
     gv_add(&expected_divisors, 5);
@@ -316,6 +317,7 @@ static void test_get_all_divisors_of_n(void)
 
     /* {{{ set expected_divisors */
 
+    gv_add(&expected_divisors, 1);
     gv_add(&expected_divisors, 2);
     gv_add(&expected_divisors, 4);
     gv_add(&expected_divisors, 71);
@@ -347,6 +349,7 @@ static void test_get_all_divisors_of_n(void)
 
     /* {{{ set expected_divisors */
 
+    gv_add(&expected_divisors, 1);
     gv_add(&expected_divisors, 2);
     gv_add(&expected_divisors, 3);
     gv_add(&expected_divisors, 4);

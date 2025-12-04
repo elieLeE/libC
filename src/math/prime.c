@@ -164,6 +164,8 @@ get_all_divisors_of_n_from_prime_factors_rec(const gv_t(primes_factors) *in,
 void get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
                                               gv_t(uint64) *out)
 {
+    gv_add(out, 1);
+
     gv_for_each_pos(pos, in) {
         prime_factor_t *current_prime_factor = &(in->tab[pos]);
         long current_div = current_prime_factor->prime;
