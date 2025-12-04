@@ -218,6 +218,26 @@ get_proper_divisors_sum_from_all_divisors(unsigned long n,
     return tmp - n;
 }
 
+unsigned long
+get_proper_divisors_sum_of_n(unsigned long n, const gv_t(uint64) *primes)
+{
+    unsigned long sum;
+    gv_t(primes_factors) primes_factors;
+    gv_t(uint64) divisors;
+
+    gv_init(&primes_factors);
+    gv_init(&divisors);
+
+    get_all_primes_factors_of_n(n, primes, &primes_factors);
+    get_all_divisors_of_n_from_prime_factors(&primes_factors, &divisors);
+    sum = get_proper_divisors_sum_from_all_divisors(n, &divisors);
+
+    gv_wipe(&divisors, NULL);
+    gv_wipe(&primes_factors, NULL);
+
+    return sum;
+}
+
 unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors)
 {
     unsigned long count = 1;

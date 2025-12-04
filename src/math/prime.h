@@ -50,6 +50,18 @@ unsigned long
 get_proper_divisors_sum_from_all_divisors(unsigned long n,
                                           const gv_t(uint64) *divisors);
 
+/* Warning, this method will create a vector for the prime factors of N and
+ * an other one for all the divisors of N. This vector will then be wiped.
+ * These allocations (of the array inside the vector) and deallocations could
+ * decrease a little the performance of your program.
+ * An other faster way would be use the methods 'get_all_primes_factors_of_n',
+ * 'get_all_divisors_of_n_from_prime_factors' and
+ * 'get_proper_divisors_sum_from_all_divisors' reusing the vectors filled by
+ * these methods */
+__attribute__((nonnull))
+unsigned long
+get_proper_divisors_sum_of_n(unsigned long n, const gv_t(uint64) *primes);
+
 __attribute__((nonnull))
 unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors);
 
