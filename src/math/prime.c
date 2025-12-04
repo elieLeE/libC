@@ -202,6 +202,13 @@ get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
     gv_remove(out, pos);
 }
 
+unsigned long
+get_all_proper_divisors_sum_from_all_divisors(unsigned long n,
+                                              const gv_t(uint64) *divisors)
+{
+    return get_all_elem_sum(divisors) - n;
+}
+
 unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors)
 {
     unsigned long count = 1;

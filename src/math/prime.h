@@ -43,6 +43,13 @@ get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
                                                 const gv_t(primes_factors) *in,
                                                 gv_t(uint64) *out);
 
+/* In this method, the vector given contains N and its value will be removed
+ * from the sum */
+__attribute__((nonnull))
+unsigned long
+get_all_proper_divisors_sum_from_all_divisors(unsigned long n,
+                                              const gv_t(uint64) *divisors);
+
 __attribute__((nonnull))
 unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors);
 
