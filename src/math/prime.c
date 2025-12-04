@@ -179,6 +179,29 @@ void get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
     }
 }
 
+static int cmp_uint64(const void *_d1, const void *_d2)
+{
+    const uint64_t *d1 = _d1;
+    const uint64_t *d2 = _d2;
+
+    return *d1 - *d2;
+}
+
+void
+get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
+                                                const gv_t(primes_factors) *in,
+                                                gv_t(uint64) *out)
+{
+    long pos;
+
+    get_all_divisors_of_n_from_prime_factors(in, out);
+    pos = gv_find(out, n, GV_SEQUENTIAL_SEARCH, cmp_uint64);
+    if (pos < 0) {
+        logger_fatal("%ld should be in its divisors\n", n);
+    }
+    gv_remove(out, pos);
+}
+
 unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors)
 {
     unsigned long count = 1;
