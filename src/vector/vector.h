@@ -186,6 +186,17 @@ void __gv_wipe(__vector_void_t *vec, void (*free_data_cb)(void **));
     } while (0)
 
 
+/* I am not sure about that. To see. To be used only with vector type on which
+ * mathematical operations can do. */
+#define get_all_elem_sum(_gvec)                                               \
+    ({  __gv_type(_gvec) __sum = 0;                                           \
+        __auto_type __gvec = (_gvec);                                         \
+        gv_for_each_pos(pos, __gvec) {                                        \
+            __sum += __gvec->tab[pos];                                        \
+        }                                                                     \
+       __sum;                                                                 \
+    })
+
 generic_vector_t(int8, int8_t);
 generic_vector_t(uint8, uint8_t);
 generic_vector_t(int16, int16_t);
