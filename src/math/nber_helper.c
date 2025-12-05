@@ -4,7 +4,7 @@
 
 unsigned int count_digits_in_nber(unsigned long n)
 {
-    unsigned int i = 1;
+    unsigned long i = 1;
     unsigned int compt = 0;
 
     while (n >= i) {
