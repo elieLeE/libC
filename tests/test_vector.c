@@ -3,6 +3,7 @@
 #include "test_vector.h"
 #include "../src/vector/vector.h"
 #include "../src/macros.h"
+#include "../src/utils.h"
 
 static void test_fill_vector(void)
 {
@@ -64,14 +65,6 @@ static void test_vector_add_and_remove_elem(void)
     gv_wipe(&vector, NULL);
 }
 
-static int cmp_elem(const void *_d1, const void *_d2)
-{
-    const int *d1 = _d1;
-    const int *d2 = _d2;
-
-    return (*d1) - (*d2);
-}
-
 static void test_fill_vector_sorting(void)
 {
     int idx_tab = 0;
@@ -80,11 +73,11 @@ static void test_fill_vector_sorting(void)
 
     gv_init(&vector);
 
-    gv_insert_elem_sorted(&vector, 3, cmp_elem);
-    gv_insert_elem_sorted(&vector, 1, cmp_elem);
-    gv_insert_elem_sorted(&vector, 5, cmp_elem);
-    gv_insert_elem_sorted(&vector, 4, cmp_elem);
-    gv_insert_elem_sorted(&vector, 2, cmp_elem);
+    gv_insert_elem_sorted(&vector, 3, g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 1, g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 5, g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 4, g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 2, g_cmp_int32);
 
     ASSERT_EQUAL_INT((int)vector.len, 5);
     ASSERT_EQUAL_INT((int)vector.size, 5);
@@ -111,7 +104,7 @@ static void test_sort_vector_simple(void)
     gv_add(&vector, 4);
     gv_add(&vector, 2);
 
-    gv_sort(&vector, cmp_elem);
+    gv_sort(&vector, g_cmp_int32);
 
     ASSERT_EQUAL_INT((int)vector.len, 5);
     ASSERT_EQUAL_INT((int)vector.size, 5);
@@ -158,16 +151,11 @@ static void test_sort_vector_increasing(void)
         gv_add(&vector, tmp);
     }
 
-    gv_sort(&vector, cmp_elem);
+    gv_sort(&vector, g_cmp_int32);
 
     check_vector_sorting(&vector, true);
 
     gv_wipe(&vector, NULL);
-}
-
-static int cmp_elem_decreasing_order(const void *d1, const void *d2)
-{
-    return - cmp_elem(d1, d2);
 }
 
 static void test_sort_vector_decreasing(void)
@@ -182,7 +170,7 @@ static void test_sort_vector_decreasing(void)
         gv_add(&vector, tmp);
     }
 
-    gv_sort(&vector, cmp_elem_decreasing_order);
+    gv_sort(&vector, g_cmp_int32_rev);
 
     check_vector_sorting(&vector, false);
 
@@ -342,7 +330,7 @@ static void test_reset_vector(void)
 static void check_pos_found_elem(gv_t(int32) *vector, long elem,
                                  gv_algo_search_t algo, long pos_expected)
 {
-    long pos_obtained = gv_find(vector, elem, algo, cmp_elem);
+    long pos_obtained = gv_find(vector, elem, algo, g_cmp_int32);
     ASSERT_EQUAL_LONG(pos_expected, pos_obtained);
 }
 
@@ -358,9 +346,9 @@ static void test_vector_find_and_contains_sequential_algo(void)
     gv_add(&vector, 2);
     gv_add(&vector, 3);
 
-    ASSERT((!(gv_contains(&vector, 10, GV_SEQUENTIAL_SEARCH, cmp_elem))),
+    ASSERT((!(gv_contains(&vector, 10, GV_SEQUENTIAL_SEARCH, g_cmp_int32))),
            "elem '10' has not been found");
-    ASSERT(gv_contains(&vector, 2, GV_SEQUENTIAL_SEARCH, cmp_elem),
+    ASSERT(gv_contains(&vector, 2, GV_SEQUENTIAL_SEARCH, g_cmp_int32),
            "elem '2' has not been found");
     check_pos_found_elem(&vector, 1, GV_SEQUENTIAL_SEARCH, 0);
     check_pos_found_elem(&vector, 2, GV_SEQUENTIAL_SEARCH, 3);
@@ -375,7 +363,7 @@ static void test_vector_find_and_contains_sequential_algo(void)
     gv_add(&vector, 8);
 
     for (int i = 0; i < 5; i++) {
-        ASSERT((!(gv_contains(&vector, i, GV_SEQUENTIAL_SEARCH, cmp_elem))),
+        ASSERT((!(gv_contains(&vector, i, GV_SEQUENTIAL_SEARCH, g_cmp_int32))),
                "elem %d should not be present", i);
     }
     for (int i = 6; i <= 8; i++) {
@@ -393,17 +381,17 @@ static void test_vector_find_and_contains_dichotomy_algo(void)
 
     check_pos_found_elem(&vector, 1, GV_DICHOTOMY_SEARCH, -1);
 
-    gv_insert_elem_sorted(&vector, 0,   cmp_elem);
-    gv_insert_elem_sorted(&vector, 3,   cmp_elem);
-    gv_insert_elem_sorted(&vector, 9,   cmp_elem);
-    gv_insert_elem_sorted(&vector, 13,  cmp_elem);
-    gv_insert_elem_sorted(&vector, 21,  cmp_elem);
-    gv_insert_elem_sorted(&vector, 65,  cmp_elem);
-    gv_insert_elem_sorted(&vector, 66,  cmp_elem);
-    gv_insert_elem_sorted(&vector, 71,  cmp_elem);
-    gv_insert_elem_sorted(&vector, 99,  cmp_elem);
-    gv_insert_elem_sorted(&vector, 100, cmp_elem);
-    gv_insert_elem_sorted(&vector, 111, cmp_elem);
+    gv_insert_elem_sorted(&vector, 0,   g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 3,   g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 9,   g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 13,  g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 21,  g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 65,  g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 66,  g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 71,  g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 99,  g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 100, g_cmp_int32);
+    gv_insert_elem_sorted(&vector, 111, g_cmp_int32);
 
     check_pos_found_elem(&vector, 0,   GV_DICHOTOMY_SEARCH, 0);
     check_pos_found_elem(&vector, 3,   GV_DICHOTOMY_SEARCH, 1);

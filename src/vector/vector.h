@@ -208,4 +208,5 @@ generic_vector_t(uint64, uint64_t);
 generic_vector_t(double, double);
 generic_vector_t(string, char *);
 
+
 #endif

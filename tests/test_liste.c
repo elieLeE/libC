@@ -3,6 +3,7 @@
 #include "../src/liste/liste.h"
 #include "../src/mem/mem.h"
 #include "../src/macros.h"
+#include "../src/utils.h"
 
 /* XXX: As the data in the list is a void *, I have to give to each element a
  * pointer. For the tests here, I created new int but, obviously, that should
@@ -62,22 +63,6 @@ static void remove_element(void *data)
     p_free(&data);
 }
 
-static int cmp_elem_increasing(void const *d1, void const *d2)
-{
-    int const *a = d1;
-    int const *b = d2;
-
-    return (*a - *b);
-}
-
-static int cmp_elem_decreasing(void const *d1, void const *d2)
-{
-    int const *a = d1;
-    int const *b = d2;
-
-    return (*b - *a);
-}
-
 static void test_get_elem_data(void)
 {
     int *a;
@@ -92,7 +77,7 @@ static void test_get_elem_data(void)
     *a = 1;
 
     gl_add_elem_first(&l, a);
-    elem = gl_get_elem_data(&l, a, cmp_elem_increasing);
+    elem = gl_get_elem_data(&l, a, g_cmp_int32);
 
     ASSERT((elem != NULL), "elem has not been found");
 
@@ -130,12 +115,12 @@ static void test_add_element_trie(void)
 
     gl_init(&l);
 
-    gl_add_elem_sorted(&l, &expected_vals[2], cmp_elem_increasing);
-    gl_add_elem_sorted(&l, &expected_vals[4], cmp_elem_increasing);
-    gl_add_elem_sorted(&l, &expected_vals[5], cmp_elem_increasing);
-    gl_add_elem_sorted(&l, &expected_vals[1], cmp_elem_increasing);
-    gl_add_elem_sorted(&l, &expected_vals[3], cmp_elem_increasing);
-    gl_add_elem_sorted(&l, &expected_vals[0], cmp_elem_increasing);
+    gl_add_elem_sorted(&l, &expected_vals[2], g_cmp_int32);
+    gl_add_elem_sorted(&l, &expected_vals[4], g_cmp_int32);
+    gl_add_elem_sorted(&l, &expected_vals[5], g_cmp_int32);
+    gl_add_elem_sorted(&l, &expected_vals[1], g_cmp_int32);
+    gl_add_elem_sorted(&l, &expected_vals[3], g_cmp_int32);
+    gl_add_elem_sorted(&l, &expected_vals[0], g_cmp_int32);
 
     gl_get_elem_n(&l, 3);
 
@@ -151,12 +136,12 @@ static void test_add_element_trie(void)
         expected_vals[i] = val;
     }
 
-    gl_add_elem_sorted(&l, &expected_vals[1], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &expected_vals[3], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &expected_vals[0], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &expected_vals[5], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &expected_vals[2], cmp_elem_decreasing);
-    gl_add_elem_sorted(&l, &expected_vals[4], cmp_elem_decreasing);
+    gl_add_elem_sorted(&l, &expected_vals[1], g_cmp_int32_rev);
+    gl_add_elem_sorted(&l, &expected_vals[3], g_cmp_int32_rev);
+    gl_add_elem_sorted(&l, &expected_vals[0], g_cmp_int32_rev);
+    gl_add_elem_sorted(&l, &expected_vals[5], g_cmp_int32_rev);
+    gl_add_elem_sorted(&l, &expected_vals[2], g_cmp_int32_rev);
+    gl_add_elem_sorted(&l, &expected_vals[4], g_cmp_int32_rev);
 
     check_list_data(&l, expected_vals, 6);
 
@@ -170,12 +155,12 @@ static void test_remove_element(void)
 
     gl_init(&l);
 
-    gl_add_elem_sorted(&l, get_new_int(1), cmp_elem_increasing);
-    gl_add_elem_sorted(&l, get_new_int(2), cmp_elem_increasing);
-    gl_add_elem_sorted(&l, get_new_int(3), cmp_elem_increasing);
-    gl_add_elem_sorted(&l, get_new_int(4), cmp_elem_increasing);
-    gl_add_elem_sorted(&l, get_new_int(5), cmp_elem_increasing);
-    gl_add_elem_sorted(&l, get_new_int(6), cmp_elem_increasing);
+    gl_add_elem_sorted(&l, get_new_int(1), g_cmp_int32);
+    gl_add_elem_sorted(&l, get_new_int(2), g_cmp_int32);
+    gl_add_elem_sorted(&l, get_new_int(3), g_cmp_int32);
+    gl_add_elem_sorted(&l, get_new_int(4), g_cmp_int32);
+    gl_add_elem_sorted(&l, get_new_int(5), g_cmp_int32);
+    gl_add_elem_sorted(&l, get_new_int(6), g_cmp_int32);
 
     gl_delete_elem_n(&l, 2, remove_element);
     gl_delete_last_elem(&l, remove_element);
@@ -205,7 +190,7 @@ static void test_insertion_sort_increasing_list(void)
         gl_add_elem_first(&l, data);
     }
 
-    gl_sort(&l, INSERTION_SORT, cmp_elem_increasing);
+    gl_sort(&l, INSERTION_SORT, g_cmp_int32);
 
     check_list_sorting(&l, true);
 
@@ -226,7 +211,7 @@ static void test_insertion_sort_decreasing_list(void)
         gl_add_elem_first(&l, data);
     }
 
-    gl_sort(&l, INSERTION_SORT, cmp_elem_decreasing);
+    gl_sort(&l, INSERTION_SORT, g_cmp_int32_rev);
 
     check_list_sorting(&l, false);
 
