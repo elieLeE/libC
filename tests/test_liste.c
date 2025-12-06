@@ -14,7 +14,7 @@
 
 static int *get_new_int(int val)
 {
-    int *p = p_calloc(sizeof(int));
+    int *p = RETHROW_P(p_calloc(sizeof(int)));
 
     *p = val;
 
