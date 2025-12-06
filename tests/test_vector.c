@@ -179,11 +179,6 @@ static void test_sort_vector_decreasing(void)
 
 generic_vector_t(int_p, int *);
 
-static void free_elem(void **elem)
-{
-    p_free(elem);
-}
-
 static void add_new_elem_and_set(gv_t(int_p) *vec, int val)
 {
     int **a_p = NULL;
@@ -214,7 +209,7 @@ static void test_fill_pointer_vector(void)
         ASSERT_EQUAL_INT(*(vector.tab[pos]), tab[idx_tab]);
         idx_tab++;
     }
-    gv_wipe(&vector, free_elem);
+    gv_wipe(&vector, _p_free);
 }
 
 static void test_new_and_delete_vector(void)
