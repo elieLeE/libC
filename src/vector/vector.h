@@ -124,7 +124,7 @@ int __gv_search_spot(__vector_void_t *vec, void *elem,
         __auto_type __val = (_val);                                           \
         __auto_type __gvec = (_gvec);                                         \
         __pos = __gv_search_spot(&__gvec->vec, &__val, cmp_data_cb);          \
-        gv_insert_elem_at_pos(_gvec, _val, __pos);                            \
+        gv_insert_elem_at_pos(_gvec, __val, __pos);                            \
     } while(0)
 
 /* Warning, this method decreases the length of the vector, eventually move the
