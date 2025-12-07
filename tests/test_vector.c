@@ -411,6 +411,8 @@ static void test_vector_find_and_contains_dichotomy_algo(void)
 static int cmp_elem_p(const void *_d1, const void *_d2)
 {
     const int *d1 = *(int **)_d1;
+    /* WARNING, here _d2 is not a (int **). It is just a (int *).
+     * Cf method 'test_vector_find_with_pointer' just below. */
     const int *d2 = _d2;
 
     return ((*d1) - (*d2));
@@ -441,7 +443,7 @@ static void test_vector_find_with_pointer(void)
     elem = p_calloc(sizeof(int));
 
     for (int i = 1; i <= 5; i++) {
-        /* all depends on what the suer looks for: the value or 
+        /* all depends on what the suer looks for: the value or
          * the memory space */
         ASSERT(gv_contains(&vector, i, GV_SEQUENTIAL_SEARCH, cmp_elem_p),
                "elem %d has not been fond", i);
