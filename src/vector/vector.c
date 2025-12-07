@@ -49,10 +49,9 @@ void *__gv_create_empty_spot(__vector_void_t *vec, long pos)
         return NULL;
     }
     if (pos >= vec->len) {
-        logger_warning("position indicated in '_gv_create_empty_spot' (%ld) "
+        logger_trace("position indicated in '_gv_create_empty_spot' (%ld) "
                      "is bigger than the length of the vector (%ld) - "
-                     "new element is added at the end",
-                     pos, vec->len);
+                     "new element is added at the end", pos, vec->len);
         /* we have checked that pos < vec->size above */
         return vec->tab + vec->__size_elem * vec->len;
     }
