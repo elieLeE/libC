@@ -7,7 +7,6 @@
 #include "../logger/logger.h"
 #include "../macros.h"
 
-
 /* {{{ Inserting methods */
 
 /* Methods here do not create elements. They just insert them. */
