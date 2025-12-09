@@ -17,6 +17,7 @@
 #include "test_vector.h"
 #include "test_tab_helper.h"
 #include "test_calculs.h"
+#include "test_big_numbers.h"
 
 static void test_swap(void)
 {
@@ -62,6 +63,9 @@ static int get_all_tests(generic_liste_t *modules_tests)
     gl_add_elem_last(modules_tests, module_tests);
 
     module_tests = RETHROW_PN(get_all_tests_calculs());
+    gl_add_elem_last(modules_tests, module_tests);
+
+    module_tests = RETHROW_PN(get_all_tests_big_numbers());
     gl_add_elem_last(modules_tests, module_tests);
 
     return 0;
