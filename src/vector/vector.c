@@ -3,7 +3,7 @@
 #include "../mem/mem.h"
 #include "../macros.h"
 
-void *__gv_extend(__vector_void_t *vec, int extra)
+void *__gv_extend(__vector_void_t *vec, long extra)
 {
     void *res;
 
@@ -24,7 +24,7 @@ void *__gv_extend(__vector_void_t *vec, int extra)
     return res;
 }
 
-void *__gv_grow(__vector_void_t *vec, int extra)
+void *__gv_grow(__vector_void_t *vec, long extra)
 {
     void *res;
 

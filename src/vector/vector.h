@@ -48,11 +48,11 @@ typedef generic_vector_data_t(void) __vector_void_t;
 #define gv_for_each_pos(_pos, _gvec)                                          \
     for (long _pos = 0; _pos < (_gvec)->len; _pos++)
 
-void *__gv_extend(__vector_void_t *vec, int extra);
+void *__gv_extend(__vector_void_t *vec, long extra);
 #define gv_extend(_gvec, extra)                                               \
     __gv_extend(&(_gvec)->vec, extra);
 
-void *__gv_grow(__vector_void_t *vec, int extra);
+void *__gv_grow(__vector_void_t *vec, long extra);
 #define gv_grow(_gvec, extra)                                                 \
     ({                                                                        \
         __auto_type __gvec = _gvec;                                           \
