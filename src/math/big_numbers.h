@@ -9,4 +9,7 @@ typedef struct big_number_t {
     unsigned long limit;
 } big_number_t;
 
+void bn_init(big_number_t *bn);
+void bn_init_with_args(big_number_t *bn, long size, unsigned long limit);
+
 #endif
