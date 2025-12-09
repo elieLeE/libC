@@ -55,7 +55,7 @@ static void test_vector_add_and_remove_elem(void)
     gv_remove(&vector, 3);
 
     ASSERT_EQUAL_INT((int)vector.len, 4);
-    ASSERT_EQUAL_INT((int)vector.size, 6);
+    ASSERT_EQUAL_INT((int)vector.size, 8);
 
     gv_for_each_pos(pos, &vector) {
         ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
@@ -80,7 +80,7 @@ static void test_fill_vector_sorting(void)
     gv_insert_elem_sorted(&vector, 2, g_cmp_int32);
 
     ASSERT_EQUAL_INT((int)vector.len, 5);
-    ASSERT_EQUAL_INT((int)vector.size, 5);
+    ASSERT_EQUAL_INT((int)vector.size, 8);
 
     gv_for_each_pos(pos, &vector) {
         ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
@@ -107,7 +107,7 @@ static void test_sort_vector_simple(void)
     gv_sort(&vector, g_cmp_int32);
 
     ASSERT_EQUAL_INT((int)vector.len, 5);
-    ASSERT_EQUAL_INT((int)vector.size, 5);
+    ASSERT_EQUAL_INT((int)vector.size, 8);
 
     gv_for_each_pos(pos, &vector) {
         ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
@@ -203,7 +203,7 @@ static void test_fill_pointer_vector(void)
     add_new_elem_and_set(&vector, 5);
 
     ASSERT_EQUAL_INT((int)vector.len, 5);
-    ASSERT_EQUAL_INT((int)vector.size, 5);
+    ASSERT_EQUAL_INT((int)vector.size, 8);
 
     gv_for_each_pos(pos, &vector) {
         ASSERT_EQUAL_INT(*(vector.tab[pos]), tab[idx_tab]);
@@ -227,7 +227,7 @@ static void test_new_and_delete_vector(void)
     gv_add(vector, 5);
 
     ASSERT_EQUAL_INT((int)vector->len, 5);
-    ASSERT_EQUAL_INT((int)vector->size, 5);
+    ASSERT_EQUAL_INT((int)vector->size, 8);
 
     gv_for_each_pos(pos, vector) {
         ASSERT_EQUAL_INT(vector->tab[pos], tab[idx_tab]);
@@ -254,7 +254,7 @@ static void test_vector_init_size(void)
     gv_insert_elem_at_pos(&vector, 12, 7);
 
     ASSERT_EQUAL_INT((int)vector.len, 8);
-    ASSERT_EQUAL_INT((int)vector.size, 10);
+    ASSERT_EQUAL_INT((int)vector.size, 16);
 
     gv_for_each_pos(pos, &vector) {
         ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
@@ -313,7 +313,7 @@ static void test_reset_vector(void)
     gv_add(&vector, 8);
 
     ASSERT_EQUAL_INT((int)vector.len, 3);
-    ASSERT_EQUAL_INT((int)vector.size, 5);
+    ASSERT_EQUAL_INT((int)vector.size, 8);
 
     gv_for_each_pos(pos, &vector) {
         ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);

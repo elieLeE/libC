@@ -2,13 +2,14 @@
 
 #include "../mem/mem.h"
 #include "../macros.h"
+#include "../math/calculs.h"
 
 void *__gv_extend(__vector_void_t *vec, long extra)
 {
     void *res;
 
-    if (vec->len + extra >= vec->size) {
-        int new_size = vec->size + extra;
+    if (vec->len + extra > vec->size) {
+       long new_size = get_next_closest_power_of_two(vec->len + extra);
 
         vec->tab = RETHROW_P(p_realloc(vec->tab, new_size * vec->__size_elem));
         vec->size = new_size;
