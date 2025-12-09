@@ -1,4 +1,4 @@
-#include "sum.h"
+#include "calculs.h"
 
 unsigned long sum_1_to_n(unsigned long n)
 {
