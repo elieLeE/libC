@@ -9,6 +9,7 @@
 #include "../attributes.h"
 #include "../macros.h"
 #include "../tab_helper/tab_helper.h"
+#include "../logger/logger.h"
 
 typedef enum gv_algo_search_t {
     GV_SEQUENTIAL_SEARCH,
@@ -84,6 +85,10 @@ static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
 
 #define gv_init_size(_gvec, _size)                                            \
     do {                                                                      \
+        long __size = (_size);                                                \
+        if (__size < 0) {                                                     \
+            logger_fatal("_size is below 0: %ld", __size);                    \
+        }                                                                     \
         __auto_type __gvec = (_gvec);                                         \
         p_clear(__gvec, 1);                                                   \
         __gv_set_size_elem(&__gvec->vec, __gv_size(__gvec));                  \
