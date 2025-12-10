@@ -3,14 +3,7 @@
 #include "test_prime.h"
 #include "../src/math/prime.h"
 #include "../src/macros.h"
-
-static int cmp_long(const void *_d1, const void *_d2)
-{
-    const long *d1 = _d1;
-    const long *d2 = _d2;
-
-    return *d1 - *d2;
-}
+#include "../src/utils.h"
 
 static void test_is_prime(void)
 {
@@ -253,7 +246,7 @@ check_obtained_divisors_of_n(long n, const gv_t(uint64) *obtained_divisors,
 {
     gv_for_each_pos(pos, obtained_divisors) {
         ASSERT(gv_contains(expected_divisors, obtained_divisors->tab[pos],
-                       GV_DICHOTOMY_SEARCH, cmp_long),
+                       GV_DICHOTOMY_SEARCH, g_cmp_int64),
                "%ld is not in the expected divisors of %ld",
                obtained_divisors->tab[pos], n);
     }
