@@ -97,7 +97,7 @@ char *bn_to_str(const big_number_t *bn)
     char *str = RETHROW_P(p_calloc(str_size));
     int charac_written = 0;
     const unsigned long min = bn->limit / 10;
-    const unsigned int max_digit_by_part = count_digits_in_nber(bn->limit) - 1;
+    const unsigned int max_digit_by_part = get_count_digits_of_n(bn->limit) - 1;
 
     if (!bn->positive_number) {
         charac_written = snprintf(str + 0, str_size - charac_written, "-");
@@ -108,7 +108,7 @@ char *bn_to_str(const big_number_t *bn)
         unsigned long n = bn->parts.tab[pos];
 
         if (pos < bn->parts.len - 1 && n < min) {
-            unsigned int digits_count = count_digits_in_nber(n);
+            unsigned int digits_count = get_count_digits_of_n(n);
             unsigned tmp_max;
 
             if (digits_count == 0) {

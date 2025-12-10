@@ -2,7 +2,7 @@
 
 #include "nber_helper.h"
 
-unsigned int count_digits_in_nber(unsigned long n)
+unsigned int get_count_digits_of_n(unsigned long n)
 {
     unsigned long i = 1;
     unsigned int compt = 0;
