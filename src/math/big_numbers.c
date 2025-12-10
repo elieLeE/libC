@@ -5,16 +5,31 @@
 
 #define LIMIT_MAX 100000000000000000
 
+void bn_set_limit(big_number_t *bn, unsigned long limit)
+{
+    unsigned long _limit;
+    unsigned long *limit_p;
+
+    if (limit == 0 || limit > LIMIT_MAX) {
+        _limit = LIMIT_MAX;
+    } else {
+        _limit = limit;
+    }
+
+    limit_p = unconst_cast(size_t, &bn->limit);
+    if (limit_p == NULL) {
+        logger_fatal("error when trying to set '__size_elem'");
+    }
+    *limit_p = _limit;
+}
+
 void bn_init_with_args(big_number_t *bn, long size, unsigned long limit)
 {
     p_clear(bn, 1);
 
+    bn_set_limit(bn, limit);
+
     bn->positive_number = true;
-    if (limit == 0 || limit > LIMIT_MAX) {
-        bn->limit = LIMIT_MAX;
-    } else {
-        bn->limit = limit;
-    }
 
     gv_init_size(&(bn->parts), size);
 }
@@ -39,7 +54,7 @@ void bn_set_from_bn(const big_number_t *in, big_number_t *out)
     out->parts.len = in->parts.len;
 
     out->positive_number = in->positive_number;
-    out->limit = in->limit;
+    bn_set_limit(out, in->limit);
 }
 
 void bn_set_from_ul(big_number_t *bn, unsigned long n)
