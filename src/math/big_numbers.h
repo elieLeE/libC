@@ -16,6 +16,8 @@ void bn_set_from_bn(const big_number_t *in, big_number_t *out);
 void bn_set_from_ul(big_number_t *bn, unsigned long n);
 void bn_set_from_l(big_number_t *bn, long n);
 
+char *bn_to_str(big_number_t *bn);
+
 void bn_fast_clear(big_number_t *bn);
 void bn_clear(big_number_t *bn);
 void bn_wipe(big_number_t *bn);

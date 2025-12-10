@@ -1,6 +1,7 @@
 #include "big_numbers.h"
 
 #include "../mem/mem.h"
+#include "nber_helper.h"
 
 #define LIMIT_MAX 100000000000000000
 
@@ -70,6 +71,51 @@ void bn_set_from_l(big_number_t *bn, long n)
 }
 
 /* }}} */
+
+char *bn_to_str(big_number_t *bn)
+{
+    size_t str_size = bn->parts.len * 18 + 1;
+    char *str = RETHROW_P(p_calloc(str_size));
+    int charac_written = 0;
+    const unsigned long min = bn->limit / 10;
+    const unsigned int max_digit_by_part = count_digits_in_nber(bn->limit) - 1;
+
+    if (!bn->positive_number) {
+        charac_written = snprintf(str + 0, str_size - charac_written, "-");
+    }
+
+    for (long pos = bn->parts.len - 1; pos >= 0; pos--) {
+        int rc;
+        unsigned long n = bn->parts.tab[pos];
+
+        if (pos < bn->parts.len - 1 && n < min) {
+            unsigned int digits_count = count_digits_in_nber(n);
+            unsigned tmp_max;
+
+            if (digits_count == 0) {
+                tmp_max = max_digit_by_part -1;
+            } else if (digits_count > max_digit_by_part) {
+                logger_fatal("'digits_count' (%d) should never be greater "
+                             "than 'max_digit_by_part' (%d)",
+                             digits_count, max_digit_by_part);
+            } else {
+                tmp_max = max_digit_by_part - digits_count;
+            }
+
+            for (unsigned int i = 0; i < tmp_max; i++) {
+                rc = snprintf(str + charac_written, str_size - charac_written,
+                              "0");
+                charac_written += rc;
+            }
+        }
+        rc = snprintf(str + charac_written, str_size - charac_written,
+                      "%ld", n);
+
+        charac_written += rc;
+    }
+
+    return str;
+}
 
 void bn_fast_clear(big_number_t *bn)
 {
