@@ -136,13 +136,3 @@ bool is_a_bouncy_number(unsigned char digits[], unsigned int max_idx)
         !is_a_decreasing_number(digits, max_idx);
 }
 
-unsigned long get_triangle_nber_from_index(unsigned long idx)
-{
-    return idx * (idx + 1) / 2;
-}
-
-unsigned long
-get_next_triangle_nber(unsigned long previous_n, unsigned long idx)
-{
-    return previous_n + idx;
-}

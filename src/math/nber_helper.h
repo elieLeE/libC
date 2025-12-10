@@ -25,10 +25,4 @@ bool is_a_increasing_number(unsigned char digits[], unsigned int max_idx);
 bool is_a_decreasing_number(unsigned char digits[], unsigned int max_idx);
 bool is_a_bouncy_number(unsigned char digits[], unsigned int max_idx);
 
-__attribute__((const))
-unsigned long get_triangle_nber_from_index(unsigned long idx);
-__attribute__((const))
-unsigned long get_next_triangle_nber(unsigned long previous_n,
-                                     unsigned long idx);
-
 #endif
