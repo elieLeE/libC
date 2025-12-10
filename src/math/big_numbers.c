@@ -22,3 +22,20 @@ void bn_init(big_number_t *bn)
 {
     bn_init_with_args(bn, 0, LIMIT_MAX);
 }
+
+void bn_fast_clear(big_number_t *bn)
+{
+    gv_fast_clear(&(bn->parts));
+    bn->positive_number = true;
+}
+
+void bn_clear(big_number_t *bn)
+{
+    gv_clear(&(bn->parts), NULL);
+    bn->positive_number = true;
+}
+
+void bn_wipe(big_number_t *bn)
+{
+    gv_wipe(&(bn->parts), NULL);
+}
