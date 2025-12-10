@@ -24,7 +24,7 @@ void bn_init(big_number_t *bn)
     bn_init_with_args(bn, 0, LIMIT_MAX);
 }
 
-/* {{{ setting methods */
+/* {{{ Setting methods */
 
 void bn_set_from_bn(const big_number_t *in, big_number_t *out)
 {
@@ -44,17 +44,21 @@ void bn_set_from_bn(const big_number_t *in, big_number_t *out)
 
 void bn_set_from_ul(big_number_t *bn, unsigned long n)
 {
+    /* not indispensable but I think it is clearer with the definition of
+     * this variable */
+    unsigned long tmp = n;
+
     bn_fast_clear(bn);
 
-    while (n >= bn->limit) {
-        unsigned long carry = n / bn->limit;
+    while (tmp >= bn->limit) {
+        unsigned long carry = tmp / bn->limit;
 
-        n -= bn->limit * carry;
-        gv_add(&(bn->parts), n);
+        tmp -= bn->limit * carry;
+        gv_add(&(bn->parts), tmp);
 
-        n = carry;
+        tmp = carry;
     }
-    gv_add(&(bn->parts), n);
+    gv_add(&(bn->parts), tmp);
 }
 
 void bn_set_from_l(big_number_t *bn, long n)
