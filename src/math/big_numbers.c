@@ -76,7 +76,7 @@ void bn_set_from_l(big_number_t *bn, long n)
 
 /* }}} */
 
-char *bn_to_str(big_number_t *bn)
+char *bn_to_str(const big_number_t *bn)
 {
     size_t str_size = bn->parts.len * 18 + 1;
     char *str = RETHROW_P(p_calloc(str_size));
