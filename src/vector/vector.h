@@ -95,6 +95,13 @@ static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
         __gv_extend(&__gvec->vec, _size);                                     \
     } while (0)
 
+void __gv_set(const __vector_void_t *src, __vector_void_t *dst);
+#define gv_set(_src, _dst)                                                    \
+    ({  __auto_type __src = (_src);                                           \
+        __auto_type __dst = (_dst);                                           \
+        __gv_set(&__src->vec, &__dst->vec);                                   \
+    })
+
 #define gv_add(_gvec, _val)                                                   \
     ({  __auto_type __gvec = (_gvec);                                         \
         __gv_type(__gvec) *__elem = __gv_grow(&__gvec->vec, 1);               \

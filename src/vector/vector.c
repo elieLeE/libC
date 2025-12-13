@@ -4,6 +4,16 @@
 #include "../macros.h"
 #include "../math/calculs.h"
 
+void __gv_set(const __vector_void_t *src, __vector_void_t *dst)
+{
+    if (dst->size < src->len) {
+        __gv_extend(dst, src->len - dst->len);
+    }
+    memcpy(dst->tab, src->tab, src->len * src->__size_elem);
+
+    dst->len = src->len;
+}
+
 void *__gv_extend(__vector_void_t *vec, long extra)
 {
     void *res;
