@@ -14,6 +14,38 @@ void __gv_set(const __vector_void_t *src, __vector_void_t *dst)
     dst->len = src->len;
 }
 
+int __gv_copy(const __vector_void_t *src, long idx_start_src,
+              long idx_start_dst, long len, __vector_void_t *dst)
+{
+    if (idx_start_src < 0) {
+        logger_error("index of src vector is negative: %ld", idx_start_src);
+        return -1;
+    }
+    if (idx_start_dst < 0) {
+        logger_error("index of dst vector is negative: %ld", idx_start_src);
+        return -1;
+    }
+    if (len < 0) {
+        logger_error("the length is negative: %ld", len);
+        return -1;
+    }
+    if (idx_start_src + len > src->len) {
+        logger_error("the space memory indicated to copy is not available");
+        return -1;
+    }
+
+    if (dst->size < idx_start_dst + len) {
+        __gv_extend(dst, idx_start_dst + len - dst->len);
+    }
+    memcpy(dst->tab + (idx_start_dst * dst->__size_elem),
+           src->tab + (idx_start_src * src->__size_elem),
+           len * src->__size_elem);
+
+    dst->len = idx_start_dst + len;
+
+    return 0;
+}
+
 void *__gv_extend(__vector_void_t *vec, long extra)
 {
     void *res;
