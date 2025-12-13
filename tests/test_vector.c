@@ -340,6 +340,47 @@ static void test_set_vector(void)
     gv_wipe(&vector, NULL);
 }
 
+static void test_copy_vector(void)
+{
+    gv_t(int32) vector;
+    gv_t(int32) vector2;
+    int32_t tab[5] = {1, 2, 3, 4, 5};
+    int32_t tab2[5] = {6, 7, 8};
+    int32_t tab3[5] = {6, 7, 2, 3, 4};
+
+    gv_init(&vector);
+    gv_init(&vector2);
+
+    gv_add(&vector, 1);
+    gv_add(&vector, 2);
+    gv_add(&vector, 3);
+    gv_add(&vector, 4);
+    gv_add(&vector, 5);
+
+    ASSERT_EQUAL_LONG(vector.len, 5L);
+    ASSERT_EQUAL_LONG(vector.size, 8L);
+    check_vector_values(&vector, tab);
+
+    gv_add(&vector2, 6);
+    gv_add(&vector2, 7);
+    gv_add(&vector2, 8);
+
+    ASSERT_EQUAL_LONG(vector2.len, 3L);
+    ASSERT_EQUAL_LONG(vector2.size, 4L);
+    check_vector_values(&vector2, tab2);
+
+    /* copy can be partial. Here, we want to copy 3 elements of 'vector' into
+     * 'vector2' at the index 2. The elements to copy are the ones at the index
+     * 1, 2 and 3 */
+    gv_copy(&vector, 1, 2, 3, &vector2);
+
+    ASSERT_EQUAL_LONG(vector2.len, 5L);
+    ASSERT_EQUAL_LONG(vector2.size, 8L);
+    check_vector_values(&vector2, tab3);
+
+    gv_wipe(&vector, NULL);
+}
+
 static void check_pos_found_elem(gv_t(int32) *vector, long elem,
                                  gv_algo_search_t algo, long pos_expected)
 {
@@ -502,6 +543,7 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests, test_vector_init_size);
     ADD_TEST_TO_MODULE(module_tests, test_reset_vector);
     ADD_TEST_TO_MODULE(module_tests, test_set_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_copy_vector);
     ADD_TEST_TO_MODULE(module_tests, test_vector_shuffle);
     ADD_TEST_TO_MODULE(module_tests,
                        test_vector_find_and_contains_sequential_algo);
