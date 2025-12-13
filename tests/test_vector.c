@@ -5,9 +5,23 @@
 #include "../src/macros.h"
 #include "../src/utils.h"
 
+static void
+check_vector_values(const gv_t(int32) *vec, const int32_t *values)
+{
+    /* I do not check in this method that the size of the array 'values' has
+     * a length equal (or greater but should be equal) than 'vec'. This is a
+     * test method and this factor should checked in the calling method.
+     * Especially, because that this size could be wrong... */
+    int idx_tab = 0;
+
+    gv_for_each_pos(pos, vec) {
+        ASSERT_EQUAL_INT(vec->tab[pos], values[idx_tab]);
+        idx_tab++;
+    }
+}
+
 static void test_fill_vector(void)
 {
-    int idx_tab = 0;
     gv_t(int32) vector;
     int32_t tab[8] = {11, 1, 10, 2, 3, 4, 5, 12};
 
@@ -24,18 +38,13 @@ static void test_fill_vector(void)
 
     ASSERT_EQUAL_LONG(vector.len, 8L);
     ASSERT_EQUAL_LONG(vector.size, 8L);
-
-    gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
-        idx_tab++;
-    }
+    check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
 }
 
 static void test_vector_add_and_remove_elem(void)
 {
-    int idx_tab = 0;
     gv_t(int32) vector;
     int32_t tab[8] = {11, 10, 4, 12};
 
@@ -56,18 +65,13 @@ static void test_vector_add_and_remove_elem(void)
 
     ASSERT_EQUAL_LONG(vector.len, 4L);
     ASSERT_EQUAL_LONG(vector.size, 8L);
-
-    gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
-        idx_tab++;
-    }
+    check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
 }
 
 static void test_fill_vector_sorting(void)
 {
-    int idx_tab = 0;
     gv_t(int32) vector;
     int32_t tab[5] = {1, 2, 3, 4, 5};
 
@@ -81,18 +85,13 @@ static void test_fill_vector_sorting(void)
 
     ASSERT_EQUAL_LONG(vector.len, 5L);
     ASSERT_EQUAL_LONG(vector.size, 8L);
-
-    gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
-        idx_tab++;
-    }
+    check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
 }
 
 static void test_sort_vector_simple(void)
 {
-    int idx_tab = 0;
     gv_t(int32) vector;
     int32_t tab[5] = {1, 2, 3, 4, 5};
 
@@ -108,11 +107,7 @@ static void test_sort_vector_simple(void)
 
     ASSERT_EQUAL_LONG(vector.len, 5L);
     ASSERT_EQUAL_LONG(vector.size, 8L);
-
-    gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
-        idx_tab++;
-    }
+    check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
 }
@@ -209,12 +204,12 @@ static void test_fill_pointer_vector(void)
         ASSERT_EQUAL_INT(*(vector.tab[pos]), tab[idx_tab]);
         idx_tab++;
     }
+
     gv_wipe(&vector, _p_free);
 }
 
 static void test_new_and_delete_vector(void)
 {
-    int idx_tab = 0;
     gv_t(int32) *vector;
     int32_t tab[5]= {1, 2, 3, 4, 5};
 
@@ -228,17 +223,13 @@ static void test_new_and_delete_vector(void)
 
     ASSERT_EQUAL_LONG(vector->len, 5L);
     ASSERT_EQUAL_LONG(vector->size, 8L);
+    check_vector_values(vector, tab);
 
-    gv_for_each_pos(pos, vector) {
-        ASSERT_EQUAL_INT(vector->tab[pos], tab[idx_tab]);
-        idx_tab++;
-    }
     gv_delete(vector, NULL);
 }
 
 static void test_vector_init_size(void)
 {
-    int idx_tab = 0;
     gv_t(int32) vector;
     int32_t tab[8] = {11, 1, 10, 2, 3, 4, 5, 12};
 
@@ -255,11 +246,7 @@ static void test_vector_init_size(void)
 
     ASSERT_EQUAL_LONG(vector.len, 8L);
     ASSERT_EQUAL_LONG(vector.size, 16L);
-
-    gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
-        idx_tab++;
-    }
+    check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
 }
@@ -285,16 +272,13 @@ static void test_vector_shuffle(void)
 
     /* As the seed of the rand is always set to 0 in this test, the shuffle of
      * the tab will be always the same */
-    for (int i = 0; i < 10; i++) {
-        ASSERT_EQUAL_INT(vector.tab[i], expected_tab[i]);
-    }
+    check_vector_values(&vector, expected_tab);
 
     gv_wipe(&vector, NULL);
 }
 
 static void test_reset_vector(void)
 {
-    int idx_tab = 0;
     gv_t(int32) vector;
     int32_t tab[5] = {6, 7, 8};
 
@@ -314,11 +298,8 @@ static void test_reset_vector(void)
 
     ASSERT_EQUAL_LONG(vector.len, 3L);
     ASSERT_EQUAL_LONG(vector.size, 8L);
+    check_vector_values(&vector, tab);
 
-    gv_for_each_pos(pos, &vector) {
-        ASSERT_EQUAL_INT(vector.tab[pos], tab[idx_tab]);
-        idx_tab++;
-    }
     gv_wipe(&vector, NULL);
 }
 
