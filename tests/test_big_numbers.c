@@ -30,7 +30,7 @@ static void test_bn_set_from_bn(void)
     /* {{{ Test with 100000000000000002 then reset to -6575901 */
     /* {{{ set bn to 100000000000000002 */
 
-    bn_set_from_ul(&bn, 100000000000000002);
+    bn_set_from_ul(100000000000000002, &bn);
 
     ASSERT_EQUAL_LONG(bn.parts.len, 2L);
     ASSERT_EQUAL_LONG(bn.parts.tab[0], 2L);
@@ -41,7 +41,7 @@ static void test_bn_set_from_bn(void)
     /* }}} */
     /* {{{ set bn to -6575901 */
 
-    bn_set_from_l(&bn2, -6575901);
+    bn_set_from_l(-6575901, &bn2);
 
     ASSERT_EQUAL_LONG(bn2.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 6575901L);
@@ -74,7 +74,7 @@ static void test_bn_set_from_ul(void)
 
     /* {{{ Test with 100000000000000002 */
 
-    bn_set_from_ul(&bn, 100000000000000002);
+    bn_set_from_ul(100000000000000002, &bn);
 
     /* the first part is in reality : 0000002. So, mathematically, it is 2.
      * Same fot he others parts. */
@@ -88,7 +88,7 @@ static void test_bn_set_from_ul(void)
     /* }}} */
     /* {{{ Test with 10005228970000272820072000070002 */
 
-    bn_set_from_ul(&bn, 100000006050900972);
+    bn_set_from_ul(100000006050900972, &bn);
 
     ASSERT_EQUAL_LONG(bn.parts.len, 3L);
     ASSERT_EQUAL_LONG(bn.parts.tab[0], 900972L);
@@ -110,7 +110,7 @@ static void test_bn_set_from_l(void)
 
     /* {{{ Test with -6575901 */
 
-    bn_set_from_l(&bn, -6575901);
+    bn_set_from_l(-6575901, &bn);
 
     ASSERT_EQUAL_LONG(bn.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn.parts.tab[0], 6575901L);
@@ -121,7 +121,7 @@ static void test_bn_set_from_l(void)
     /* }}} */
     /* {{{ Test with 10005228970000272820072000070002 */
 
-    bn_set_from_l(&bn, -100000006050900972);
+    bn_set_from_l(-100000006050900972, &bn);
 
     ASSERT_EQUAL_LONG(bn.parts.len, 2L);
     ASSERT_EQUAL_LONG(bn.parts.tab[0], 6050900972L);

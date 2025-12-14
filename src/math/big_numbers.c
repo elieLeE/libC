@@ -41,51 +41,51 @@ void bn_init(big_number_t *bn)
 
 /* {{{ Setting methods */
 
-void bn_set_from_bn(const big_number_t *in, big_number_t *out)
+void bn_set_from_bn(const big_number_t *src, big_number_t *dst)
 {
-    bn_fast_clear(out);
+    bn_fast_clear(dst);
 
-    if (out->parts.size < in->parts.len) {
-        gv_extend(&(out->parts), (in->parts.len - out->parts.size));
+    if (dst->parts.size < src->parts.len) {
+        gv_extend(&(dst->parts), (src->parts.len - dst->parts.size));
     }
-    memcpy(out->parts.tab, in->parts.tab,
-           in->parts.len * in->parts.__size_elem);
+    memcpy(dst->parts.tab, src->parts.tab,
+           src->parts.len * src->parts.__size_elem);
 
-    out->parts.len = in->parts.len;
+    dst->parts.len = src->parts.len;
 
-    out->positive_number = in->positive_number;
-    bn_set_limit(out, in->limit);
+    dst->positive_number = src->positive_number;
+    bn_set_limit(dst, src->limit);
 }
 
-void bn_set_from_ul(big_number_t *bn, unsigned long n)
+void bn_set_from_ul(unsigned long n, big_number_t *out)
 {
     /* not indispensable but I think it is clearer with the definition of
      * this variable */
     unsigned long tmp = n;
 
-    bn_fast_clear(bn);
+    bn_fast_clear(out);
 
-    while (tmp >= bn->limit) {
-        unsigned long carry = tmp / bn->limit;
+    while (tmp >= out->limit) {
+        unsigned long carry = tmp / out->limit;
 
-        tmp -= bn->limit * carry;
-        gv_add(&(bn->parts), tmp);
+        tmp -= out->limit * carry;
+        gv_add(&(out->parts), tmp);
 
         tmp = carry;
     }
-    gv_add(&(bn->parts), tmp);
+    gv_add(&(out->parts), tmp);
 }
 
-void bn_set_from_l(big_number_t *bn, long n)
+void bn_set_from_l(long n, big_number_t *out)
 {
     if (n > 0) {
-        bn_set_from_ul(bn, n);
+        bn_set_from_ul(n, out);
     } else {
-        bn_set_from_ul(bn, -n);
+        bn_set_from_ul(-n, out);
     }
 
     if (n < 0) {
-        bn->positive_number = false;
+        out->positive_number = false;
     }
 }
 

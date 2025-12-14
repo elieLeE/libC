@@ -12,11 +12,11 @@ typedef struct big_number_t {
 void bn_init(big_number_t *bn);
 void bn_init_with_args(big_number_t *bn, long size, unsigned long limit);
 
-void bn_set_from_bn(const big_number_t *in, big_number_t *out);
-void bn_set_from_ul(big_number_t *bn, unsigned long n);
-void bn_set_from_l(big_number_t *bn, long n);
 void bn_set_limit(big_number_t *bn, unsigned long limit);
 
+void bn_set_from_bn(const big_number_t *src, big_number_t *out);
+void bn_set_from_ul(unsigned long n, big_number_t *out);
+void bn_set_from_l(long n, big_number_t *out);
 
 char *bn_to_str(const big_number_t *bn);
 
