@@ -17,6 +17,8 @@ typedef struct prime_factor_t {
 generic_vector_t(primes_factors, prime_factor_t);
 
 bool is_prime(unsigned long n);
+bool is_prime_from_smallest_primes(unsigned long n,
+                                   const gv_t(uint64) *primes);
 
 __attribute__((nonnull))
 long get_all_primes_below_n(unsigned long lim, gv_t(uint64) *out);

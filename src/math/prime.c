@@ -31,6 +31,16 @@ bool is_prime(unsigned long n)
     return true;
 }
 
+bool is_prime_from_smallest_primes(unsigned long n, const gv_t(uint64) *primes)
+{
+    gv_for_each_pos(pos, primes) {
+        if (n % primes->tab[pos] == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
 /* This methods is very efficient but needs an array with all numbers to lim */
 static void fill_tab_prime_bool(unsigned long lim, bool out[])
 {
@@ -90,16 +100,7 @@ void get_all_n_first_primes(long count_asked, gv_t(uint64) *out)
     current_nber = 3;
 
     while (out->len < count_asked) {
-        bool is_current_n_prime = true;
-
-        gv_for_each_pos(pos, out) {
-            if (current_nber % out->tab[pos] == 0) {
-                is_current_n_prime = false;
-                break;
-            }
-        }
-
-        if (is_current_n_prime) {
+        if (is_prime_from_smallest_primes(current_nber, out)) {
             gv_add(out, current_nber);
         }
         current_nber += 2;
