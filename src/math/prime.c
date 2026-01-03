@@ -26,7 +26,7 @@ bool is_prime(unsigned long n)
         if (n % i == 0) {
             return false;
         }
-        i = i+2;
+        i += 2;
     }
     return true;
 }
@@ -54,7 +54,8 @@ static void fill_tab_prime_bool(unsigned long lim, bool out[])
         j = 3 * i;
         while (j < lim) {
             out[j] = true;
-            /* Same the previously: we skip the even numbers */
+            /* Same than previously: we skip the even numbers: i and j are odd.
+             * So, 2 * i is even and j + 2 * i is odd. */
             j = j + 2 * i;
         }
         i += 2;
@@ -89,16 +90,16 @@ void get_all_n_first_primes(long count_asked, gv_t(uint64) *out)
     current_nber = 3;
 
     while (out->len < count_asked) {
-        bool current_nber_is_prime = true;
+        bool is_current_n_prime = true;
 
         gv_for_each_pos(pos, out) {
             if (current_nber % out->tab[pos] == 0) {
-                current_nber_is_prime = false;
+                is_current_n_prime = false;
                 break;
             }
         }
 
-        if (current_nber_is_prime) {
+        if (is_current_n_prime) {
             gv_add(out, current_nber);
         }
         current_nber += 2;
