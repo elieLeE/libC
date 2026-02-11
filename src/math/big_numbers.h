@@ -20,6 +20,8 @@ void bn_set_from_l(long n, big_number_t *out);
 
 /* Note: in all methods below, 'out' can be the same pointer than one of
  * the "in" big number argument" */
+int bn_add(const big_number_t * const bn1, const big_number_t * const bn2,
+           big_number_t *out);
 void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out);
 
 char *bn_to_str(const big_number_t *bn);

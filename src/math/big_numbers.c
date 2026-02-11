@@ -131,6 +131,76 @@ _bn_pos_add_ul(const big_number_t * const bn, unsigned long n,
     }
 }
 
+static int
+bn_add_pos_pos(const big_number_t * const bn1,
+               const big_number_t * const bn2, big_number_t *out)
+{
+    unsigned long carry = 0;
+    const big_number_t * const shortest_bn =
+        bn1->parts.len >= bn2->parts.len ? bn2 : bn1;
+    const big_number_t * const longest_bn =
+        bn1->parts.len >= bn2->parts.len ? bn1 : bn2;
+
+    if (out != longest_bn && out != shortest_bn) {
+        bn_set_from_bn(longest_bn, out);
+    }
+
+    for (long i = 0; i < shortest_bn->parts.len; i++) {
+        unsigned long tmp = bn1->parts.tab[i] + bn2->parts.tab[i] + carry;
+
+        if (tmp >= out->limit) {
+            carry = tmp / bn1->limit;
+            tmp -= bn1->limit * carry;
+        } else {
+            carry = 0;
+        }
+        out->parts.tab[i] = tmp;
+    }
+
+    if (longest_bn != out) {
+        long diff_len = longest_bn->parts.len - shortest_bn->parts.len;
+
+        if (diff_len > 0) {
+            gv_copy(&longest_bn->parts, shortest_bn->parts.len,
+                    shortest_bn->parts.len, diff_len, &out->parts);
+        }
+    }
+
+    if (carry == 0) {
+        return 0;
+    }
+
+    if (longest_bn->parts.len == shortest_bn->parts.len) {
+        gv_add(&out->parts, carry);
+        return 0;
+    }
+
+    _bn_pos_add_ul(longest_bn, carry, shortest_bn->parts.len, out);
+
+    return 0;
+}
+
+int bn_add(const big_number_t * const bn1, const big_number_t * const bn2,
+           big_number_t *out)
+{
+    if (bn1->limit != bn2->limit) {
+        logger_error("operations between big numbers with different limit "
+                     "has not been yet implemented, %ld - %ld",
+                     bn1->parts.len, bn2->parts.len);
+        return -1;
+    }
+
+    if (bn1->positive_number && bn2->positive_number) {
+        return bn_add_pos_pos(bn1, bn2, out);
+    } else if (!bn1->positive_number && !bn2->positive_number) {
+        out->positive_number = false;
+        return bn_add_pos_pos(bn1, bn2, out);
+    }
+
+    logger_fatal("NOT YET IMPLEMENTED");
+    return -1;
+}
+
 void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out)
 {
     if (bn->parts.len == 0) {
