@@ -82,6 +82,73 @@ void bn_set_from_l(long n, big_number_t *out)
 }
 
 /* }}} */
+/* {{{ Adding methods */
+
+static void
+_bn_pos_add_ul(const big_number_t * const bn, unsigned long n,
+               long first_idx, big_number_t *out)
+{
+    unsigned long tmp;
+    long idx_part = first_idx;
+
+    if (out->parts.size < bn->parts.len) {
+        gv_extend(&out->parts, bn->parts.len - out->parts.len);
+    }
+
+    /* len of the vector have been checked in the calling method */
+    tmp = bn->parts.tab[idx_part] + n;
+    out->parts.tab[idx_part] = tmp;
+
+    while (tmp >= bn->limit) {
+        unsigned int carry = tmp / bn->limit;
+
+        tmp -= bn->limit * carry;
+        out->parts.tab[idx_part] = tmp;
+
+        idx_part++;
+
+        if (idx_part > bn->parts.len - 1) {
+            tmp = carry;
+            break;
+        }
+
+        tmp = bn->parts.tab[idx_part] + carry;
+        out->parts.tab[idx_part] = tmp;
+    }
+
+    if (idx_part > bn->parts.len - 1) {
+        while (tmp >= bn->limit) {
+            unsigned long carry = tmp / bn->limit;
+
+            tmp -= bn->limit * carry;
+            gv_add(&(out->parts), tmp);
+
+            tmp = carry;
+        }
+        if (tmp != 0) {
+            gv_add(&(out->parts), tmp);
+        }
+    }
+}
+
+void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out)
+{
+    if (bn->parts.len == 0) {
+        bn_set_from_ul(n, out);
+    } else {
+        if (bn->limit != out->limit) {
+            bn_set_limit(out, bn->limit);
+        }
+
+        if (bn->positive_number) {
+            _bn_pos_add_ul(bn, n, 0, out);
+        } else {
+            logger_fatal("NOT YET IMPLEMENTED");
+        }
+    }
+}
+
+/* }}} */
 
 char *bn_to_str(const big_number_t *bn)
 {
