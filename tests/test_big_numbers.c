@@ -136,15 +136,59 @@ static void test_bn_set_from_l(void)
 }
 
 /* }}} */
+/* {{{ Adding tests */
+
+static void test_bn_add_ul(void)
+{
+    big_number_t bn;
+
+    bn_init_with_args(&bn, 0, 10000000);
+
+    /* {{{ Add a unsigned long to a positive big number */
+
+    bn_set_from_ul(1768928368, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 8928368L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 176L);
+
+    check_bn_value_str(&bn, "1768928368");
+
+    bn_add_ul(&bn, 78865, &bn);
+    /* Only the first part has been modified */
+    ASSERT_EQUAL_LONG(bn.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 9007233L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 176L);
+
+    bn_add_ul(&bn, 787363765, &bn);
+    ASSERT_EQUAL_LONG(bn.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 6370998L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 255L);
+
+    bn_add_ul(&bn, 5693637787363765, &bn);
+    ASSERT_EQUAL_LONG(bn.parts.len, 3L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 3734763L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 9364034L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[2], 56L);
+
+    /* }}} */
+
+    bn_wipe(&bn);
+}
+
+/* }}} */
 
 module_tests_t *get_all_tests_big_numbers(void)
 {
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "BIG_NUMBERS");
+
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_ul);
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_l);
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_bn);
+
+    ADD_TEST_TO_MODULE(module_tests, test_bn_add_ul);
 
     return module_tests;
 }
