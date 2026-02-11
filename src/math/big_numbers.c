@@ -43,15 +43,7 @@ void bn_init(big_number_t *bn)
 
 void bn_set_from_bn(const big_number_t * const src, big_number_t *dst)
 {
-    bn_fast_clear(dst);
-
-    if (dst->parts.size < src->parts.len) {
-        gv_extend(&(dst->parts), (src->parts.len - dst->parts.size));
-    }
-    memcpy(dst->parts.tab, src->parts.tab,
-           src->parts.len * src->parts.__size_elem);
-
-    dst->parts.len = src->parts.len;
+    gv_set(&src->parts, &dst->parts);
 
     dst->positive_number = src->positive_number;
     bn_set_limit(dst, src->limit);
