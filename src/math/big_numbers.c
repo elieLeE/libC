@@ -41,7 +41,7 @@ void bn_init(big_number_t *bn)
 
 /* {{{ Setting methods */
 
-void bn_set_from_bn(const big_number_t *src, big_number_t *dst)
+void bn_set_from_bn(const big_number_t * const src, big_number_t *dst)
 {
     bn_fast_clear(dst);
 
