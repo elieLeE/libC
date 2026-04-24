@@ -20,6 +20,22 @@ check_bn_value_str(const big_number_t *bn, const char *expected_str)
 
 /* {{{ Helpers tests */
 
+static void test_bn_get_digits_count(void)
+{
+    big_number_t bn;
+
+    bn_init(&bn);
+
+    bn_init_with_args(&bn, 0, 10000000);
+
+    bn_set_from_ul(1768928368, &bn);
+    ASSERT_EQUAL_INT(bn_get_digits_count(&bn), 10);
+
+    bn_set_limit(&bn, 100);
+    bn_set_from_ul(154, &bn);
+    ASSERT_EQUAL_INT(bn_get_digits_count(&bn), 3);
+}
+
 /* }}} */
 /* {{{ Setting tests */
 
@@ -186,6 +202,8 @@ module_tests_t *get_all_tests_big_numbers(void)
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "BIG_NUMBERS");
+
+    ADD_TEST_TO_MODULE(module_tests, test_bn_get_digits_count);
 
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_ul);
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_l);
