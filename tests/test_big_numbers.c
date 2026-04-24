@@ -18,6 +18,9 @@ check_bn_value_str(const big_number_t *bn, const char *expected_str)
     p_free((void **)&bn_str);
 }
 
+/* {{{ Helpers tests */
+
+/* }}} */
 /* {{{ Setting tests */
 
 static void test_bn_set_from_bn(void)

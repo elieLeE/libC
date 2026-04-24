@@ -14,6 +14,8 @@ void bn_init_with_args(big_number_t *bn, long size, unsigned long limit);
 
 void bn_set_limit(big_number_t *bn, unsigned long limit);
 
+unsigned int bn_get_digits_count(const big_number_t *bn);
+
 void bn_set_from_bn(const big_number_t * const src, big_number_t *out);
 void bn_set_from_ul(unsigned long n, big_number_t *out);
 void bn_set_from_l(long n, big_number_t *out);

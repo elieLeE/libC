@@ -39,6 +39,25 @@ void bn_init(big_number_t *bn)
     bn_init_with_args(bn, 0, LIMIT_MAX);
 }
 
+/* {{{ Helpers methods */
+
+unsigned int bn_get_digits_count(const big_number_t *bn)
+{
+    unsigned int digits_count_limit;
+
+    if (bn->parts.len == 0) {
+        return 0;
+    } else if (bn->parts.len == 1) {
+        return get_count_digits_of_n(bn->parts.tab[0]);
+    }
+
+    digits_count_limit = get_count_digits_of_n(bn->limit) - 1;
+
+    return digits_count_limit * (bn->parts.len - 1) +
+        get_count_digits_of_n(bn->parts.tab[bn->parts.len - 1]);
+}
+
+/* }}} */
 /* {{{ Setting methods */
 
 void bn_set_from_bn(const big_number_t * const src, big_number_t *dst)
