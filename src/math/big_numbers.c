@@ -57,6 +57,32 @@ unsigned int bn_get_digits_count(const big_number_t *bn)
         get_count_digits_of_n(bn->parts.tab[bn->parts.len - 1]);
 }
 
+
+int bn_cmp(const big_number_t *bn1, const big_number_t *bn2)
+{
+    if (bn1->limit != bn2->limit) {
+        /* TODO => Disable for now */
+        logger_fatal("cannot compare 2 big numbers with different limits: "
+                     "%ld - %ld",
+                     bn1->limit, bn2->limit);
+    }
+
+    if (bn1->parts.len != bn2->parts.len) {
+        return bn1->parts.len - bn2->parts.len;
+    }
+
+    for (int i = bn1->parts.len - 1; i >= 0; i--) {
+        unsigned long n1 = bn1->parts.tab[i];
+        unsigned long n2 = bn2->parts.tab[i];
+
+        if (n1 != n2) {
+            return n1 - n2;
+        }
+    }
+
+    return 0;
+}
+
 /* }}} */
 /* {{{ Setting methods */
 

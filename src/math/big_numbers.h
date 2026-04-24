@@ -16,6 +16,15 @@ void bn_set_limit(big_number_t *bn, unsigned long limit);
 
 unsigned int bn_get_digits_count(const big_number_t *bn);
 
+/* determine which number between the big number 'bn' and 'bn2' is the
+ * biggest.
+ * return
+ *      > 0 if bn > bnn
+ *      = 0 if bn = 0 (so if bn represents he same value as bn2)
+ *      < 0 if bn < bnn
+ */
+int bn_cmp(const big_number_t *bn1, const big_number_t *bn2);
+
 void bn_set_from_bn(const big_number_t * const src, big_number_t *out);
 void bn_set_from_ul(unsigned long n, big_number_t *out);
 void bn_set_from_l(long n, big_number_t *out);
