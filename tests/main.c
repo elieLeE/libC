@@ -18,27 +18,7 @@
 #include "test_tab_helper.h"
 #include "test_calculs.h"
 #include "test_big_numbers.h"
-
-static void test_swap(void)
-{
-    int a = 5;
-    int b = 13;
-
-    SWAP(int, &a, &b);
-
-    ASSERT_EQUAL_INT(a, 13);
-    ASSERT_EQUAL_INT(b, 5);
-}
-
-static module_tests_t *get_all_tests_without_modules(void)
-{
-    module_tests_t *module_tests = module_tests_new();
-
-    set_module_name(module_tests, "WITHOUT MODULE");
-    ADD_TEST_TO_MODULE(module_tests, test_swap);
-
-    return module_tests;
-}
+#include "test_utils.h"
 
 static int get_all_tests(generic_liste_t *modules_tests)
 {
@@ -48,7 +28,7 @@ static int get_all_tests(generic_liste_t *modules_tests)
 
     module_tests_t *module_tests;
 
-    ADD_TEST_MODULE(without_modules);
+    ADD_TEST_MODULE(utils);
     ADD_TEST_MODULE(liste);
     ADD_TEST_MODULE(prime);
     ADD_TEST_MODULE(vector);
