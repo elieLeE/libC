@@ -174,8 +174,8 @@ void bn_set_from_l(long n, big_number_t *out)
 /* {{{ Adding methods */
 
 static void
-_bn_pos_add_ul(const big_number_t * const bn, unsigned long n,
-               long first_idx, big_number_t *out)
+_bn_add_ul(const big_number_t * const bn, unsigned long n,
+           long first_idx, big_number_t *out)
 {
     unsigned long tmp;
     long idx_part = first_idx;
@@ -221,8 +221,8 @@ _bn_pos_add_ul(const big_number_t * const bn, unsigned long n,
 }
 
 static int
-bn_add_pos_pos(const big_number_t * const bn1,
-               const big_number_t * const bn2, big_number_t *out)
+_bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
+           big_number_t *out)
 {
     unsigned long carry = 0;
     const big_number_t * const shortest_bn =
@@ -264,13 +264,13 @@ bn_add_pos_pos(const big_number_t * const bn1,
         return 0;
     }
 
-    _bn_pos_add_ul(longest_bn, carry, shortest_bn->parts.len, out);
+    _bn_add_ul(longest_bn, carry, shortest_bn->parts.len, out);
 
     return 0;
 }
 
-int bn_add(const big_number_t * const bn1, const big_number_t * const bn2,
-           big_number_t *out)
+int bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
+              big_number_t *out)
 {
     if (bn1->limit != bn2->limit) {
         logger_error("operations between big numbers with different limit "
@@ -280,10 +280,10 @@ int bn_add(const big_number_t * const bn1, const big_number_t * const bn2,
     }
 
     if (bn1->positive_number && bn2->positive_number) {
-        return bn_add_pos_pos(bn1, bn2, out);
+        return _bn_add_bn(bn1, bn2, out);
     } else if (!bn1->positive_number && !bn2->positive_number) {
         out->positive_number = false;
-        return bn_add_pos_pos(bn1, bn2, out);
+        return _bn_add_bn(bn1, bn2, out);
     }
 
     logger_fatal("NOT YET IMPLEMENTED");
@@ -300,7 +300,7 @@ void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out)
         }
 
         if (bn->positive_number) {
-            _bn_pos_add_ul(bn, n, 0, out);
+            _bn_add_ul(bn, n, 0, out);
         } else {
             logger_fatal("NOT YET IMPLEMENTED");
         }
