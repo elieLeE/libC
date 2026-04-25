@@ -2,6 +2,7 @@
 
 #include "../mem/mem.h"
 #include "nber_helper.h"
+#include "../utils.h"
 
 #define LIMIT_MAX 100000000000000000
 
@@ -57,6 +58,49 @@ unsigned int bn_get_digits_count(const big_number_t *bn)
         get_count_digits_of_n(bn->parts.tab[bn->parts.len - 1]);
 }
 
+/* WARNING, this method could generate an overflow if it used on a "real" big
+ * number, as to say a big number greater than ULONG_MAX.
+ * Never use it. It is only dedicated to this module as it is used only when
+ * it is known that the big number is below ULONG_MAX */
+static unsigned long bn_get_ul(const big_number_t *bn)
+{
+    unsigned long n = bn->parts.tab[bn->parts.len - 1];
+
+    for (int i = bn->parts.len - 2; i >= 0; i--) {
+        n *= bn->limit;
+        n += bn->parts.tab[i];
+    }
+    return n;
+}
+
+int bn_cmp_ul(const big_number_t *bn, unsigned long n)
+{
+    unsigned int digits_count_bn;
+    unsigned long bn_ul;
+
+#if __x86_64__
+    const unsigned int digits_count_unsigned_long_max = 20;
+#else
+    const unsigned int digits_count_unsigned_long_max = 10;
+#endif
+
+    if (bn->parts.len == 0) {
+        return -1;
+    } else if (bn->parts.len == 1) {
+        if (bn->parts.tab[0] > n) {
+            return 1;
+        }
+        return -1;
+    }
+
+    digits_count_bn = bn_get_digits_count(bn);
+    if (digits_count_bn > digits_count_unsigned_long_max) {
+        return 1;
+    }
+
+    bn_ul = bn_get_ul(bn);
+    return g_cmp_uint64(&bn_ul, &n);
+}
 
 int bn_cmp(const big_number_t *bn1, const big_number_t *bn2)
 {
