@@ -94,10 +94,13 @@ static inline int g_cmp_int32_rev(const void *_d1, const void *_d2)
 
 static inline int g_cmp_uint32(const void *_d1, const void *_d2)
 {
-    const int32_t *d1 = (const int32_t *)_d1;
-    const int32_t *d2 = (const int32_t *)_d2;
+    const uint32_t *d1 = (const uint32_t *)_d1;
+    const uint32_t *d2 = (const uint32_t *)_d2;
 
-    return *d1 - *d2;
+    /* In order to be consistent, this method should return an int. But the
+     * difference between two 'unint' could overtake the maximum limit of a
+     * int. So, it is necessary to do the comparison directly. */
+    return *d1 == *d2 ? 0 : *d1 > *d2 ? 1 : -1;
 }
 
 static inline int g_cmp_uint32_rev(const void *_d1, const void *_d2)
@@ -110,7 +113,10 @@ static inline int g_cmp_int64(const void *_d1, const void *_d2)
     const int64_t *d1 = (const int64_t *)_d1;
     const int64_t *d2 = (const int64_t *)_d2;
 
-    return *d1 - *d2;
+    /* In order to be consistent, this method should return an int. But the
+     * difference between two 'int64' could overtake the maximum limit of a
+     * int. So, it is necessary to do the comparison directly. */
+    return *d1 == *d2 ? 0 : *d1 > *d2 ? 1 : -1;
 }
 
 static inline int g_cmp_int64_rev(const void *_d1, const void *_d2)
@@ -123,7 +129,10 @@ static inline int g_cmp_uint64(const void *_d1, const void *_d2)
     const uint64_t *d1 = (const uint64_t *)_d1;
     const uint64_t *d2 = (const uint64_t *)_d2;
 
-    return *d1 - *d2;
+    /* In order to be consistent, this method should return an int. But the
+     * difference between two 'uint64' could overtake the maximum limit of a
+     * int. So, it is necessary to do the comparison directly. */
+    return *d1 == *d2 ? 0 : *d1 > *d2 ? 1 : -1;
 }
 
 static inline int g_cmp_uint64_rev(const void *_d1, const void *_d2)
@@ -136,7 +145,7 @@ static inline int g_cmp_double(const void *_d1, const void *_d2)
     const double *d1 = (const double *)_d1;
     const double *d2 = (const double *)_d2;
 
-    return *d1 - *d2;
+    return *d1 == *d2 ? 0 : *d1 > *d2 ? 1 : -1;
 }
 
 static inline int g_cmp_double_rev(const void *_d1, const void *_d2)
