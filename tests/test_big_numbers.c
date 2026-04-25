@@ -71,6 +71,33 @@ static void test_bn_cmp(void)
     assert((bn_cmp(&bn, &bn2) < 0));
 }
 
+static void test_bn_cmp_ul(void)
+{
+    big_number_t bn;
+
+    bn_init(&bn);
+
+    bn_init_with_args(&bn, 0, 10000000);
+
+    bn_set_from_ul(1768928368, &bn);
+    assert((bn_cmp_ul(&bn, 1768928367) > 0));
+
+    bn_set_from_ul(1768928368, &bn);
+    assert((bn_cmp_ul(&bn, 2768928367) < 0));
+
+    bn_set_from_ul(31768928368, &bn);
+    assert((bn_cmp_ul(&bn, 2768928367) > 0));
+
+    bn_set_from_ul(27689283678888, &bn);
+    assert((bn_cmp_ul(&bn, 99) > 0));
+
+    bn_set_from_ul(27689283678888, &bn);
+    assert((bn_cmp_ul(&bn, 27689283678888) == 0));
+
+    bn_set_from_ul(2, &bn);
+    assert((bn_cmp_ul(&bn, 7) < 0));
+}
+
 /* }}} */
 /* {{{ Setting tests */
 
@@ -241,6 +268,7 @@ module_tests_t *get_all_tests_big_numbers(void)
     ADD_TEST_TO_MODULE(module_tests, test_bn_get_digits_count);
 
     ADD_TEST_TO_MODULE(module_tests, test_bn_cmp);
+    ADD_TEST_TO_MODULE(module_tests, test_bn_cmp_ul);
 
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_ul);
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_l);
