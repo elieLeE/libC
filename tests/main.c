@@ -42,33 +42,23 @@ static module_tests_t *get_all_tests_without_modules(void)
 
 static int get_all_tests(generic_liste_t *modules_tests)
 {
+#define ADD_TEST_MODULE(_module_name)                                         \
+    module_tests = RETHROW_PN(get_all_tests_##_module_name());                \
+    gl_add_elem_last(modules_tests, module_tests);
+
     module_tests_t *module_tests;
 
-    module_tests = RETHROW_PN(get_all_tests_without_modules());
-    gl_add_elem_last(modules_tests, module_tests);
-
-    module_tests = RETHROW_PN(get_all_tests_liste());
-    gl_add_elem_last(modules_tests, module_tests);
-
-    module_tests = RETHROW_PN(get_all_tests_io());
-    gl_add_elem_last(modules_tests, module_tests);
-
-    module_tests = RETHROW_PN(get_all_tests_prime());
-    gl_add_elem_last(modules_tests, module_tests);
-
-    module_tests = RETHROW_PN(get_all_tests_vector());
-    gl_add_elem_last(modules_tests, module_tests);
-
-    module_tests = RETHROW_PN(get_all_tests_tab_helper());
-    gl_add_elem_last(modules_tests, module_tests);
-
-    module_tests = RETHROW_PN(get_all_tests_calculs());
-    gl_add_elem_last(modules_tests, module_tests);
-
-    module_tests = RETHROW_PN(get_all_tests_big_numbers());
-    gl_add_elem_last(modules_tests, module_tests);
+    ADD_TEST_MODULE(without_modules);
+    ADD_TEST_MODULE(liste);
+    ADD_TEST_MODULE(prime);
+    ADD_TEST_MODULE(vector);
+    ADD_TEST_MODULE(tab_helper);
+    ADD_TEST_MODULE(calculs);
+    ADD_TEST_MODULE(big_numbers);
 
     return 0;
+
+#undef ADD_TEST_MODULE
 }
 
 static void print_usage(const char *argv0)
