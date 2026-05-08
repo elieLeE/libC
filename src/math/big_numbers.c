@@ -172,6 +172,7 @@ void bn_set_from_l(long n, big_number_t *out)
 
 /* }}} */
 /* {{{ Adding methods */
+/* {{{ Same sign */
 
 static void
 _bn_add_ul(const big_number_t * const bn, unsigned long n,
@@ -229,6 +230,8 @@ _bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
         bn1->parts.len >= bn2->parts.len ? bn2 : bn1;
     const big_number_t * const longest_bn =
         bn1->parts.len >= bn2->parts.len ? bn1 : bn2;
+    const long short_bn_len = bn1->parts.len >= bn2->parts.len ?
+        bn2->parts.len : bn1->parts.len;
 
     if (out != longest_bn && out != shortest_bn) {
         bn_set_from_bn(longest_bn, out);
@@ -259,14 +262,33 @@ _bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
         return 0;
     }
 
-    if (longest_bn->parts.len == shortest_bn->parts.len) {
+    if (longest_bn->parts.len == short_bn_len) {
         gv_add(&out->parts, carry);
         return 0;
     }
 
-    _bn_add_ul(longest_bn, carry, shortest_bn->parts.len, out);
+    _bn_add_ul(longest_bn, carry, short_bn_len, out);
 
     return 0;
+}
+
+/* }}} */
+
+void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out)
+{
+    if (bn->parts.len == 0) {
+        bn_set_from_ul(n, out);
+    } else {
+        if (bn->limit != out->limit) {
+            bn_set_limit(out, bn->limit);
+        }
+
+        if (bn->positive_number) {
+            _bn_add_ul(bn, n, 0, out);
+        } else {
+            logger_fatal("NOT YET IMPLEMENTED");
+        }
+    }
 }
 
 int bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
@@ -288,23 +310,6 @@ int bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
 
     logger_fatal("NOT YET IMPLEMENTED");
     return -1;
-}
-
-void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out)
-{
-    if (bn->parts.len == 0) {
-        bn_set_from_ul(n, out);
-    } else {
-        if (bn->limit != out->limit) {
-            bn_set_limit(out, bn->limit);
-        }
-
-        if (bn->positive_number) {
-            _bn_add_ul(bn, n, 0, out);
-        } else {
-            logger_fatal("NOT YET IMPLEMENTED");
-        }
-    }
 }
 
 /* }}} */
