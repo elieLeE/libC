@@ -34,6 +34,8 @@ static void test_bn_get_digits_count(void)
     bn_set_limit(&bn, 100);
     bn_set_from_ul(154, &bn);
     ASSERT_EQUAL_INT(bn_get_digits_count(&bn), 3);
+
+    bn_wipe(&bn);
 }
 
 static void test_bn_cmp(void)
@@ -69,6 +71,9 @@ static void test_bn_cmp(void)
     bn_set_from_ul(2, &bn);
     bn_set_from_ul(7, &bn2);
     assert((bn_cmp(&bn, &bn2) < 0));
+
+    bn_wipe(&bn);
+    bn_wipe(&bn2);
 }
 
 static void test_bn_cmp_ul(void)
@@ -96,6 +101,8 @@ static void test_bn_cmp_ul(void)
 
     bn_set_from_ul(2, &bn);
     assert((bn_cmp_ul(&bn, 7) < 0));
+
+    bn_wipe(&bn);
 }
 
 /* }}} */
