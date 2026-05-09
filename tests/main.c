@@ -19,6 +19,8 @@
 #include "test_calculs.h"
 #include "test_big_numbers.h"
 #include "test_utils.h"
+#include "test_nber_helper.h"
+
 
 static int get_all_tests(generic_liste_t *modules_tests)
 {
@@ -36,6 +38,7 @@ static int get_all_tests(generic_liste_t *modules_tests)
     ADD_TEST_MODULE(calculs);
     ADD_TEST_MODULE(big_numbers);
     ADD_TEST_MODULE(io);
+    ADD_TEST_MODULE(nber_helper);
 
     return 0;
 
