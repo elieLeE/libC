@@ -284,6 +284,9 @@ void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out)
         }
 
         if (bn->positive_number) {
+            if (bn != out) {
+                bn_set_from_bn(bn, out);
+            }
             _bn_add_ul(bn, n, 0, out);
         } else {
             logger_fatal("NOT YET IMPLEMENTED");
