@@ -228,11 +228,13 @@ static void test_bn_set_from_l(void)
 
 static void test_bn_add_ul(void)
 {
-    big_number_t bn;
+    big_number_t bn, res;
 
     bn_init_with_args(&bn, 0, 10000000);
+    bn_init_with_args(&res, 0, 10000000);
 
-    /* {{{ Add a unsigned long to a positive big number */
+    /* {{{ pos BN + ul => BN
+     * Add a unsigned long to a positive big number */
 
     bn_set_from_ul(1768928368, &bn);
 
@@ -260,8 +262,43 @@ static void test_bn_add_ul(void)
     ASSERT_EQUAL_LONG(bn.parts.tab[2], 56L);
 
     /* }}} */
+    /* {{{ pos BN + ul => BN2
+     * Add a unsigned long to a positive big number with result in a
+     * another big_number_t */
+
+    bn_set_from_ul(1768928368, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 8928368L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 176L);
+
+    check_bn_value_str(&bn, "1768928368");
+
+    bn_add_ul(&bn, 78865, &res);
+    /* Only the first part has been modified */
+    ASSERT_EQUAL_LONG(res.parts.len, 2L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 9007233L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 176L);
+
+    bn_set_from_bn(&res, &bn);
+    bn_add_ul(&bn, 787363765, &res);
+    ASSERT_EQUAL_LONG(res.parts.len, 2L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 6370998L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 255L);
+
+    bn_set_from_bn(&res, &bn);
+    bn_add_ul(&bn, 5693637787363765, &res);
+    ASSERT_EQUAL_LONG(res.parts.len, 3L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 3734763L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 9364034L);
+    ASSERT_EQUAL_LONG(res.parts.tab[2], 56L);
+
+    check_bn_value_str(&res, "5693640343734763");
+
+    /* }}} */
 
     bn_wipe(&bn);
+    bn_wipe(&res);
 }
 
 /* }}} */
