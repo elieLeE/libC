@@ -35,6 +35,7 @@ static int get_all_tests(generic_liste_t *modules_tests)
     ADD_TEST_MODULE(tab_helper);
     ADD_TEST_MODULE(calculs);
     ADD_TEST_MODULE(big_numbers);
+    ADD_TEST_MODULE(io);
 
     return 0;
 
