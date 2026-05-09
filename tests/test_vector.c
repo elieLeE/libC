@@ -338,6 +338,7 @@ static void test_set_vector(void)
     check_vector_values(&vector2, tab);
 
     gv_wipe(&vector, NULL);
+    gv_wipe(&vector2, NULL);
 }
 
 static void test_copy_vector(void)
@@ -379,6 +380,7 @@ static void test_copy_vector(void)
     check_vector_values(&vector2, tab3);
 
     gv_wipe(&vector, NULL);
+    gv_wipe(&vector2, NULL);
 }
 
 static void check_pos_found_elem(gv_t(int32) *vector, long elem,
