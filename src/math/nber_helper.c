@@ -110,7 +110,8 @@ unsigned long build_number_from_digits_rev(const unsigned char digits[],
     return n;
 }
 
-bool is_a_increasing_number(unsigned char digits[], unsigned int max_idx)
+bool is_a_increasing_number(const unsigned char digits[],
+                            unsigned int max_idx)
 {
     for (unsigned int i = 0; i < max_idx; i++) {
         if (digits[i] > digits[i + 1]) {
@@ -120,7 +121,8 @@ bool is_a_increasing_number(unsigned char digits[], unsigned int max_idx)
     return true;
 }
 
-bool is_a_decreasing_number(unsigned char digits[], unsigned int max_idx)
+bool is_a_decreasing_number(const unsigned char digits[],
+                            unsigned int max_idx)
 {
     for (unsigned int i = 0; i < max_idx; i++) {
         if (digits[i] < digits[i + 1]) {
@@ -130,7 +132,7 @@ bool is_a_decreasing_number(unsigned char digits[], unsigned int max_idx)
     return true;
 }
 
-bool is_a_bouncy_number(unsigned char digits[], unsigned int max_idx)
+bool is_a_bouncy_number(const unsigned char digits[], unsigned int max_idx)
 {
     return !is_a_increasing_number(digits, max_idx) &&
         !is_a_decreasing_number(digits, max_idx);
