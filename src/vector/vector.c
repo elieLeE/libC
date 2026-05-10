@@ -112,7 +112,7 @@ void *__gv_create_empty_spot(__vector_void_t *vec, long pos)
  * to sort them by decreasing order, implement a method that will return > 0
  * when the first element is below than the second one.
  */
-int __gv_search_spot(__vector_void_t *vec, void *elem,
+int __gv_search_spot(const __vector_void_t *vec, const void *elem,
                      int (*cmp_data_cb)(const void *d1, const void *d2))
 {
     if (vec->len == 0) {
@@ -152,7 +152,7 @@ int __gv_remove_elem_n(__vector_void_t *vec, long pos)
     return 0;
 }
 
-static long gv_find_sequantial(const __vector_void_t *vec, void *elem,
+static long gv_find_sequantial(const __vector_void_t *vec, const void *elem,
                                int (*cmp_data_cb)(const void *, const void *))
 {
     gv_for_each_pos(pos, vec) {
@@ -164,7 +164,7 @@ static long gv_find_sequantial(const __vector_void_t *vec, void *elem,
 }
 
 static long
-gv_find_dichotomy_rec(const __vector_void_t *vec, void *elem, long min,
+gv_find_dichotomy_rec(const __vector_void_t *vec, const void *elem, long min,
                       long max, int (*cmp_data_cb)(const void *, const void *))
 {
     long current_pos = (max + min) / 2;
@@ -190,7 +190,7 @@ gv_find_dichotomy_rec(const __vector_void_t *vec, void *elem, long min,
 }
 
 static long
-gv_find_dichotomy(const __vector_void_t *vec, void *elem,
+gv_find_dichotomy(const __vector_void_t *vec, const void *elem,
                   int (*cmp_data_cb)(const void *, const void *))
 {
     if (vec->len == 0) {
@@ -208,7 +208,8 @@ gv_find_dichotomy(const __vector_void_t *vec, void *elem,
     return gv_find_dichotomy_rec(vec, elem, 0, vec->len, cmp_data_cb);
 }
 
-long __gv_find(const __vector_void_t *vec, void *elem, gv_algo_search_t algo,
+long __gv_find(const __vector_void_t *vec, const void *elem,
+               gv_algo_search_t algo,
                int (*cmp_data_cb)(const void *, const void *d))
 {
     if (algo < 0 || algo > GV_ALGO_MAX_SEARCH) {

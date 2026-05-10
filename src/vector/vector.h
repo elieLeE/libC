@@ -137,7 +137,7 @@ void *__gv_create_empty_spot(__vector_void_t *vec, long pos);
         __set_elem_at_new_spot(__gvec, _val, _pos);                           \
     } while(0)
 
-int __gv_search_spot(__vector_void_t *vec, void *elem,
+int __gv_search_spot(const __vector_void_t *vec, const void *elem,
                      int (*cmp_data_cb)(const void *d1, const void *d2));
 
 #define gv_insert_elem_sorted(_gvec, _val, cmp_data_cb)                       \
@@ -173,7 +173,8 @@ __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
         shuffle_tab(__gvec->vec.tab, __gvec->len, __gvec->__size_elem);       \
     } while (0)
 
-long __gv_find(const __vector_void_t *vec, void *elem, gv_algo_search_t algo,
+long __gv_find(const __vector_void_t *vec, const void *elem,
+               gv_algo_search_t algo,
                int (*cmp_data_cb)(const void *, const void *d));
 
 #define gv_find(_gvec, _elem, algo, cmp_data_cb)                              \
