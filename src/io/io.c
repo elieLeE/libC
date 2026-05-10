@@ -71,7 +71,7 @@ void fermer_fichier(FILE **f)
     fclose(*f);
 }
 
-void lire_matrice(FILE* fichier, int* matrice[], int tailleLig, int tailleCol)
+void lire_matrice(FILE *fichier, int *matrice[], int tailleLig, int tailleCol)
 {
     int i, j;
 
