@@ -323,6 +323,11 @@ int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
 
 /* }}} */
 
+void bn_add_part(big_number_t *bn, unsigned long val)
+{
+    gv_add(&(bn->parts), val);
+}
+
 char *bn_to_str(const big_number_t *bn)
 {
     size_t str_size = bn->parts.len * 18 + 1;

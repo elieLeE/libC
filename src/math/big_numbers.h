@@ -14,6 +14,47 @@ void bn_init_with_args(big_number_t *bn, long size, unsigned long limit);
 
 void bn_set_limit(big_number_t *bn, unsigned long limit);
 
+static inline void
+bn_set_part(big_number_t *bn, unsigned long val, long idx)
+{
+    bn->parts.tab[idx] = val;
+}
+
+static inline void
+bn_set_part_safe(big_number_t *bn, unsigned long val, long idx)
+{
+    if (idx >= bn->parts.len) {
+        logger_fatal("idx (%ld) is bigger than the BN length (%ld)",
+                     idx, bn->parts.len);
+    }
+    if (val >= bn->limit) {
+        logger_fatal("value (%ld) is bigger than the BN limit (%ld)",
+                     val, bn->limit);
+    }
+    bn_set_part(bn, val, idx);
+}
+
+/* Synaptic gets me an error here. I do not exactly why yet. For now,
+ * the method is defined in the .c.
+ * TODO: TO INVESTIGATE */
+void bn_add_part(big_number_t *bn, unsigned long val);
+
+static inline unsigned long
+bn_get_part(const big_number_t *bn, long idx)
+{
+    return bn->parts.tab[idx];
+}
+
+static inline unsigned long
+bn_get_part_safe(const big_number_t *bn, long idx)
+{
+    if (idx >= bn->parts.len) {
+        logger_fatal("idx (%ld) is bigger than the BN length (%ld)",
+                     idx, bn->parts.len);
+    }
+    return bn_get_part(bn, idx);
+}
+
 unsigned int bn_get_digits_count(const big_number_t *bn);
 
 /* determine which number between the big number 'bn' and 'bn2/n' is the
