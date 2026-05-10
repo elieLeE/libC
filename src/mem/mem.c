@@ -3,7 +3,7 @@
 #include "mem.h"
 #include "../logger/logger.h"
 
-void* p_malloc(size_t const taille)
+void* p_malloc(size_t taille)
 {
     void *p;
 
@@ -20,7 +20,7 @@ void* p_malloc(size_t const taille)
     return p;
 }
 
-void* p_calloc(size_t const taille)
+void* p_calloc(size_t taille)
 {
     void *p;
 
@@ -37,7 +37,7 @@ void* p_calloc(size_t const taille)
     return p;
 }
 
-void* p_realloc(void *p, size_t const taille)
+void* p_realloc(void *p, size_t taille)
 {
     if (taille <= 0) {
         logger_error("cannot allocate a negative size: %ld", taille);
@@ -57,7 +57,7 @@ void _p_clear(void *p, size_t size)
     memset(p, 0, size);
 }
 
-void** alloc_tab_2d(int const lig, int const col, size_t const type_size)
+void** alloc_tab_2d(int lig, int col, size_t type_size)
 {
     int i, t;
     void **tab;
@@ -83,7 +83,7 @@ void** alloc_tab_2d(int const lig, int const col, size_t const type_size)
     return tab;
 }
 
-void free_tab_2d(void **matrice, int const lig)
+void free_tab_2d(void **matrice, int lig)
 {
     int i;
 

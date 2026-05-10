@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-__attribute__((malloc)) void* p_malloc(size_t const taille);
-__attribute__((malloc)) void* p_calloc(size_t const taille);
+__attribute__((malloc)) void* p_malloc(size_t taille);
+__attribute__((malloc)) void* p_calloc(size_t taille);
 __attribute__((malloc))
-void* p_realloc(void *p, size_t const taille);
+void* p_realloc(void *p, size_t taille);
 
 void _p_clear(void *p, size_t size);
 #define p_clear(_p, _n)                                                       \
@@ -16,9 +16,9 @@ void _p_clear(void *p, size_t size);
     } while (0)
 
 __attribute__((malloc))
-void** alloc_tab_2d(int const lig, int const col, size_t const tailleType);
+void** alloc_tab_2d(int lig, int col, size_t tailleType);
 
-void free_tab_2d(void** matrice, int const lig);
+void free_tab_2d(void** matrice, int lig);
 
 void _p_free(void **p);
 #define p_free(_p)                                                            \
