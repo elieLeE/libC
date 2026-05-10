@@ -226,12 +226,18 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
            big_number_t *out)
 {
     unsigned long carry = 0;
-    const big_number_t * const shortest_bn =
-        bn1->parts.len >= bn2->parts.len ? bn2 : bn1;
-    const big_number_t * const longest_bn =
-        bn1->parts.len >= bn2->parts.len ? bn1 : bn2;
-    const long short_bn_len = bn1->parts.len >= bn2->parts.len ?
-        bn2->parts.len : bn1->parts.len;
+    const big_number_t *shortest_bn, *longest_bn;
+    long short_bn_len;
+
+    if (bn1->parts.len >= bn2->parts.len) {
+        shortest_bn = bn2;
+        longest_bn = bn1;
+        short_bn_len = bn2->parts.len;
+    } else {
+        shortest_bn = bn1;
+        longest_bn = bn2;
+        short_bn_len = bn1->parts.len;
+    }
 
     if (out != longest_bn && out != shortest_bn) {
         bn_set_from_bn(longest_bn, out);
