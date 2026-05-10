@@ -130,7 +130,7 @@ int bn_cmp(const big_number_t *bn1, const big_number_t *bn2)
 /* }}} */
 /* {{{ Setting methods */
 
-void bn_set_from_bn(const big_number_t * const src, big_number_t *dst)
+void bn_set_from_bn(const big_number_t *src, big_number_t *dst)
 {
     gv_set(&src->parts, &dst->parts);
 
@@ -175,7 +175,7 @@ void bn_set_from_l(long n, big_number_t *out)
 /* {{{ Same sign */
 
 static void
-_bn_add_ul(const big_number_t * const bn, unsigned long n,
+_bn_add_ul(const big_number_t *bn, unsigned long n,
            long first_idx, big_number_t *out)
 {
     unsigned long tmp;
@@ -222,7 +222,7 @@ _bn_add_ul(const big_number_t * const bn, unsigned long n,
 }
 
 static int
-_bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
+_bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
            big_number_t *out)
 {
     unsigned long carry = 0;
@@ -274,7 +274,7 @@ _bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
 
 /* }}} */
 
-void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out)
+void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
 {
     if (bn->parts.len == 0) {
         bn_set_from_ul(n, out);
@@ -294,7 +294,7 @@ void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out)
     }
 }
 
-int bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
+int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out)
 {
     if (bn1->limit != bn2->limit) {

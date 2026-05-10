@@ -26,15 +26,16 @@ unsigned int bn_get_digits_count(const big_number_t *bn);
 int bn_cmp(const big_number_t *bn1, const big_number_t *bn2);
 int bn_cmp_ul(const big_number_t *bn, unsigned long n);
 
-void bn_set_from_bn(const big_number_t * const src, big_number_t *out);
+void bn_set_from_bn(const big_number_t *src, big_number_t *out);
 void bn_set_from_ul(unsigned long n, big_number_t *out);
 void bn_set_from_l(long n, big_number_t *out);
 
 /* Note: in all methods below, 'out' can be the same pointer than one of
  * the "in" big number argument" */
-int bn_add_bn(const big_number_t * const bn1, const big_number_t * const bn2,
+int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out);
-void bn_add_ul(big_number_t *bn, unsigned long n, big_number_t *out);
+void bn_add_ul(const big_number_t *bn, unsigned long n,
+               big_number_t *out);
 
 char *bn_to_str(const big_number_t *bn);
 
