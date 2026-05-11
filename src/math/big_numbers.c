@@ -1,5 +1,7 @@
 #include "big_numbers.h"
 
+#include <limits.h>
+
 #include "../mem/mem.h"
 #include "nber_helper.h"
 #include "../utils.h"
@@ -186,6 +188,7 @@ _bn_add_ul(const big_number_t *bn, unsigned long n,
     }
 
     /* len of the vector have been checked in the calling method */
+    // ouverflow is not possible here. Case are handled in method 'bn_add_ul'.
     tmp = bn->parts.tab[idx_part] + n;
     out->parts.tab[idx_part] = tmp;
 
@@ -293,7 +296,19 @@ void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
             if (bn != out) {
                 bn_set_from_bn(bn, out);
             }
-            _bn_add_ul(bn, n, 0, out);
+
+            if (n < ULONG_MAX + bn->limit) {
+                _bn_add_ul(bn, n, 0, out);
+            } else {
+                big_number_t tmp;
+
+                bn_init_with_args(&tmp, 0, bn->limit);
+                bn_set_from_ul(n, &tmp);
+
+                _bn_add_bn(&tmp, bn, out);
+
+                bn_wipe(&tmp);
+            }
         } else {
             logger_fatal("NOT YET IMPLEMENTED");
         }

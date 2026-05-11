@@ -1,5 +1,7 @@
 #include "test_big_numbers.h"
 
+#include <limits.h>
+
 #include "../src/math/big_numbers.h"
 #include "../src/macros.h"
 #include "../src/mem/mem.h"
@@ -600,6 +602,15 @@ static void test_bn_add_ul(void)
     ASSERT_EQUAL_LONG(bn.parts.tab[1], 9364034L);
     ASSERT_EQUAL_LONG(bn.parts.tab[2], 56L);
 
+    bn_set_from_l(2, &bn);
+    bn_add_ul(&bn, ULONG_MAX -1, &bn);
+    ASSERT_EQUAL_LONG(bn.parts.len, 3L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 9551616L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 4407370L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[2], 184467L);
+
+    check_bn_value_str(&bn, "18446744073709551616");
+
     /* }}} */
     /* {{{ pos BN + ul => BN2
      * Add a unsigned long to a positive big number with result in a
@@ -633,6 +644,15 @@ static void test_bn_add_ul(void)
     ASSERT_EQUAL_LONG(res.parts.tab[2], 56L);
 
     check_bn_value_str(&res, "5693640343734763");
+
+    bn_set_from_l(2, &bn);
+    bn_add_ul(&bn, ULONG_MAX -1, &res);
+    ASSERT_EQUAL_LONG(res.parts.len, 3L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 9551616L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 4407370L);
+    ASSERT_EQUAL_LONG(res.parts.tab[2], 184467L);
+
+    check_bn_value_str(&res, "18446744073709551616");
 
     /* }}} */
 
