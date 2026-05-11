@@ -178,8 +178,8 @@ void bn_set_from_l(long n, big_number_t *out)
 /* {{{ Same sign */
 
 static void
-_bn_add_ul(const big_number_t *bn, unsigned long n,
-           long first_idx, big_number_t *out)
+__bn_add_ul(const big_number_t *bn, unsigned long n,
+            long first_idx, big_number_t *out)
 {
     unsigned long tmp;
     long idx_part = first_idx;
@@ -277,7 +277,28 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
         return;
     }
 
-    _bn_add_ul(longest_bn, carry, short_bn_len, out);
+    __bn_add_ul(longest_bn, carry, short_bn_len, out);
+}
+
+static void
+_bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
+{
+    if (bn != out) {
+        bn_set_from_bn(bn, out);
+    }
+
+    if (n < ULONG_MAX + bn->limit) {
+        __bn_add_ul(bn, n, 0, out);
+    } else {
+        big_number_t tmp;
+
+        bn_init_with_args(&tmp, 0, bn->limit);
+        bn_set_from_ul(n, &tmp);
+
+        _bn_add_bn(&tmp, bn, out);
+
+        bn_wipe(&tmp);
+    }
 }
 
 /* }}} */
@@ -286,31 +307,17 @@ void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
 {
     if (bn->parts.len == 0) {
         bn_set_from_ul(n, out);
+        return;
+    }
+
+    if (bn->limit != out->limit) {
+        bn_set_limit(out, bn->limit);
+    }
+
+    if (bn->positive_number) {
+        _bn_add_ul(bn, n, out);
     } else {
-        if (bn->limit != out->limit) {
-            bn_set_limit(out, bn->limit);
-        }
-
-        if (bn->positive_number) {
-            if (bn != out) {
-                bn_set_from_bn(bn, out);
-            }
-
-            if (n < ULONG_MAX + bn->limit) {
-                _bn_add_ul(bn, n, 0, out);
-            } else {
-                big_number_t tmp;
-
-                bn_init_with_args(&tmp, 0, bn->limit);
-                bn_set_from_ul(n, &tmp);
-
-                _bn_add_bn(&tmp, bn, out);
-
-                bn_wipe(&tmp);
-            }
-        } else {
-            logger_fatal("NOT YET IMPLEMENTED");
-        }
+        logger_fatal("NOT YET IMPLEMENTED");
     }
 }
 
