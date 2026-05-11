@@ -225,7 +225,7 @@ _bn_add_ul(const big_number_t *bn, unsigned long n,
     }
 }
 
-static int
+static void
 _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
            big_number_t *out)
 {
@@ -269,17 +269,15 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
     }
 
     if (carry == 0) {
-        return 0;
+        return;
     }
 
     if (longest_bn->parts.len == short_bn_len) {
         gv_add(&out->parts, carry);
-        return 0;
+        return;
     }
 
     _bn_add_ul(longest_bn, carry, short_bn_len, out);
-
-    return 0;
 }
 
 /* }}} */
@@ -327,10 +325,14 @@ int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
     }
 
     if (bn1->positive_number && bn2->positive_number) {
-        return _bn_add_bn(bn1, bn2, out);
+        _bn_add_bn(bn1, bn2, out);
+
+        return 0;
     } else if (!bn1->positive_number && !bn2->positive_number) {
         out->positive_number = false;
-        return _bn_add_bn(bn1, bn2, out);
+        _bn_add_bn(bn1, bn2, out);
+
+        return 0;
     }
 
     logger_fatal("NOT YET IMPLEMENTED");
