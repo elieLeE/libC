@@ -18,12 +18,16 @@ static inline void
 bn_set_part(big_number_t *bn, unsigned long val, long idx)
 {
     bn->parts.tab[idx] = val;
+
+    if (idx >= bn->parts.len) {
+        bn->parts.len = idx + 1;
+    }
 }
 
 static inline void
 bn_set_part_safe(big_number_t *bn, unsigned long val, long idx)
 {
-    if (idx >= bn->parts.len) {
+    if (idx >= bn->parts.size) {
         logger_fatal("idx (%ld) is bigger than the BN length (%ld)",
                      idx, bn->parts.len);
     }
