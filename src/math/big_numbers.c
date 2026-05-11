@@ -50,7 +50,9 @@ unsigned int bn_get_digits_count(const big_number_t *bn)
 
     if (bn->parts.len == 0) {
         return 0;
-    } else if (bn->parts.len == 1) {
+    }
+
+    if (bn->parts.len == 1) {
         return get_count_digits_of_n(bn->parts.tab[0]);
     }
 
@@ -88,7 +90,9 @@ int bn_cmp_ul(const big_number_t *bn, unsigned long n)
 
     if (bn->parts.len == 0) {
         return -1;
-    } else if (bn->parts.len == 1) {
+    }
+
+    if (bn->parts.len == 1) {
         if (bn->parts.tab[0] > n) {
             return 1;
         }
@@ -161,13 +165,10 @@ void bn_set_from_ul(unsigned long n, big_number_t *out)
 
 void bn_set_from_l(long n, big_number_t *out)
 {
-    if (n > 0) {
+    if (n >= 0) {
         bn_set_from_ul(n, out);
     } else {
         bn_set_from_ul(-n, out);
-    }
-
-    if (n < 0) {
         out->positive_number = false;
     }
 }
