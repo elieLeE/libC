@@ -243,8 +243,10 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
         short_bn_len = bn1->parts.len;
     }
 
+    /* cannot do that in the method 'bn_add_bn' because this methods can also
+     * be called from 'bn_add_ul' and 'bn_sub_ul' */
     if (out != longest_bn && out != shortest_bn) {
-        bn_set_from_bn(longest_bn, out);
+        gv_set(&(longest_bn->parts), &(out->parts));
     }
 
     for (long i = 0; i < shortest_bn->parts.len; i++) {
