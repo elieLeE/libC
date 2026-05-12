@@ -228,7 +228,7 @@ static void test_bn_set_from_l(void)
 /* }}} */
 /* {{{ Adding tests */
 
-static void test_bn_add(void)
+static void test_bn_pos_bn_add_pos_bn(void)
 {
     big_number_t bn1, bn2, bn3;
 
@@ -567,7 +567,7 @@ static void test_bn_add(void)
     bn_wipe(&bn3);
 }
 
-static void test_bn_add_ul(void)
+static void test_bn_pos_bn_add_ul(void)
 {
     big_number_t bn, res;
 
@@ -677,8 +677,8 @@ module_tests_t *get_all_tests_big_numbers(void)
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_l);
     ADD_TEST_TO_MODULE(module_tests, test_bn_set_from_bn);
 
-    ADD_TEST_TO_MODULE(module_tests, test_bn_add);
-    ADD_TEST_TO_MODULE(module_tests, test_bn_add_ul);
+    ADD_TEST_TO_MODULE(module_tests, test_bn_pos_bn_add_pos_bn);
+    ADD_TEST_TO_MODULE(module_tests, test_bn_pos_bn_add_ul);
 
     return module_tests;
 }
