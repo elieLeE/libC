@@ -331,13 +331,22 @@ int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
         return -1;
     }
 
+    if (bn1 != out && bn2 != out) {
+        bn_fast_clear(out);
+
+        if (bn1->limit != out->limit) {
+            bn_set_limit(out, bn1->limit);
+        }
+    }
+
     if (bn1->positive_number && bn2->positive_number) {
         _bn_add_bn(bn1, bn2, out);
+        out->positive_number = true;
 
         return 0;
     } else if (!bn1->positive_number && !bn2->positive_number) {
-        out->positive_number = false;
         _bn_add_bn(bn1, bn2, out);
+        out->positive_number = false;
 
         return 0;
     }
