@@ -304,6 +304,98 @@ _bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
 }
 
 /* }}} */
+/* {{{ Opposite sign */
+
+static void
+_bn_set_part_or_add(unsigned long val, long idx, big_number_t *out)
+{
+    if (idx > out->parts.len -1) {
+        gv_add(&out->parts, val);
+    } else {
+        out->parts.tab[idx] = val;
+    }
+}
+
+static inline unsigned long
+_get_bn_part_sub_ul(unsigned long n1_part, unsigned long n2_part,
+                    unsigned long bn_limit, bool is_n1_biggest,
+                    unsigned long *carry)
+{
+    if (is_n1_biggest) {
+        if (n1_part >= n2_part) {
+            *carry = 0;
+            return n1_part - n2_part;
+        } else {
+            *carry = 1;
+            return bn_limit + n1_part - n2_part;
+        }
+    } else if (n1_part <= n2_part) {
+        *carry = 0;
+        return n2_part - n1_part;
+    } else {
+        *carry = 1;
+        return bn_limit + n2_part - n1_part;
+    }
+}
+
+/* This method only manages cases where n is below then bn->limit ! */
+static void
+__bn_sub_ul(const big_number_t *bn, unsigned long n,
+           long first_idx, bool is_bn_biggest, big_number_t *out)
+{
+    long bn_part_idx = first_idx;
+    unsigned long carry = n;
+
+    do {
+        unsigned long val;
+
+        val = _get_bn_part_sub_ul(bn->parts.tab[bn_part_idx], carry, bn->limit,
+                                  is_bn_biggest, &carry);
+        _bn_set_part_or_add(val, bn_part_idx, out);
+
+        bn_part_idx++;
+    } while (carry != 0);
+
+    if (bn_part_idx <= bn->parts.len - 1) {
+        gv_copy(&bn->parts, bn_part_idx, bn_part_idx,
+                (bn->parts.len - bn_part_idx), &out->parts);
+    } else {
+        long i = out->parts.len - 1;
+
+        while (i >= 0 && out->parts.tab[i] == 0) {
+            out->parts.len--;
+            i--;
+        }
+    }
+}
+
+static void
+_bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
+{
+    bool is_bn_biggest = true;
+    int bn_cmp_n = bn_cmp_ul(bn, n);
+
+    if (bn_cmp_n == 0) {
+        bn_set_from_l(0, out);
+        return;
+    } else if (bn_cmp_n < 0) {
+        is_bn_biggest = false;
+    }
+
+    if (bn->positive_number) {
+        out->positive_number = is_bn_biggest;
+    } else {
+        out->positive_number = !is_bn_biggest;
+    }
+
+    if (bn->limit > n) {
+        __bn_sub_ul(bn, n, 0, is_bn_biggest, out);
+    } else {
+        logger_fatal("NOT IMPLEMENTED YET");
+    }
+}
+
+/* }}} */
 
 void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
 {
@@ -324,7 +416,10 @@ void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
         _bn_add_ul(bn, n, out);
         out->positive_number = true;
     } else {
-        logger_fatal("NOT YET IMPLEMENTED");
+        /* bn here is not a positive one, but adding a positive number to
+         * a negative number is equivalent to substracting a positive
+         * number to another one */
+        _bn_sub_ul(bn, n, out);
     }
 }
 
