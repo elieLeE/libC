@@ -370,6 +370,37 @@ __bn_sub_ul(const big_number_t *bn, unsigned long n,
 }
 
 static void
+_bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2, big_number_t *out)
+{
+    unsigned long carry = 0;
+    long bn_part_idx = 0;
+    /* first bn is always the first one in this method */
+    long short_bn_len = bn2->parts.len;
+
+    if (bn1 != out && bn2 != out) {
+        gv_set(&(bn1->parts), &(out->parts));
+    }
+
+    for (bn_part_idx = 0; bn_part_idx < short_bn_len - 1; bn_part_idx++) {
+        unsigned long n1 = bn1->parts.tab[bn_part_idx];
+        unsigned long n2 = bn2->parts.tab[bn_part_idx] + carry;
+        unsigned long tmp = _get_bn_part_sub_ul(n1, n2, bn1->limit,
+                                                true, &carry);
+
+        if (tmp > bn1->limit) {
+            logger_fatal("%ld is bigger than limit (%ld)\n", tmp, bn1->limit);
+        }
+
+        _bn_set_part_or_add(tmp, bn_part_idx, out);
+    }
+
+    __bn_sub_ul(bn1, bn2->parts.tab[short_bn_len - 1] + carry, bn_part_idx,
+                true, out);
+
+    return;
+}
+
+static void
 _bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
 {
     bool is_bn_biggest = true;
@@ -391,7 +422,18 @@ _bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
     if (bn->limit > n) {
         __bn_sub_ul(bn, n, 0, is_bn_biggest, out);
     } else {
-        logger_fatal("NOT IMPLEMENTED YET");
+        big_number_t tmp;
+
+        bn_init_with_args(&tmp, 0, bn->limit);
+        bn_set_from_ul(n, &tmp);
+
+        if (is_bn_biggest) {
+            _bn_sub_bn(bn, &tmp, out);
+        } else {
+            _bn_sub_bn(&tmp, bn, out);
+        }
+
+        bn_wipe(&tmp);
     }
 }
 
