@@ -465,6 +465,34 @@ void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
     }
 }
 
+void bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
+{
+    if (bn->parts.len == 0) {
+        bn_set_from_ul(n, out);
+        out->positive_number = false;
+
+        return;
+    }
+
+    if (bn != out) {
+        bn_fast_clear(out);
+
+        if (bn->limit != out->limit) {
+            bn_set_limit(out, bn->limit);
+        }
+    }
+
+    if (bn->positive_number) {
+        _bn_sub_ul(bn, n, out);
+    } else {
+        /* bn here is not a positive one, but adding a positive number to
+         * a negative number is equivalent to substracting a positive
+         * number to another one */
+        _bn_add_ul(bn, n, out);
+        out->positive_number = false;
+    }
+}
+
 int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out)
 {
