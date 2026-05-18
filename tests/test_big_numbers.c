@@ -1679,6 +1679,92 @@ static void test_bn_pos_bn_sub_ul(void)
     bn_wipe(&res);
 }
 
+static void test_bn_pos_bn_sub_l(void)
+{
+    big_number_t bn, res;
+
+    bn_init_with_args(&bn, 0, 10000);
+    bn_init_with_args(&res, 0, 10000);
+
+    /* {{{ pos BN - l => BN
+     * Add a unsigned long to a negative big number */
+    /* {{{ bn = 9999 and n = 9999 */
+
+    bn_set_from_l(9999, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 9999L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    bn_sub_l(&bn, 9999, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 0L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 3333 and n = 4000 */
+
+    bn_set_from_l(3333, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 3333L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    bn_sub_l(&bn, 40000, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 6667L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 3L);
+    ASSERT(!bn.positive_number, "bn should be negative");
+
+    /* }}} */
+    /* {{{ bn = 10002 and n = -3776 */
+
+    bn_set_from_l(10002, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 2L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 1L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    bn_sub_l(&bn, -3776, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 3778L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 1L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* }}} */
+    /* {{{ pos BN - l => BN2
+     * Add a unsigned long to a negative big number with result in a
+     * another big_number_t */
+    /* {{{ bn = LONG_MAX and n = LONG_MAX - 77654 */
+
+    bn_set_from_l(LONG_MAX, &bn);
+    ASSERT_EQUAL_LONG(bn.parts.len, 5L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 5807L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[1], 5477L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[2], 368L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[3], 3372L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[4], 922L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    bn_sub_l(&bn, LONG_MAX - 77654, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 2L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 7654L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 7L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* }}} */
+
+    bn_wipe(&bn);
+    bn_wipe(&res);
+}
+
 /* }}} */
 /* {{{ test_bn_neg_bn_sub_* */
 
@@ -2049,6 +2135,7 @@ module_tests_t *get_all_tests_big_numbers(void)
     ADD_TEST_TO_MODULE(module_tests, test_bn_neg_bn_add_l);
 
     ADD_TEST_TO_MODULE(module_tests, test_bn_pos_bn_sub_ul);
+    ADD_TEST_TO_MODULE(module_tests, test_bn_pos_bn_sub_l);
 
     return module_tests;
 }
