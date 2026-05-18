@@ -499,6 +499,15 @@ void bn_add_l(const big_number_t *bn, long n, big_number_t *out)
     }
 }
 
+void bn_sub_l(const big_number_t *bn, long n, big_number_t *out)
+{
+    if (n >= 0) {
+        bn_sub_ul(bn, n, out);
+    } else {
+        bn_add_ul(bn, -n, out);
+    }
+}
+
 int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out)
 {

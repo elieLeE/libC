@@ -83,6 +83,7 @@ void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out);
 void bn_add_l(const big_number_t *bn, long n, big_number_t *out);
 
 void bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out);
+void bn_sub_l(const big_number_t *bn, long n, big_number_t *out);
 
 char *bn_to_str(const big_number_t *bn);
 
