@@ -93,10 +93,7 @@ int bn_cmp_ul(const big_number_t *bn, unsigned long n)
     }
 
     if (bn->parts.len == 1) {
-        if (bn->parts.tab[0] > n) {
-            return 1;
-        }
-        return -1;
+        return bn->parts.tab[0] - n;
     }
 
     digits_count_bn = bn_get_digits_count(bn);
