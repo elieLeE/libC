@@ -1266,12 +1266,12 @@ static void test_bn_neg_bn_add_ul(void)
     ASSERT_EQUAL_LONG(bn.parts.tab[2], 87L);
     ASSERT(!bn.positive_number, "bn should be negative");
 
-    bn_add_ul(&bn, 873672, &bn);
+    bn_add_ul(&bn, 873672, &res);
 
-    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
-    ASSERT_EQUAL_LONG(bn.parts.tab[0], 0L);
-    ASSERT(bn.positive_number, "bn should be positive");
-    check_bn_value_str(&bn, "0");
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 0L);
+    ASSERT(res.positive_number, "bn should be positive");
+    check_bn_value_str(&res, "0");
 
     /* }}} */
     /* {{{ bn = -3 and n = 4 */
