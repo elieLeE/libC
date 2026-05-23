@@ -373,7 +373,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
      * Test with 2 positives BNs and result has to be set in the same
      * variable than the lowest one in the addition (the second one if both
      * have same length) */
-    /* {{{ bn1 = 5 and bn2 = 9 */
+    /* {{{ bn1 = 9 and bn2 = 5 */
 
     bn_set_from_ul(9, &bn1);
     bn_set_from_ul(5, &bn2);
@@ -393,7 +393,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
     ASSERT(bn2.positive_number, "bn should be positive");
 
     /* }}} */
-    /* {{{ bn1 = 14 and bn2 = 99 */
+    /* {{{ bn1 = 99 and bn2 = 14 */
 
     bn_set_from_ul(99, &bn1);
     bn_set_from_ul(14, &bn2);
@@ -414,7 +414,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
     ASSERT(bn2.positive_number, "bn should be positive");
 
     /* }}} */
-    /* {{{ bn1 = 1 and bn2 = 99999999 */
+    /* {{{ bn1 = 99999999 and bn2 = 1 */
 
     bn_set_from_ul(99999999, &bn1);
     bn_set_from_ul(1, &bn2);
