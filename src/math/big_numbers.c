@@ -371,7 +371,7 @@ _bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2, big_number_t *out)
 {
     unsigned long carry = 0;
     long bn_part_idx = 0;
-    /* first bn is always the first one in this method */
+    /* first bn is always the biggest one in this method */
     long short_bn_len = bn2->parts.len;
 
     if (bn1 != out && bn2 != out) {
