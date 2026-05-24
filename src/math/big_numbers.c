@@ -536,9 +536,29 @@ int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
         out->positive_number = false;
 
         return 0;
+    } else {
+        int bn_cmp_res = (bn_cmp(bn1, bn2));
+        bool is_bn1_biggest;
+
+        if (bn_cmp_res == 0) {
+            bn_set_from_l(0, out);
+            return 0;
+        }
+
+        is_bn1_biggest = (bn_cmp_res > 0);
+        if (is_bn1_biggest) {
+            _bn_sub_bn(bn1, bn2, out);
+        } else {
+            _bn_sub_bn(bn2, bn1, out);
+        }
+
+        if (bn1->positive_number) {
+            out->positive_number = is_bn1_biggest;
+        } else {
+            out->positive_number = !is_bn1_biggest;
+        }
     }
 
-    logger_fatal("NOT YET IMPLEMENTED");
     return -1;
 }
 
