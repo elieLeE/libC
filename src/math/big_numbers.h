@@ -63,6 +63,8 @@ unsigned int bn_get_digits_count(const big_number_t *bn);
 
 /* determine which number between the big number 'bn' and 'bn2/n' is the
  * biggest.
+ * In these methods, the sign of variables are not taken in account !
+ *
  * return
  *      > 0 if bn > bn2/n
  *      = 0 if bn = 0 (so if bn represents he same value as bn2/n)
