@@ -508,6 +508,62 @@ void bn_sub_l(const big_number_t *bn, long n, big_number_t *out)
     }
 }
 
+int bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2,
+              big_number_t *out)
+{
+    if (bn1->limit != bn2->limit) {
+        logger_error("operations between big numbers with different limit "
+                     "has not been yet implemented, %ld - %ld",
+                     bn1->parts.len, bn2->parts.len);
+        return -1;
+    }
+
+    if (bn1 != out && bn2 != out) {
+        bn_fast_clear(out);
+
+        if (bn1->limit != out->limit) {
+            bn_set_limit(out, bn1->limit);
+        }
+    }
+
+    if (bn1->positive_number && !bn2->positive_number) {
+        _bn_add_bn(bn1, bn2, out);
+        out->positive_number = true;
+
+        return 0;
+    } else if (!bn1->positive_number && bn2->positive_number) {
+        _bn_add_bn(bn1, bn2, out);
+        out->positive_number = false;
+
+        return 0;
+    } else {
+        int bn_cmp_res = bn_cmp(bn1, bn2);
+        bool is_bn1_biggest;
+
+        if (bn_cmp_res == 0) {
+            bn_set_from_l(0, out);
+            return 0;
+        }
+
+        is_bn1_biggest = (bn_cmp_res > 0);
+        if (is_bn1_biggest) {
+            _bn_sub_bn(bn1, bn2, out);
+            out->positive_number = bn1->positive_number;
+        } else {
+            _bn_sub_bn(bn2, bn1, out);
+            out->positive_number = bn2->positive_number;
+        }
+
+        if (bn1->positive_number) {
+            out->positive_number = is_bn1_biggest;
+        } else {
+            out->positive_number = !is_bn1_biggest;
+        }
+    }
+
+    return -1;
+}
+
 int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out)
 {
