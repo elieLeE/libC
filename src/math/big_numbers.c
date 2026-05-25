@@ -286,7 +286,11 @@ _bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
         bn_set_from_bn(bn, out);
     }
 
-    if (n < ULONG_MAX + bn->limit) {
+    /* If n + bn->limit, we will get overflow. As, we can not check if a number
+     * if greater than the maximum possible, we substract bn->limit to
+     * ULONG_MAX. Moreover, we take a margin by dividing by 2 ULONG_MAX in
+     * order to taking account of the carry */
+    if (n < (ULONG_MAX / 2) - bn->limit) {
         __bn_add_ul(bn, n, 0, out);
     } else {
         big_number_t tmp;
