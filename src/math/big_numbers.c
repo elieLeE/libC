@@ -191,7 +191,7 @@ __bn_add_ul(const big_number_t *bn, unsigned long n,
     out->parts.tab[idx_part] = tmp;
 
     while (tmp >= bn->limit) {
-        unsigned int carry = tmp / bn->limit;
+        unsigned long carry = tmp / bn->limit;
 
         tmp -= bn->limit * carry;
         out->parts.tab[idx_part] = tmp;
