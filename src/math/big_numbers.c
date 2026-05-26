@@ -370,7 +370,8 @@ __bn_sub_ul(const big_number_t *bn, uint64_t n, int64_t first_idx,
 }
 
 static void
-_bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2, big_number_t *out)
+__bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2,
+            big_number_t *out)
 {
     uint64_t carry = 0;
     int64_t bn_part_idx = 0;
@@ -424,9 +425,9 @@ static void _bn_sub_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
         bn_set_from_ul(n, &tmp);
 
         if (is_bn_biggest) {
-            _bn_sub_bn(bn, &tmp, out);
+            __bn_sub_bn(bn, &tmp, out);
         } else {
-            _bn_sub_bn(&tmp, bn, out);
+            __bn_sub_bn(&tmp, bn, out);
         }
 
         bn_wipe(&tmp);
@@ -507,6 +508,28 @@ void bn_sub_l(const big_number_t *bn, int64_t n, big_number_t *out)
     }
 }
 
+static void
+_bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2, big_number_t *out)
+{
+    int bn_cmp_res;
+    bool is_bn1_biggest;
+
+    bn_cmp_res = bn_cmp(bn1, bn2);
+    if (bn_cmp_res == 0) {
+        bn_set_from_l(0, out);
+        return;
+    }
+
+    is_bn1_biggest = (bn_cmp_res > 0);
+    if (is_bn1_biggest) {
+        __bn_sub_bn(bn1, bn2, out);
+        out->positive_number = bn1->positive_number;
+    } else {
+        __bn_sub_bn(bn2, bn1, out);
+        out->positive_number = !bn1->positive_number;
+    }
+}
+
 int bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out)
 {
@@ -530,35 +553,16 @@ int bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2,
         out->positive_number = true;
 
         return 0;
-    } else if (!bn1->positive_number && bn2->positive_number) {
+    }
+
+    if (!bn1->positive_number && bn2->positive_number) {
         _bn_add_bn(bn1, bn2, out);
         out->positive_number = false;
 
         return 0;
-    } else {
-        int bn_cmp_res = bn_cmp(bn1, bn2);
-        bool is_bn1_biggest;
-
-        if (bn_cmp_res == 0) {
-            bn_set_from_l(0, out);
-            return 0;
-        }
-
-        is_bn1_biggest = (bn_cmp_res > 0);
-        if (is_bn1_biggest) {
-            _bn_sub_bn(bn1, bn2, out);
-            out->positive_number = bn1->positive_number;
-        } else {
-            _bn_sub_bn(bn2, bn1, out);
-            out->positive_number = bn2->positive_number;
-        }
-
-        if (bn1->positive_number) {
-            out->positive_number = is_bn1_biggest;
-        } else {
-            out->positive_number = !is_bn1_biggest;
-        }
     }
+
+    _bn_sub_bn(bn1, bn2, out);
 
     return -1;
 }
@@ -586,33 +590,16 @@ int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
         out->positive_number = true;
 
         return 0;
-    } else if (!bn1->positive_number && !bn2->positive_number) {
+    }
+
+    if (!bn1->positive_number && !bn2->positive_number) {
         _bn_add_bn(bn1, bn2, out);
         out->positive_number = false;
 
         return 0;
-    } else {
-        int bn_cmp_res = (bn_cmp(bn1, bn2));
-        bool is_bn1_biggest;
-
-        if (bn_cmp_res == 0) {
-            bn_set_from_l(0, out);
-            return 0;
-        }
-
-        is_bn1_biggest = (bn_cmp_res > 0);
-        if (is_bn1_biggest) {
-            _bn_sub_bn(bn1, bn2, out);
-        } else {
-            _bn_sub_bn(bn2, bn1, out);
-        }
-
-        if (bn1->positive_number) {
-            out->positive_number = is_bn1_biggest;
-        } else {
-            out->positive_number = !is_bn1_biggest;
-        }
     }
+
+    _bn_sub_bn(bn1, bn2, out);
 
     return -1;
 }
