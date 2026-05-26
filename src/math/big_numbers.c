@@ -130,6 +130,16 @@ int bn_cmp(const big_number_t *bn1, const big_number_t *bn2)
     return 0;
 }
 
+static void
+_bn_set_part_or_add(uint64_t val, int64_t idx, big_number_t *out)
+{
+    if (idx > out->parts.len -1) {
+        gv_add(&out->parts, val);
+    } else {
+        out->parts.tab[idx] = val;
+    }
+}
+
 /* }}} */
 /* {{{ Setting methods */
 
@@ -306,16 +316,6 @@ _bn_add_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
 
 /* }}} */
 /* {{{ Opposite sign */
-
-static void
-_bn_set_part_or_add(uint64_t val, int64_t idx, big_number_t *out)
-{
-    if (idx > out->parts.len -1) {
-        gv_add(&out->parts, val);
-    } else {
-        out->parts.tab[idx] = val;
-    }
-}
 
 static inline uint64_t
 _get_bn_part_sub_ul(uint64_t n1_part, uint64_t n2_part, uint64_t bn_limit,
