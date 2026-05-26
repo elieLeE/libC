@@ -194,6 +194,22 @@ void bn_set_from_l(int64_t n, big_number_t *out)
 /* {{{ Adding methods */
 /* {{{ Same sign */
 
+static void __bn_add_carry(uint64_t n, big_number_t *out)
+{
+    while (n >= out->limit) {
+        uint64_t carry = n / out->limit;
+
+        n -= out->limit * carry;
+        gv_append(&(out->parts), n);
+
+       n = carry;
+    }
+
+    if (n != 0) {
+        gv_append(&(out->parts), n);
+    }
+}
+
 static void
 __bn_add_ul(const big_number_t *bn, uint64_t n, int64_t first_idx,
             big_number_t *out)
@@ -228,17 +244,7 @@ __bn_add_ul(const big_number_t *bn, uint64_t n, int64_t first_idx,
     }
 
     if (idx_part > bn->parts.len - 1) {
-        while (tmp >= bn->limit) {
-            unsigned long carry = tmp / bn->limit;
-
-            tmp -= bn->limit * carry;
-            gv_append(&(out->parts), tmp);
-
-            tmp = carry;
-        }
-        if (tmp != 0) {
-            gv_append(&(out->parts), tmp);
-        }
+        __bn_add_carry(tmp, out);
     }
 }
 
