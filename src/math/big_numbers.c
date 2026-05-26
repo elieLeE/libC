@@ -757,6 +757,19 @@ int bn_mul_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
     return 0;
 }
 
+int bn_mul_l(const big_number_t *bn, int64_t n, big_number_t *out)
+{
+    if (n >= 0) {
+        return bn_mul_ul(bn, n, out);
+    } else {
+        int res = RETHROW(bn_mul_ul(bn, -n, out));
+
+        out->positive_number = !bn->positive_number;
+
+        return res;
+    }
+}
+
 /* }}} */
 
 void bn_add_part(big_number_t *bn, uint64_t val)
