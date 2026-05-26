@@ -651,7 +651,61 @@ _bn_mul_ul(const big_number_t *bn, uint64_t n, int64_t first_part_out,
     __bn_add_carry(carry, out);
 }
 
-int bn_mul_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
+/* In this method, bn1 and bn2 are different from out ! */
+static void __bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
+                        big_number_t *out)
+{
+    big_number_t tmp;
+    const big_number_t *shortest_bn, *longest_bn;
+
+    if (bn1->parts.len >= bn2->parts.len) {
+        shortest_bn = bn2;
+        longest_bn = bn1;
+    } else {
+        shortest_bn = bn1;
+        longest_bn = bn2;
+    }
+
+    bn_init_with_args(&tmp, longest_bn->parts.len, bn1->limit);
+
+    for (int64_t pos = 0; pos < shortest_bn->parts.len; pos++) {
+        uint64_t n = shortest_bn->parts.tab[pos];
+
+        if (n == 0) {
+            continue;
+        }
+
+        _bn_mul_ul(longest_bn, n, pos, &tmp);
+        _bn_add_bn(out, &tmp, out);
+
+        /* Not fast clear here however the first values will be kept.
+         * So, when tmp will be added to out, the no clear values will corrupt
+         * the results */
+        bn_clear(&tmp);
+        tmp.parts.len = pos + 1;
+    }
+
+    bn_wipe(&tmp);
+}
+
+static void _bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
+                       big_number_t *out)
+{
+    if (bn1 == out || bn2 == out) {
+        big_number_t tmp;
+
+        bn_init_with_args(&tmp, 0, bn1->limit);
+
+        __bn_mul_bn(bn1, bn2, &tmp);
+        bn_set_parts_from_bn(&tmp, out);
+
+        bn_wipe(&tmp);
+    } else {
+        __bn_mul_bn(bn1, bn2, out);
+    }
+}
+
+int bn_mul_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
 {
     if (bn != out) {
         bn_fast_clear(out);
@@ -680,8 +734,22 @@ int bn_mul_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
     if (bn->limit < (ULONG_MAX / 2 ) / n) {
         _bn_mul_ul(bn, n, 0, out);
     } else {
-        logger_error("NOT IMPLEMENTED YET");
-        return -1;
+        big_number_t tmp;
+
+        if (bn->limit >= (ULONG_MAX / 2 ) / bn->limit) {
+            logger_error("n is to big to multiply directly BN by n and limit "
+                         "(%ld) of the BN is too big to multiply it by "
+                         "another one",
+                         bn->limit);
+            return -1;
+        }
+
+        bn_init_with_args(&tmp, 0, bn->limit);
+        bn_set_from_ul(n, &tmp);
+
+        _bn_mul_bn(bn, &tmp, out);
+
+        bn_wipe(&tmp);
     }
 
     out->positive_number = bn->positive_number;
