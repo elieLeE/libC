@@ -604,6 +604,35 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     /* }}} */
     /* }}} */
+    /* {{{ pos BN + pos BN => BN
+     * Test adding a big number with itself to itself */
+    /* {{{ bn1 = 709775166799 and bn2 = 1667998 */
+
+    bn_set_from_ul(709775166799, &bn1);
+
+    ASSERT_EQUAL_LONG(bn1.parts.len, 6L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[0], 99L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[1], 67L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[2], 16L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[3], 75L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[4], 97L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[5], 70L);
+    ASSERT(bn1.positive_number, "bn should be positive");
+
+    bn_add_bn(&bn1, &bn1, &bn1);
+
+    ASSERT_EQUAL_LONG(bn1.parts.len, 7L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[0], 98L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[1], 35L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[2], 33L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[3], 50L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[4], 95L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[5], 41L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[6], 1L);
+    ASSERT(bn1.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* }}} */
 
     bn_wipe(&bn1);
     bn_wipe(&bn2);
@@ -1521,6 +1550,26 @@ static void test_bn_neg_bn_add_neg_bn(void)
     ASSERT_EQUAL_LONG(bn3.parts.tab[1], 4407370L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[2], 184467L);
     ASSERT(!bn3.positive_number, "bn should be negative");
+
+    /* }}} */
+    /* }}} */
+    /* {{{ neg BN + neg BN => BN
+     * Test adding a big number with itself to itself */
+    /* {{{ bn1 = 709775166799 */
+
+    bn_set_from_l(-709775166799, &bn1);
+
+    ASSERT_EQUAL_LONG(bn1.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[0], 5166799L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[1], 70977L);
+    ASSERT(!bn1.positive_number, "bn should be negative");
+
+    bn_add_bn(&bn1, &bn1, &bn1);
+
+    ASSERT_EQUAL_LONG(bn1.parts.len, 2L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[0], 333598L);
+    ASSERT_EQUAL_LONG(bn1.parts.tab[1], 141955L);
+    ASSERT(!bn1.positive_number, "bn should be negative");
 
     /* }}} */
     /* }}} */
