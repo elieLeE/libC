@@ -6,16 +6,15 @@
 typedef struct big_number_t {
     gv_t(uint64) parts;
     bool positive_number;
-    const unsigned long limit;
+    const uint64_t limit;
 } big_number_t;
 
 void bn_init(big_number_t *bn);
-void bn_init_with_args(big_number_t *bn, long size, unsigned long limit);
+void bn_init_with_args(big_number_t *bn, int64_t size, uint64_t limit);
 
-void bn_set_limit(big_number_t *bn, unsigned long limit);
+void bn_set_limit(big_number_t *bn, uint64_t limit);
 
-static inline void
-bn_set_part(big_number_t *bn, unsigned long val, long idx)
+static inline void bn_set_part(big_number_t *bn, uint64_t val, int64_t idx)
 {
     bn->parts.tab[idx] = val;
 
@@ -25,7 +24,7 @@ bn_set_part(big_number_t *bn, unsigned long val, long idx)
 }
 
 static inline void
-bn_set_part_safe(big_number_t *bn, unsigned long val, long idx)
+bn_set_part_safe(big_number_t *bn, uint64_t val, int64_t idx)
 {
     if (idx >= bn->parts.size) {
         logger_fatal("idx (%ld) is bigger than the BN length (%ld)",
@@ -41,16 +40,15 @@ bn_set_part_safe(big_number_t *bn, unsigned long val, long idx)
 /* Synaptic gets me an error here. I do not exactly why yet. For now,
  * the method is defined in the .c.
  * TODO: TO INVESTIGATE */
-void bn_add_part(big_number_t *bn, unsigned long val);
+void bn_add_part(big_number_t *bn, uint64_t val);
 
-static inline unsigned long
-bn_get_part(const big_number_t *bn, long idx)
+static inline uint64_t bn_get_part(const big_number_t *bn, int64_t idx)
 {
     return bn->parts.tab[idx];
 }
 
-static inline unsigned long
-bn_get_part_safe(const big_number_t *bn, long idx)
+static inline uint64_t
+bn_get_part_safe(const big_number_t *bn, int64_t idx)
 {
     if (idx >= bn->parts.len) {
         logger_fatal("idx (%ld) is bigger than the BN length (%ld)",
@@ -71,23 +69,23 @@ unsigned int bn_get_digits_count(const big_number_t *bn);
  *      < 0 if bn < bn2/n
  */
 int bn_cmp(const big_number_t *bn1, const big_number_t *bn2);
-int bn_cmp_ul(const big_number_t *bn, unsigned long n);
+int bn_cmp_ul(const big_number_t *bn, uint64_t n);
 
 void bn_set_from_bn(const big_number_t *src, big_number_t *out);
-void bn_set_from_ul(unsigned long n, big_number_t *out);
-void bn_set_from_l(long n, big_number_t *out);
+void bn_set_from_ul(uint64_t n, big_number_t *out);
+void bn_set_from_l(int64_t n, big_number_t *out);
 
 /* Note: in all methods below, 'out' can be the same pointer than one of
  * the "in" big number argument" */
 int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out);
-void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out);
-void bn_add_l(const big_number_t *bn, long n, big_number_t *out);
+void bn_add_ul(const big_number_t *bn, uint64_t n, big_number_t *out);
+void bn_add_l(const big_number_t *bn, int64_t n, big_number_t *out);
 
 int bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out);
-void bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out);
-void bn_sub_l(const big_number_t *bn, long n, big_number_t *out);
+void bn_sub_ul(const big_number_t *bn, uint64_t n, big_number_t *out);
+void bn_sub_l(const big_number_t *bn, int64_t n, big_number_t *out);
 
 char *bn_to_str(const big_number_t *bn);
 

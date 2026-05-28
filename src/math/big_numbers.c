@@ -8,10 +8,10 @@
 
 #define LIMIT_MAX 100000000000000000
 
-void bn_set_limit(big_number_t *bn, unsigned long limit)
+void bn_set_limit(big_number_t *bn, uint64_t limit)
 {
-    unsigned long _limit;
-    unsigned long *limit_p;
+    uint64_t _limit;
+    uint64_t *limit_p;
 
     if (limit == 0 || limit > LIMIT_MAX) {
         _limit = LIMIT_MAX;
@@ -19,14 +19,14 @@ void bn_set_limit(big_number_t *bn, unsigned long limit)
         _limit = limit;
     }
 
-    limit_p = unconst_cast(size_t, &bn->limit);
+    limit_p = unconst_cast(uint64_t, &bn->limit);
     if (limit_p == NULL) {
         logger_fatal("error when trying to set '__size_elem'");
     }
     *limit_p = _limit;
 }
 
-void bn_init_with_args(big_number_t *bn, long size, unsigned long limit)
+void bn_init_with_args(big_number_t *bn, int64_t size, uint64_t limit)
 {
     p_clear(bn, 1);
 
@@ -66,21 +66,21 @@ unsigned int bn_get_digits_count(const big_number_t *bn)
  * number, as to say a big number greater than ULONG_MAX.
  * Never use it. It is only dedicated to this module as it is used only when
  * it is known that the big number is below ULONG_MAX */
-static unsigned long bn_get_ul(const big_number_t *bn)
+static uint64_t bn_get_ul(const big_number_t *bn)
 {
-    unsigned long n = bn->parts.tab[bn->parts.len - 1];
+    uint64_t n = bn->parts.tab[bn->parts.len - 1];
 
-    for (int i = bn->parts.len - 2; i >= 0; i--) {
+    for (int64_t i = bn->parts.len - 2; i >= 0; i--) {
         n *= bn->limit;
         n += bn->parts.tab[i];
     }
     return n;
 }
 
-int bn_cmp_ul(const big_number_t *bn, unsigned long n)
+int bn_cmp_ul(const big_number_t *bn, uint64_t n)
 {
     unsigned int digits_count_bn;
-    unsigned long bn_ul;
+    uint64_t bn_ul;
 
 #if __x86_64__
     const unsigned int digits_count_unsigned_long_max = 20;
@@ -119,8 +119,8 @@ int bn_cmp(const big_number_t *bn1, const big_number_t *bn2)
     }
 
     for (int i = bn1->parts.len - 1; i >= 0; i--) {
-        unsigned long n1 = bn1->parts.tab[i];
-        unsigned long n2 = bn2->parts.tab[i];
+        uint64_t n1 = bn1->parts.tab[i];
+        uint64_t n2 = bn2->parts.tab[i];
 
         if (n1 != n2) {
             return n1 - n2;
@@ -141,16 +141,16 @@ void bn_set_from_bn(const big_number_t *src, big_number_t *dst)
     bn_set_limit(dst, src->limit);
 }
 
-void bn_set_from_ul(unsigned long n, big_number_t *out)
+void bn_set_from_ul(uint64_t n, big_number_t *out)
 {
     /* not indispensable but I think it is clearer with the definition of
      * this variable */
-    unsigned long tmp = n;
+    uint64_t tmp = n;
 
     bn_fast_clear(out);
 
     while (tmp >= out->limit) {
-        unsigned long carry = tmp / out->limit;
+        uint64_t carry = tmp / out->limit;
 
         tmp -= out->limit * carry;
         gv_add(&(out->parts), tmp);
@@ -160,7 +160,7 @@ void bn_set_from_ul(unsigned long n, big_number_t *out)
     gv_add(&(out->parts), tmp);
 }
 
-void bn_set_from_l(long n, big_number_t *out)
+void bn_set_from_l(int64_t n, big_number_t *out)
 {
     if (n >= 0) {
         bn_set_from_ul(n, out);
@@ -175,11 +175,11 @@ void bn_set_from_l(long n, big_number_t *out)
 /* {{{ Same sign */
 
 static void
-__bn_add_ul(const big_number_t *bn, unsigned long n,
-            long first_idx, big_number_t *out)
+__bn_add_ul(const big_number_t *bn, uint64_t n, int64_t first_idx,
+            big_number_t *out)
 {
-    unsigned long tmp;
-    long idx_part = first_idx;
+    uint64_t tmp;
+    int64_t idx_part = first_idx;
 
     if (out->parts.size < bn->parts.len) {
         gv_extend(&out->parts, bn->parts.len - out->parts.len);
@@ -191,7 +191,7 @@ __bn_add_ul(const big_number_t *bn, unsigned long n,
     out->parts.tab[idx_part] = tmp;
 
     while (tmp >= bn->limit) {
-        unsigned long carry = tmp / bn->limit;
+        uint64_t carry = tmp / bn->limit;
 
         tmp -= bn->limit * carry;
         out->parts.tab[idx_part] = tmp;
@@ -226,9 +226,9 @@ static void
 _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
            big_number_t *out)
 {
-    unsigned long carry = 0;
+    uint64_t carry = 0;
     const big_number_t *shortest_bn, *longest_bn;
-    long short_bn_len;
+    int64_t short_bn_len;
 
     if (bn1->parts.len >= bn2->parts.len) {
         shortest_bn = bn2;
@@ -246,8 +246,8 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
         gv_set(&(longest_bn->parts), &(out->parts));
     }
 
-    for (long i = 0; i < shortest_bn->parts.len; i++) {
-        unsigned long tmp = bn1->parts.tab[i] + bn2->parts.tab[i] + carry;
+    for (int64_t i = 0; i < shortest_bn->parts.len; i++) {
+        uint64_t tmp = bn1->parts.tab[i] + bn2->parts.tab[i] + carry;
 
         if (tmp >= out->limit) {
             carry = tmp / bn1->limit;
@@ -259,7 +259,7 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
     }
 
     if (longest_bn != out) {
-        long diff_len = longest_bn->parts.len - shortest_bn->parts.len;
+        int64_t diff_len = longest_bn->parts.len - shortest_bn->parts.len;
 
         if (diff_len > 0) {
             gv_copy(&longest_bn->parts, shortest_bn->parts.len,
@@ -280,7 +280,7 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
 }
 
 static void
-_bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
+_bn_add_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
 {
     if (bn != out) {
         bn_set_from_bn(bn, out);
@@ -308,7 +308,7 @@ _bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
 /* {{{ Opposite sign */
 
 static void
-_bn_set_part_or_add(unsigned long val, long idx, big_number_t *out)
+_bn_set_part_or_add(uint64_t val, int64_t idx, big_number_t *out)
 {
     if (idx > out->parts.len -1) {
         gv_add(&out->parts, val);
@@ -317,10 +317,9 @@ _bn_set_part_or_add(unsigned long val, long idx, big_number_t *out)
     }
 }
 
-static inline unsigned long
-_get_bn_part_sub_ul(unsigned long n1_part, unsigned long n2_part,
-                    unsigned long bn_limit, bool is_n1_biggest,
-                    unsigned long *carry)
+static inline uint64_t
+_get_bn_part_sub_ul(uint64_t n1_part, uint64_t n2_part, uint64_t bn_limit,
+                    bool is_n1_biggest, uint64_t *carry)
 {
     if (is_n1_biggest) {
         if (n1_part >= n2_part) {
@@ -341,14 +340,14 @@ _get_bn_part_sub_ul(unsigned long n1_part, unsigned long n2_part,
 
 /* This method only manages cases where n is below then bn->limit ! */
 static void
-__bn_sub_ul(const big_number_t *bn, unsigned long n,
-           long first_idx, bool is_bn_biggest, big_number_t *out)
+__bn_sub_ul(const big_number_t *bn, uint64_t n, int64_t first_idx,
+            bool is_bn_biggest, big_number_t *out)
 {
-    long bn_part_idx = first_idx;
-    unsigned long carry = n;
+    int64_t bn_part_idx = first_idx;
+    uint64_t carry = n;
 
     do {
-        unsigned long val;
+        uint64_t val;
 
         val = _get_bn_part_sub_ul(bn->parts.tab[bn_part_idx], carry, bn->limit,
                                   is_bn_biggest, &carry);
@@ -361,7 +360,7 @@ __bn_sub_ul(const big_number_t *bn, unsigned long n,
         gv_copy(&bn->parts, bn_part_idx, bn_part_idx,
                 (bn->parts.len - bn_part_idx), &out->parts);
     } else {
-        long i = out->parts.len - 1;
+        int64_t i = out->parts.len - 1;
 
         while (i >= 0 && out->parts.tab[i] == 0) {
             out->parts.len--;
@@ -373,20 +372,19 @@ __bn_sub_ul(const big_number_t *bn, unsigned long n,
 static void
 _bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2, big_number_t *out)
 {
-    unsigned long carry = 0;
-    long bn_part_idx = 0;
+    uint64_t carry = 0;
+    int64_t bn_part_idx = 0;
     /* first bn is always the biggest one in this method */
-    long short_bn_len = bn2->parts.len;
+    int64_t short_bn_len = bn2->parts.len;
 
     if (bn1 != out && bn2 != out) {
         gv_set(&(bn1->parts), &(out->parts));
     }
 
     for (bn_part_idx = 0; bn_part_idx < short_bn_len - 1; bn_part_idx++) {
-        unsigned long n1 = bn1->parts.tab[bn_part_idx];
-        unsigned long n2 = bn2->parts.tab[bn_part_idx] + carry;
-        unsigned long tmp = _get_bn_part_sub_ul(n1, n2, bn1->limit,
-                                                true, &carry);
+        uint64_t n1 = bn1->parts.tab[bn_part_idx];
+        uint64_t n2 = bn2->parts.tab[bn_part_idx] + carry;
+        uint64_t tmp = _get_bn_part_sub_ul(n1, n2, bn1->limit, true, &carry);
 
         if (tmp > bn1->limit) {
             logger_fatal("%ld is bigger than limit (%ld)\n", tmp, bn1->limit);
@@ -397,12 +395,9 @@ _bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2, big_number_t *out)
 
     __bn_sub_ul(bn1, bn2->parts.tab[short_bn_len - 1] + carry, bn_part_idx,
                 true, out);
-
-    return;
 }
 
-static void
-_bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
+static void _bn_sub_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
 {
     bool is_bn_biggest = true;
     int bn_cmp_n = bn_cmp_ul(bn, n);
@@ -440,7 +435,7 @@ _bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
 
 /* }}} */
 
-void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
+void bn_add_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
 {
     if (bn->parts.len == 0) {
         bn_set_from_ul(n, out);
@@ -466,7 +461,7 @@ void bn_add_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
     }
 }
 
-void bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
+void bn_sub_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
 {
     if (bn->parts.len == 0) {
         bn_set_from_ul(n, out);
@@ -494,7 +489,7 @@ void bn_sub_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
     }
 }
 
-void bn_add_l(const big_number_t *bn, long n, big_number_t *out)
+void bn_add_l(const big_number_t *bn, int64_t n, big_number_t *out)
 {
     if (n >= 0) {
         bn_add_ul(bn, n, out);
@@ -503,7 +498,7 @@ void bn_add_l(const big_number_t *bn, long n, big_number_t *out)
     }
 }
 
-void bn_sub_l(const big_number_t *bn, long n, big_number_t *out)
+void bn_sub_l(const big_number_t *bn, int64_t n, big_number_t *out)
 {
     if (n >= 0) {
         bn_sub_ul(bn, n, out);
@@ -624,7 +619,7 @@ int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
 
 /* }}} */
 
-void bn_add_part(big_number_t *bn, unsigned long val)
+void bn_add_part(big_number_t *bn, uint64_t val)
 {
     gv_add(&(bn->parts), val);
 }
@@ -634,23 +629,23 @@ char *bn_to_str(const big_number_t *bn)
     size_t str_size = bn->parts.len * 18 + 1;
     char *str = RETHROW_P(p_calloc(str_size));
     int charac_written = 0;
-    const unsigned long min = bn->limit / 10;
+    const uint64_t min = bn->limit / 10;
     const unsigned int max_digit_by_part = get_count_digits_of_n(bn->limit) - 1;
 
     if (!bn->positive_number) {
         charac_written = snprintf(str + 0, str_size - charac_written, "-");
     }
 
-    for (long pos = bn->parts.len - 1; pos >= 0; pos--) {
+    for (int64_t pos = bn->parts.len - 1; pos >= 0; pos--) {
         int rc;
-        unsigned long n = bn->parts.tab[pos];
+        uint64_t n = bn->parts.tab[pos];
 
         if (pos < bn->parts.len - 1 && n < min) {
             unsigned int digits_count = get_count_digits_of_n(n);
-            unsigned tmp_max;
+            unsigned int tmp_max;
 
             if (digits_count == 0) {
-                tmp_max = max_digit_by_part -1;
+                tmp_max = max_digit_by_part - 1;
             } else if (digits_count > max_digit_by_part) {
                 logger_fatal("'digits_count' (%d) should never be greater "
                              "than 'max_digit_by_part' (%d)",
