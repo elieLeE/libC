@@ -87,6 +87,8 @@ int bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2,
 void bn_sub_ul(const big_number_t *bn, uint64_t n, big_number_t *out);
 void bn_sub_l(const big_number_t *bn, int64_t n, big_number_t *out);
 
+int bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
+              big_number_t *out);
 int bn_mul_ul(const big_number_t *bn, uint64_t n, big_number_t *out);
 int bn_mul_l(const big_number_t *bn, int64_t n, big_number_t *out);
 

@@ -770,6 +770,64 @@ int bn_mul_l(const big_number_t *bn, int64_t n, big_number_t *out)
     }
 }
 
+int bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
+              big_number_t *out)
+{
+    if (bn1->limit != bn2->limit) {
+        logger_error("operations between big numbers with different limit "
+                     "has not been yet implemented, %ld - %ld",
+                     bn1->parts.len, bn2->parts.len);
+        return -1;
+    }
+
+    if (bn1->limit >= (ULONG_MAX / 2 ) / bn1->limit) {
+        logger_error("limit (%ld) if the BNs are too big to multiply them",
+                     bn1->limit);
+        return -1;
+    }
+
+    if (bn1 != out && bn2 != out) {
+        bn_fast_clear(out);
+
+        if (bn1->limit != out->limit) {
+            bn_set_limit(out, bn1->limit);
+        }
+    }
+
+    if (bn1->parts.len == 1) {
+        if (bn1->parts.tab[0] == 0) {
+            bn_set_from_l(0, out);
+            return 0;
+        } else if (bn1->parts.tab[0] == 1) {
+            if (bn2 != out) {
+                bn_set_parts_from_bn(bn2, out);
+            }
+            goto end;
+        }
+    }
+
+    if (bn2->parts.len == 1) {
+        if (bn2->parts.tab[0] == 0) {
+            bn_set_from_l(0, out);
+            return 0;
+        } else if (bn2->parts.tab[0] == 1) {
+            if (bn1 != out) {
+                bn_set_parts_from_bn(bn1, out);
+            }
+            goto end;
+        }
+    }
+
+    _bn_mul_bn(bn1, bn2, out);
+
+end:
+    out->positive_number =
+        (bn1->positive_number && bn2->positive_number) ||
+        (!bn1->positive_number && !bn2->positive_number);
+
+    return 0;
+}
+
 /* }}} */
 
 void bn_add_part(big_number_t *bn, uint64_t val)
