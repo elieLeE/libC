@@ -168,6 +168,8 @@ void bn_set_from_ul(uint64_t n, big_number_t *out)
         tmp = carry;
     }
     gv_add(&(out->parts), tmp);
+
+    out->positive_number = true;
 }
 
 void bn_set_from_l(int64_t n, big_number_t *out)
