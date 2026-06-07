@@ -440,17 +440,17 @@ static void _bn_sub_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
 
 void bn_add_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
 {
-    if (bn->parts.len == 0) {
-        bn_set_from_ul(n, out);
-        return;
-    }
-
     if (bn != out) {
         bn_fast_clear(out);
 
         if (bn->limit != out->limit) {
             bn_set_limit(out, bn->limit);
         }
+    }
+
+    if (bn->parts.len == 0) {
+        bn_set_from_ul(n, out);
+        return;
     }
 
     if (bn->positive_number) {
