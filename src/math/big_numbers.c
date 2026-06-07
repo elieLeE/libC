@@ -651,7 +651,39 @@ _bn_mul_ul(const big_number_t *bn, uint64_t n, int64_t first_part_out,
     __bn_add_carry(carry, out);
 }
 
-/* In this method, bn1 and bn2 are different from out ! */
+/* In this method, bn1 and bn2 are different from out !
+ * Moreover, bn1 is always the longest one ! */
+static void ___bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
+                         big_number_t *tmp_out, big_number_t *out)
+{
+    for (int64_t pos = 0; pos < bn2->parts.len; pos++) {
+        uint64_t n = bn2->parts.tab[pos];
+
+        /* Not fast clear here however the first values will be kept.
+         * So, when tmp will be added to out, the no clear values will corrupt
+         * the results */
+        bn_clear(tmp_out);
+
+        /* By setting the length of this big number, I set the first elements
+         * of the array to 0 (as the big number has been clear just above).
+         * It is expected as when a number is multiplied by another one, it is
+         * like multiplied it by different number of one digit (for example)
+         * but each result of multiplication has to be moved to the left.
+         * For example, If I multiply 17 by 17, it is like doing:
+         * - 17 * 7 = 749
+         * - 17 * 10 => 17 * 1 and digit are moved on the left once.
+         * The, just add the different results */
+        tmp_out->parts.len = pos;
+
+        if (n == 0) {
+            continue;
+        }
+
+        _bn_mul_ul(bn1, n, pos, tmp_out);
+        _bn_add_bn(out, tmp_out, out);
+    }
+}
+
 static void __bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
                         big_number_t *out)
 {
@@ -668,22 +700,7 @@ static void __bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
 
     bn_init_with_args(&tmp, longest_bn->parts.len, bn1->limit);
 
-    for (int64_t pos = 0; pos < shortest_bn->parts.len; pos++) {
-        uint64_t n = shortest_bn->parts.tab[pos];
-
-        if (n == 0) {
-            continue;
-        }
-
-        _bn_mul_ul(longest_bn, n, pos, &tmp);
-        _bn_add_bn(out, &tmp, out);
-
-        /* Not fast clear here however the first values will be kept.
-         * So, when tmp will be added to out, the no clear values will corrupt
-         * the results */
-        bn_clear(&tmp);
-        tmp.parts.len = pos + 1;
-    }
+    ___bn_mul_bn(longest_bn, shortest_bn, &tmp, out);
 
     bn_wipe(&tmp);
 }
