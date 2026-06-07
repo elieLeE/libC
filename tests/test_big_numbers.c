@@ -264,6 +264,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[0], 14L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "5"));
 
     /* }}} */
     /* {{{ bn1 = 99 and bn2 = 14 */
@@ -285,6 +286,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.tab[0], 13L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[1], 1L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "14"));
 
     /* }}} */
     /* {{{ bn1 = 99999999 and bn2 = 1 */
@@ -312,6 +314,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.tab[3], 0L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[4], 1L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "1"));
 
     /* }}} */
     /* {{{ bn1 = 166799 and bn2 = 166799 */
@@ -338,6 +341,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.tab[1], 35L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[2], 33L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "166799"));
 
     /* }}} */
     /* {{{ bn1 = 709775166799 and bn2 = 1667998 */
@@ -371,6 +375,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.tab[4], 97L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[5], 70L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "1667998"));
 
     /* }}} */
     /* }}} */
@@ -393,6 +398,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "9"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 14L);
     ASSERT(bn2.positive_number, "bn should be positive");
@@ -413,6 +419,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "99"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 2L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 13L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[1], 1L);
@@ -437,6 +444,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "99999999"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 5L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 0L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[1], 0L);
@@ -465,6 +473,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "166799"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 3L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 98L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[1], 35L);
@@ -495,6 +504,7 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "709775166799"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 6L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 97L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[1], 47L);
@@ -523,6 +533,8 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "5"));
+    assert(check_bn_value_str(&bn2, "9"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 14L);
     ASSERT(bn3.positive_number, "bn should be positive");
@@ -543,6 +555,8 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "14"));
+    assert(check_bn_value_str(&bn2, "99"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 2L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 13L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[1], 1L);
@@ -568,6 +582,8 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "166799"));
+    assert(check_bn_value_str(&bn2, "166799"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 3L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 98L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[1], 35L);
@@ -598,6 +614,8 @@ static void test_bn_pos_bn_add_pos_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "709775166799"));
+    assert(check_bn_value_str(&bn2, "1667998"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 6L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 97L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[1], 47L);
@@ -674,6 +692,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[0], 4L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "-5"));
 
     /* }}} */
     /* {{{ bn1 = 100 and bn2 = -14 */
@@ -695,6 +714,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[0], 86L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "-14"));
 
     /* }}} */
     /* {{{ bn1 = 100000001 and bn2 = -99999999 */
@@ -722,6 +742,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[0], 2L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "-99999999"));
 
     /* }}} */
     /* {{{ bn1 = 166799 and bn2 = -166799 */
@@ -746,6 +767,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[0], 0L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "-166799"));
 
     /* }}} */
     /* {{{ bn1 = 709775166799 and bn2 = -1667998 */
@@ -779,6 +801,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
     ASSERT_EQUAL_LONG(bn1.parts.tab[4], 97L);
     ASSERT_EQUAL_LONG(bn1.parts.tab[5], 70L);
     ASSERT(bn1.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn2, "-1667998"));
 
     /* }}} */
     /* }}} */
@@ -801,6 +824,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "9"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 2L);
     ASSERT(!bn2.positive_number, "bn should be negative");
@@ -822,6 +846,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "99"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 2L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 15L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[1], 10L);
@@ -850,6 +875,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "99999999"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 2L);
     ASSERT(!bn2.positive_number, "bn should be negative");
@@ -874,6 +900,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "166799"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 0L);
     ASSERT(bn2.positive_number, "bn should be positive");
@@ -902,6 +929,7 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn2);
 
+    assert(check_bn_value_str(&bn1, "1667998"));
     ASSERT_EQUAL_LONG(bn2.parts.len, 6L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[0], 1L);
     ASSERT_EQUAL_LONG(bn2.parts.tab[1], 88L);
@@ -930,6 +958,8 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "9"));
+    assert(check_bn_value_str(&bn2, "-5"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 4L);
     ASSERT(bn3.positive_number, "bn should be positive");
@@ -952,6 +982,8 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "198"));
+    assert(check_bn_value_str(&bn2, "-199"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 1L);
     ASSERT(!bn3.positive_number, "bn should be negative");
@@ -979,6 +1011,8 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "99999999"));
+    assert(check_bn_value_str(&bn2, "-100000001"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 2L);
     ASSERT(!bn3.positive_number, "bn should be negative");
@@ -1003,6 +1037,8 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "166799"));
+    assert(check_bn_value_str(&bn2, "-166799"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 1L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 0L);
     ASSERT(bn3.positive_number, "bn should be positive");
@@ -1031,6 +1067,8 @@ static void test_bn_pos_bn_add_neg_bn(void)
 
     bn_add_bn(&bn1, &bn2, &bn3);
 
+    assert(check_bn_value_str(&bn1, "709775166799"));
+    assert(check_bn_value_str(&bn2, "-1667998"));
     ASSERT_EQUAL_LONG(bn3.parts.len, 6L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[0], 1L);
     ASSERT_EQUAL_LONG(bn3.parts.tab[1], 88L);
@@ -1098,41 +1136,44 @@ static void test_bn_pos_bn_add_ul(void)
      * another big_number_t */
 
     bn_set_from_ul(1768928368, &bn);
-
     ASSERT_EQUAL_LONG(bn.parts.len, 2L);
     ASSERT_EQUAL_LONG(bn.parts.tab[0], 8928368L);
     ASSERT_EQUAL_LONG(bn.parts.tab[1], 176L);
-
     assert(check_bn_value_str(&bn, "1768928368"));
 
     bn_add_ul(&bn, 78865, &res);
     /* Only the first part has been modified */
+    assert(check_bn_value_str(&bn, "1768928368"));
     ASSERT_EQUAL_LONG(res.parts.len, 2L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 9007233L);
     ASSERT_EQUAL_LONG(res.parts.tab[1], 176L);
+    assert(check_bn_value_str(&res, "1769007233"));
 
     bn_set_from_bn(&res, &bn);
+    assert(check_bn_value_str(&bn, "1769007233"));
     bn_add_ul(&bn, 787363765, &res);
+    assert(check_bn_value_str(&bn, "1769007233"));
     ASSERT_EQUAL_LONG(res.parts.len, 2L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 6370998L);
     ASSERT_EQUAL_LONG(res.parts.tab[1], 255L);
+    assert(check_bn_value_str(&res, "2556370998"));
 
     bn_set_from_bn(&res, &bn);
     bn_add_ul(&bn, 5693637787363765, &res);
+    assert(check_bn_value_str(&bn, "2556370998"));
     ASSERT_EQUAL_LONG(res.parts.len, 3L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 3734763L);
     ASSERT_EQUAL_LONG(res.parts.tab[1], 9364034L);
     ASSERT_EQUAL_LONG(res.parts.tab[2], 56L);
-
     assert(check_bn_value_str(&res, "5693640343734763"));
 
     bn_set_from_l(2, &bn);
     bn_add_ul(&bn, ULONG_MAX -1, &res);
+    assert(check_bn_value_str(&bn, "2"));
     ASSERT_EQUAL_LONG(res.parts.len, 3L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 9551616L);
     ASSERT_EQUAL_LONG(res.parts.tab[1], 4407370L);
     ASSERT_EQUAL_LONG(res.parts.tab[2], 184467L);
-
     assert(check_bn_value_str(&res, "18446744073709551616"));
 
     /* }}} */
@@ -1210,45 +1251,50 @@ static void test_bn_pos_bn_add_l(void)
      * another big_number_t */
 
     bn_set_from_l(-1768928368, &bn);
-
     ASSERT_EQUAL_LONG(bn.parts.len, 2L);
     ASSERT_EQUAL_LONG(bn.parts.tab[0], 8928368L);
     ASSERT_EQUAL_LONG(bn.parts.tab[1], 176L);
-
     assert(check_bn_value_str(&bn, "-1768928368"));
 
     bn_add_l(&bn, -78865, &res);
     /* Only the first part has been modified */
+    assert(check_bn_value_str(&bn, "-1768928368"));
     ASSERT_EQUAL_LONG(res.parts.len, 2L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 9007233L);
     ASSERT_EQUAL_LONG(res.parts.tab[1], 176L);
     ASSERT(!res.positive_number, "bn should be negative");
+    assert(check_bn_value_str(&res, "-1769007233"));
 
     bn_set_from_bn(&res, &bn);
+    assert(check_bn_value_str(&bn, "-1769007233"));
     bn_add_l(&bn, 787363765, &res);
+    assert(check_bn_value_str(&bn, "-1769007233"));
     ASSERT_EQUAL_LONG(res.parts.len, 2L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 1643468L);
     ASSERT_EQUAL_LONG(res.parts.tab[1], 98L);
     ASSERT(!res.positive_number, "bn should be negative");
+    assert(check_bn_value_str(&res, "-981643468"));
 
     bn_set_from_bn(&res, &bn);
+    assert(check_bn_value_str(&bn, "-981643468"));
     bn_add_l(&bn, 5693637787363765, &res);
+    assert(check_bn_value_str(&bn, "-981643468"));
     ASSERT_EQUAL_LONG(res.parts.len, 3L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 5720297L);
     ASSERT_EQUAL_LONG(res.parts.tab[1], 9363680L);
     ASSERT_EQUAL_LONG(res.parts.tab[2], 56L);
     ASSERT(res.positive_number, "bn should be positive");
-
     assert(check_bn_value_str(&res, "5693636805720297"));
 
     bn_set_from_bn(&res, &bn);
+    assert(check_bn_value_str(&bn, "5693636805720297"));
     bn_add_l(&bn, - (LONG_MAX -1), &res);
+    assert(check_bn_value_str(&bn, "5693636805720297"));
     ASSERT_EQUAL_LONG(res.parts.len, 3L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 9055509L);
     ASSERT_EQUAL_LONG(res.parts.tab[1], 7840004L);
     ASSERT_EQUAL_LONG(res.parts.tab[2], 92176L);
     ASSERT(!res.positive_number, "bn should be negative");
-
     assert(check_bn_value_str(&res, "-9217678400049055509"));
 
     /* {{{ bn = LONG_MAX - 1 and n = - (LONG_MAX - 1) */
@@ -1259,9 +1305,11 @@ static void test_bn_pos_bn_add_l(void)
     ASSERT_EQUAL_LONG(bn.parts.tab[1], 7203685L);
     ASSERT_EQUAL_LONG(bn.parts.tab[2], 92233L);
     ASSERT(bn.positive_number, "bn should be positive");
+    assert(check_bn_value_str(&bn, "9223372036854775806"));
 
     bn_add_l(&bn, - (LONG_MAX - 1), &res);
 
+    assert(check_bn_value_str(&bn, "9223372036854775806"));
     ASSERT_EQUAL_LONG(res.parts.len, 1L);
     ASSERT_EQUAL_LONG(res.parts.tab[0], 0L);
     ASSERT(res.positive_number, "bn should be positive");
