@@ -143,12 +143,20 @@ _bn_set_part_or_add(uint64_t val, int64_t idx, big_number_t *out)
 /* }}} */
 /* {{{ Setting methods */
 
-void bn_set_from_bn(const big_number_t *src, big_number_t *dst)
+static inline void
+bn_set_parts_from_bn(const big_number_t *src, big_number_t *dst)
 {
     gv_set(&src->parts, &dst->parts);
+}
+
+void bn_set_from_bn(const big_number_t *src, big_number_t *dst)
+{
+    bn_set_parts_from_bn(src, dst);
 
     dst->positive_number = src->positive_number;
-    bn_set_limit(dst, src->limit);
+    if (src->limit != dst->limit) {
+        bn_set_limit(dst, src->limit);
+    }
 }
 
 void bn_set_from_ul(uint64_t n, big_number_t *out)
@@ -255,7 +263,7 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
     /* cannot do that in the method 'bn_add_bn' because this methods can also
      * be called from 'bn_add_ul' and 'bn_sub_ul' */
     if (out != longest_bn && out != shortest_bn) {
-        gv_set(&(longest_bn->parts), &(out->parts));
+        bn_set_parts_from_bn(longest_bn, out);
     }
 
     for (int64_t i = 0; i < shortest_bn->parts.len; i++) {
@@ -381,7 +389,7 @@ __bn_sub_bn(const big_number_t *bn1, const big_number_t *bn2,
     int64_t short_bn_len = bn2->parts.len;
 
     if (bn1 != out && bn2 != out) {
-        gv_set(&(bn1->parts), &(out->parts));
+        bn_set_parts_from_bn(bn1, out);
     }
 
     for (bn_part_idx = 0; bn_part_idx < short_bn_len - 1; bn_part_idx++) {
