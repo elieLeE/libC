@@ -628,15 +628,15 @@ _bn_mul_ul(const big_number_t *bn, uint64_t n, int64_t first_part_out,
            big_number_t *out)
 {
     uint64_t carry = 0;
-    int64_t idx_part = 0;
-    int64_t idx_part_out = first_part_out;
 
     if (out->parts.size < bn->parts.len) {
         gv_extend(&out->parts, bn->parts.len - out->parts.len);
     }
 
-    while (idx_part < bn->parts.len) {
-        uint64_t tmp = bn->parts.tab[idx_part] * n + carry;
+    for (int64_t idx = 0, idx_part_out = first_part_out;
+         idx < bn->parts.len; idx++, idx_part_out++)
+    {
+        uint64_t tmp = bn->parts.tab[idx] * n + carry;
 
         if (tmp >= bn->limit) {
             carry = tmp / bn->limit;
