@@ -929,6 +929,51 @@ int bn_pow_ul(const big_number_t *bn, uint32_t exp, big_number_t *out)
     return 0;
 }
 
+int bn_ul_pow_ul(uint64_t n, uint32_t exp, big_number_t *out)
+{
+    big_number_t tmp;
+
+    if (exp == 0) {
+        bn_set_from_l(1, out);
+        return 0;
+    }
+
+    if (exp == 1) {
+        bn_set_from_ul(n, out);
+        return 0;
+    }
+
+    if (n == 0) {
+        bn_set_from_l(0, out);
+        return 0;
+    }
+
+    if (n == 1) {
+        bn_set_from_l(1, out);
+        return 0;
+    }
+
+    if (out->limit >= (ULONG_MAX / 2 ) / out->limit) {
+        logger_error("n is to big to multiply directly BN by n and limit "
+                     "(%ld) of the BN is too big to multiply it by "
+                     "another one",
+                     out->limit);
+        return -1;
+    }
+
+    bn_init_with_args(&tmp, 0, out->limit);
+    bn_set_from_ul(n, &tmp);
+
+    bn_fast_clear(out);
+    _bn_pow_ul(&tmp, exp, out);
+
+    out->positive_number = true;
+
+    bn_wipe(&tmp);
+
+    return 0;
+}
+
 /* }}} */
 
 void bn_add_part(big_number_t *bn, uint64_t val)
