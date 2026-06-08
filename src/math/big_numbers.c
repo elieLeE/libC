@@ -974,6 +974,19 @@ int bn_ul_pow_ul(uint64_t n, uint32_t exp, big_number_t *out)
     return 0;
 }
 
+int bn_l_pow_ul(int64_t n, uint32_t exp, big_number_t *out)
+{
+    if (n >= 0) {
+        return bn_ul_pow_ul(n, exp, out);
+    } else {
+        int res = RETHROW(bn_ul_pow_ul(-n, exp, out));
+
+        out->positive_number = (exp % 2 == 0);
+
+        return res;
+    }
+}
+
 /* }}} */
 
 void bn_add_part(big_number_t *bn, uint64_t val)

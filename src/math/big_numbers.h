@@ -96,6 +96,7 @@ int bn_mul_l(const big_number_t *bn, int64_t n, big_number_t *out);
  * crash if the result is too big */
 int bn_pow_ul(const big_number_t *bn, uint32_t exp, big_number_t *out);
 int bn_ul_pow_ul(uint64_t n, uint32_t exp, big_number_t *out);
+int bn_l_pow_ul(int64_t n, uint32_t exp, big_number_t *out);
 
 char *bn_to_str(const big_number_t *bn);
 
