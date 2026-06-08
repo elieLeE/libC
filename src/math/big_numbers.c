@@ -846,6 +846,90 @@ end:
 }
 
 /* }}} */
+/* {{{ Powering methods */
+
+/* In this method, bn is different from out ! */
+static void _bn_pow_ul(const big_number_t *bn, uint32_t exp, big_number_t *out)
+{
+    big_number_t tmp, tmp2;
+
+    bn_init_with_args(&tmp, bn->parts.len, bn->limit);
+    bn_init_with_args(&tmp2, bn->parts.len, bn->limit);
+
+    bn_set_from_bn(bn, &tmp);
+
+    for (uint32_t i = 0; i < exp - 1; i++) {
+        ___bn_mul_bn(&tmp, bn, &tmp2, out);
+
+        if (i < exp - 2) {
+            bn_set_parts_from_bn(out, &tmp);
+            bn_fast_clear(out);
+        }
+    }
+
+    bn_wipe(&tmp);
+    bn_wipe(&tmp2);
+}
+
+int bn_pow_ul(const big_number_t *bn, uint32_t exp, big_number_t *out)
+{
+    bool out_sign;
+
+    if (bn->limit >= (ULONG_MAX / 2 ) / bn->limit) {
+        logger_error("limit (%ld) if the BNs are too big to multiply them",
+                     bn->limit);
+        return -1;
+    }
+
+    if (exp == 0) {
+        bn_set_from_l(1, out);
+        return 0;
+    }
+
+    if (exp == 1) {
+        bn_set_from_bn(bn, out);
+        return 0;
+    }
+
+    out_sign = bn->positive_number || (exp % 2 == 0);
+
+    if (bn->parts.len == 1) {
+        if (bn->parts.tab[0] == 0) {
+            bn_set_from_l(0, out);
+            return 0;
+        } else if (bn->parts.tab[0] == 1) {
+            bn_set_from_bn(bn, out);
+            out->positive_number = out_sign;
+
+            return 0;
+        }
+    }
+
+    if (bn != out) {
+        bn_fast_clear(out);
+
+        if (bn->limit != out->limit) {
+            bn_set_limit(out, bn->limit);
+        }
+
+        _bn_pow_ul(bn, exp, out);
+    } else {
+        big_number_t tmp;
+
+        bn_init_with_args(&tmp, bn->parts.len, bn->limit);
+
+        _bn_pow_ul(bn, exp, &tmp);
+        bn_set_from_bn(&tmp, out);
+
+        bn_wipe(&tmp);
+    }
+
+    out->positive_number = out_sign;
+
+    return 0;
+}
+
+/* }}} */
 
 void bn_add_part(big_number_t *bn, uint64_t val)
 {
