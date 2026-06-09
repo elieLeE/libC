@@ -61,6 +61,12 @@ void gl_insert_elem_sorted(generic_liste_t *l, gl_elem_t *elem,
 
 gl_elem_t *gl_add_elem_first(generic_liste_t* l, void *e);
 gl_elem_t *gl_add_elem_last(generic_liste_t *l, void *e);
+
+static inline gl_elem_t *gl_append(generic_liste_t *l, void *e)
+{
+    return gl_add_elem_last(l, e);
+}
+
 gl_elem_t *
 gl_add_elem_next(generic_liste_t *l, generic_elem_liste_t *e, void *data);
 /* Add a new element and sorted it.
