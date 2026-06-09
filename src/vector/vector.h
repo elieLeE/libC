@@ -112,7 +112,7 @@ int __gv_copy(const __vector_void_t *src, long idx_start_src,
         __gv_copy(&__src->vec, (_idx_src), (_idx_dst), (len), &__dst->vec);   \
     })
 
-#define gv_add(_gvec, _val)                                                   \
+#define gv_append(_gvec, _val)                                                \
     ({  __auto_type __gvec = (_gvec);                                         \
         __gv_type(__gvec) *__elem = __gv_grow(&__gvec->vec, 1);               \
         *__elem = _val;                                                       \

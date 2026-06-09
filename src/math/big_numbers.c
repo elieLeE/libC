@@ -134,7 +134,7 @@ static void
 _bn_set_part_or_add(uint64_t val, int64_t idx, big_number_t *out)
 {
     if (idx > out->parts.len -1) {
-        gv_add(&out->parts, val);
+        gv_append(&out->parts, val);
     } else {
         out->parts.tab[idx] = val;
     }
@@ -163,11 +163,11 @@ void bn_set_from_ul(uint64_t n, big_number_t *out)
         uint64_t carry = tmp / out->limit;
 
         tmp -= out->limit * carry;
-        gv_add(&(out->parts), tmp);
+        gv_append(&(out->parts), tmp);
 
         tmp = carry;
     }
-    gv_add(&(out->parts), tmp);
+    gv_append(&(out->parts), tmp);
 
     out->positive_number = true;
 }
@@ -224,12 +224,12 @@ __bn_add_ul(const big_number_t *bn, uint64_t n, int64_t first_idx,
             unsigned long carry = tmp / bn->limit;
 
             tmp -= bn->limit * carry;
-            gv_add(&(out->parts), tmp);
+            gv_append(&(out->parts), tmp);
 
             tmp = carry;
         }
         if (tmp != 0) {
-            gv_add(&(out->parts), tmp);
+            gv_append(&(out->parts), tmp);
         }
     }
 }
@@ -284,7 +284,7 @@ _bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
     }
 
     if (longest_bn->parts.len == short_bn_len) {
-        gv_add(&out->parts, carry);
+        gv_append(&out->parts, carry);
         return;
     }
 
@@ -610,7 +610,7 @@ int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
 
 void bn_add_part(big_number_t *bn, uint64_t val)
 {
-    gv_add(&(bn->parts), val);
+    gv_append(&(bn->parts), val);
 }
 
 char *bn_to_str(const big_number_t *bn)

@@ -27,12 +27,12 @@ static void test_fill_vector(void)
 
     gv_init(&vector);
 
-    gv_add(&vector, 1);
-    gv_add(&vector, 2);
+    gv_append(&vector, 1);
+    gv_append(&vector, 2);
     gv_insert_elem_at_pos(&vector, 10, 1);
-    gv_add(&vector, 3);
-    gv_add(&vector, 4);
-    gv_add(&vector, 5);
+    gv_append(&vector, 3);
+    gv_append(&vector, 4);
+    gv_append(&vector, 5);
     gv_insert_elem_at_pos(&vector, 11, 0);
     gv_insert_elem_at_pos(&vector, 12, 7);
 
@@ -50,13 +50,13 @@ static void test_vector_add_and_remove_elem(void)
 
     gv_init(&vector);
 
-    gv_add(&vector, 1);
-    gv_add(&vector, 2);
+    gv_append(&vector, 1);
+    gv_append(&vector, 2);
     gv_insert_elem_at_pos(&vector, 10, 1);
     gv_remove(&vector, 2);
-    gv_add(&vector, 3);
-    gv_add(&vector, 4);
-    gv_add(&vector, 5);
+    gv_append(&vector, 3);
+    gv_append(&vector, 4);
+    gv_append(&vector, 5);
     gv_remove(&vector, 2);
     gv_remove(&vector, 0);
     gv_insert_elem_at_pos(&vector, 11, 0);
@@ -97,11 +97,11 @@ static void test_sort_vector_simple(void)
 
     gv_init(&vector);
 
-    gv_add(&vector, 3);
-    gv_add(&vector, 1);
-    gv_add(&vector, 5);
-    gv_add(&vector, 4);
-    gv_add(&vector, 2);
+    gv_append(&vector, 3);
+    gv_append(&vector, 1);
+    gv_append(&vector, 5);
+    gv_append(&vector, 4);
+    gv_append(&vector, 2);
 
     gv_sort(&vector, g_cmp_int32);
 
@@ -143,7 +143,7 @@ static void test_sort_vector_increasing(void)
     for (int i = 0; i < 1000; i++) {
         int tmp = rand() % 10000;
 
-        gv_add(&vector, tmp);
+        gv_append(&vector, tmp);
     }
 
     gv_sort(&vector, g_cmp_int32);
@@ -162,7 +162,7 @@ static void test_sort_vector_decreasing(void)
     for (int i = 0; i < 1000; i++) {
         int tmp = rand() % 10000;
 
-        gv_add(&vector, tmp);
+        gv_append(&vector, tmp);
     }
 
     gv_sort(&vector, g_cmp_int32_rev);
@@ -215,11 +215,11 @@ static void test_new_and_delete_vector(void)
 
     vector = gv_new(int32);
 
-    gv_add(vector, 1);
-    gv_add(vector, 2);
-    gv_add(vector, 3);
-    gv_add(vector, 4);
-    gv_add(vector, 5);
+    gv_append(vector, 1);
+    gv_append(vector, 2);
+    gv_append(vector, 3);
+    gv_append(vector, 4);
+    gv_append(vector, 5);
 
     ASSERT_EQUAL_LONG(vector->len, 5L);
     ASSERT_EQUAL_LONG(vector->size, 8L);
@@ -235,12 +235,12 @@ static void test_vector_init_size(void)
 
     gv_init_size(&vector, 10);
 
-    gv_add(&vector, 1);
-    gv_add(&vector, 2);
+    gv_append(&vector, 1);
+    gv_append(&vector, 2);
     gv_insert_elem_at_pos(&vector, 10, 1);
-    gv_add(&vector, 3);
-    gv_add(&vector, 4);
-    gv_add(&vector, 5);
+    gv_append(&vector, 3);
+    gv_append(&vector, 4);
+    gv_append(&vector, 5);
     gv_insert_elem_at_pos(&vector, 11, 0);
     gv_insert_elem_at_pos(&vector, 12, 7);
 
@@ -263,7 +263,7 @@ static void test_vector_shuffle(void)
     srand(0);
 
     for (int i = 1; i <= 10; i++) {
-        gv_add(&vector, i);
+        gv_append(&vector, i);
     }
     gv_shuffle(&vector);
 
@@ -284,17 +284,17 @@ static void test_reset_vector(void)
 
     gv_init(&vector);
 
-    gv_add(&vector, 1);
-    gv_add(&vector, 2);
-    gv_add(&vector, 3);
-    gv_add(&vector, 4);
-    gv_add(&vector, 5);
+    gv_append(&vector, 1);
+    gv_append(&vector, 2);
+    gv_append(&vector, 3);
+    gv_append(&vector, 4);
+    gv_append(&vector, 5);
 
     gv_clear(&vector, NULL);
 
-    gv_add(&vector, 6);
-    gv_add(&vector, 7);
-    gv_add(&vector, 8);
+    gv_append(&vector, 6);
+    gv_append(&vector, 7);
+    gv_append(&vector, 8);
 
     ASSERT_EQUAL_LONG(vector.len, 3L);
     ASSERT_EQUAL_LONG(vector.size, 8L);
@@ -313,19 +313,19 @@ static void test_set_vector(void)
     gv_init(&vector);
     gv_init(&vector2);
 
-    gv_add(&vector, 1);
-    gv_add(&vector, 2);
-    gv_add(&vector, 3);
-    gv_add(&vector, 4);
-    gv_add(&vector, 5);
+    gv_append(&vector, 1);
+    gv_append(&vector, 2);
+    gv_append(&vector, 3);
+    gv_append(&vector, 4);
+    gv_append(&vector, 5);
 
     ASSERT_EQUAL_LONG(vector.len, 5L);
     ASSERT_EQUAL_LONG(vector.size, 8L);
     check_vector_values(&vector, tab);
 
-    gv_add(&vector2, 6);
-    gv_add(&vector2, 7);
-    gv_add(&vector2, 8);
+    gv_append(&vector2, 6);
+    gv_append(&vector2, 7);
+    gv_append(&vector2, 8);
 
     ASSERT_EQUAL_LONG(vector2.len, 3L);
     ASSERT_EQUAL_LONG(vector2.size, 4L);
@@ -352,19 +352,19 @@ static void test_copy_vector(void)
     gv_init(&vector);
     gv_init(&vector2);
 
-    gv_add(&vector, 1);
-    gv_add(&vector, 2);
-    gv_add(&vector, 3);
-    gv_add(&vector, 4);
-    gv_add(&vector, 5);
+    gv_append(&vector, 1);
+    gv_append(&vector, 2);
+    gv_append(&vector, 3);
+    gv_append(&vector, 4);
+    gv_append(&vector, 5);
 
     ASSERT_EQUAL_LONG(vector.len, 5L);
     ASSERT_EQUAL_LONG(vector.size, 8L);
     check_vector_values(&vector, tab);
 
-    gv_add(&vector2, 6);
-    gv_add(&vector2, 7);
-    gv_add(&vector2, 8);
+    gv_append(&vector2, 6);
+    gv_append(&vector2, 7);
+    gv_append(&vector2, 8);
 
     ASSERT_EQUAL_LONG(vector2.len, 3L);
     ASSERT_EQUAL_LONG(vector2.size, 4L);
@@ -396,11 +396,11 @@ static void test_vector_find_and_contains_sequential_algo(void)
 
     gv_init(&vector);
 
-    gv_add(&vector, 1);
-    gv_add(&vector, 5);
-    gv_add(&vector, 4);
-    gv_add(&vector, 2);
-    gv_add(&vector, 3);
+    gv_append(&vector, 1);
+    gv_append(&vector, 5);
+    gv_append(&vector, 4);
+    gv_append(&vector, 2);
+    gv_append(&vector, 3);
 
     ASSERT((!(gv_contains(&vector, 10, GV_SEQUENTIAL_SEARCH, g_cmp_int32))),
            "elem '10' has not been found");
@@ -414,9 +414,9 @@ static void test_vector_find_and_contains_sequential_algo(void)
 
     gv_clear(&vector, NULL);
 
-    gv_add(&vector, 6);
-    gv_add(&vector, 7);
-    gv_add(&vector, 8);
+    gv_append(&vector, 6);
+    gv_append(&vector, 7);
+    gv_append(&vector, 8);
 
     for (int i = 0; i < 5; i++) {
         ASSERT((!(gv_contains(&vector, i, GV_SEQUENTIAL_SEARCH, g_cmp_int32))),
@@ -495,11 +495,11 @@ static void test_vector_find_with_pointer(void)
 
     gv_init(&vector);
 
-    gv_add(&vector, &tab[1]);
-    gv_add(&vector, &tab[0]);
-    gv_add(&vector, &tab[3]);
-    gv_add(&vector, &tab[2]);
-    gv_add(&vector, &tab[4]);
+    gv_append(&vector, &tab[1]);
+    gv_append(&vector, &tab[0]);
+    gv_append(&vector, &tab[3]);
+    gv_append(&vector, &tab[2]);
+    gv_append(&vector, &tab[4]);
 
     elem = p_calloc(sizeof(int));
 

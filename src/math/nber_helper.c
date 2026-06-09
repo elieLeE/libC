@@ -19,7 +19,7 @@ void get_digits_from_number(unsigned long n, gv_t(uint8) *out)
     while (n >= 1) {
         unsigned long n2 = n / 10;
 
-        gv_add(out, (n - n2 * 10));
+        gv_append(out, (n - n2 * 10));
         n = n / 10;
     }
 }

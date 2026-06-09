@@ -80,10 +80,10 @@ long get_all_primes_below_n(unsigned long lim, gv_t(uint64) *out)
 
     fill_tab_prime_bool(lim, tab_bool);
 
-    gv_add(out, 2);
+    gv_append(out, 2);
     for (unsigned long i = 3; i <= lim; i = i + 2) {
         if (!tab_bool[i]) {
-            gv_add(out, i);
+            gv_append(out, i);
         }
     }
 
@@ -96,12 +96,12 @@ void get_all_n_first_primes(long count_asked, gv_t(uint64) *out)
 {
     unsigned long current_nber;
 
-    gv_add(out, 2);
+    gv_append(out, 2);
     current_nber = 3;
 
     while (out->len < count_asked) {
         if (is_prime_from_smallest_primes(current_nber, out)) {
-            gv_add(out, current_nber);
+            gv_append(out, current_nber);
         }
         current_nber += 2;
     }
@@ -155,7 +155,7 @@ get_all_divisors_of_n_from_prime_factors_rec(const gv_t(primes_factors) *in,
         unsigned long current_div = current_prime_factor->prime * basis;
 
         for (unsigned int i = 0; i < current_prime_factor->iteration; i++) {
-            gv_add(out, current_div);
+            gv_append(out, current_div);
             get_all_divisors_of_n_from_prime_factors_rec(in, current_div,
                                                          pos + 1, out);
             current_div *= current_prime_factor->prime;
@@ -167,14 +167,14 @@ void get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
                                               gv_t(uint64) *out)
 {
     /* 1 divides all the numbers */
-    gv_add(out, 1);
+    gv_append(out, 1);
 
     gv_for_each_pos(pos, in) {
         prime_factor_t *current_prime_factor = &(in->tab[pos]);
         unsigned long current_div = current_prime_factor->prime;
 
         for (unsigned int i = 0; i < current_prime_factor->iteration; i++) {
-            gv_add(out, current_div);
+            gv_append(out, current_div);
             get_all_divisors_of_n_from_prime_factors_rec(in, current_div,
                                                          pos + 1, out);
             current_div *= current_prime_factor->prime;
@@ -271,7 +271,7 @@ void get_all_phi_from_1_to_n(long n, gv_t(int64) *phi)
         gv_extend(phi, n + 1 - phi->len);
     }
     for (long i = 0; i <= n; i++) {
-        gv_add(phi, i);
+        gv_append(phi, i);
     }
     for (long i = 2; i <= n; i++) {
         if (phi->tab[i] == i) {
