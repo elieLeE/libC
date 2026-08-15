@@ -621,6 +621,75 @@ int bn_add_bn(const big_number_t *bn1, const big_number_t *bn2,
 }
 
 /* }}} */
+/* {{{ Multiplying methods */
+
+static void
+_bn_mul_ul(const big_number_t *bn, uint64_t n, int64_t first_part_out,
+           big_number_t *out)
+{
+    uint64_t carry = 0;
+    int64_t idx_part = 0;
+    int64_t idx_part_out = first_part_out;
+
+    if (out->parts.size < bn->parts.len) {
+        gv_extend(&out->parts, bn->parts.len - out->parts.len);
+    }
+
+    while (idx_part < bn->parts.len) {
+        uint64_t tmp = bn->parts.tab[idx_part] * n + carry;
+
+        if (tmp >= bn->limit) {
+            carry = tmp / bn->limit;
+            tmp -= bn->limit * carry;
+        } else {
+            carry = 0;
+        }
+
+        _bn_set_part_or_add(tmp, idx_part_out, out);
+    }
+
+    __bn_add_carry(carry, out);
+}
+
+int bn_mul_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
+{
+    if (bn != out) {
+        bn_fast_clear(out);
+
+        if (bn->limit != out->limit) {
+            bn_set_limit(out, bn->limit);
+        }
+    }
+
+    if (n == 0) {
+        bn_set_from_l(0, out);
+        return 0;
+    }
+
+    if (n == 1) {
+        if (bn != out) {
+            bn_set_from_bn(bn, out);
+        }
+        return 0;
+    }
+
+    /* If n * bn->limit, we will get overflow. As, we can not check if a number
+     * if greater than the maximum possible, we divide ULONG_MAX by bn->limit
+     * Moreover, we take a margin by dividing by 2 ULONG_MAX in order to
+     * taking account of the carry */
+    if (bn->limit < (ULONG_MAX / 2 ) / n) {
+        _bn_mul_ul(bn, n, 0, out);
+    } else {
+        logger_error("NOT IMPLEMENTED YET");
+        return -1;
+    }
+
+    out->positive_number = bn->positive_number;
+
+    return 0;
+}
+
+/* }}} */
 
 void bn_add_part(big_number_t *bn, uint64_t val)
 {
