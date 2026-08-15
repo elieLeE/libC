@@ -1,6 +1,7 @@
 #include "test_big_numbers.h"
 
 #include <limits.h>
+#include <gmp.h>
 
 #include "../src/math/big_numbers.h"
 #include "../src/macros.h"
@@ -6600,6 +6601,493 @@ static void test_bn_mul_l(void)
 }
 
 /* }}} */
+/* {{{ Powering tests */
+
+static bool
+check_infinity_res(const big_number_t *bn, int64_t n, int32_t exp)
+{
+    bool res = true;
+    mpz_t x;
+    char *gmp_str, *bn_str;
+
+    mpz_init(x);
+
+    mpz_set_si(x, n);
+    mpz_pow_ui(x, x, exp);
+
+    gmp_str = mpz_get_str(NULL, 10, x);
+    bn_str = bn_to_str(bn);
+
+    if (strcmp(gmp_str, bn_str) != 0) {
+        res = false;
+        logger_error("\nbig numbers string expected: %s\n,"
+                     "                  obtained: %s\n", gmp_str, bn_str);
+    }
+
+    mpz_clear(x);
+    p_free((void **)&gmp_str);
+    p_free((void **)&bn_str);
+
+    return res;
+}
+
+static void test_bn_pow_ul(void)
+{
+    big_number_t bn, res;
+
+    bn_init_with_args(&bn, 0, 100000);
+    bn_init_with_args(&res, 0, 100000);
+
+    /* {{{ pos BN ^ ul => BN
+     * Multiply a positive big number by a positive unsigned long */
+    /* {{{ bn = 0 and exp = 0 */
+
+    bn_set_from_l(0, &bn);
+
+    bn_pow_ul(&bn, 0, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 1L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 65637 and exp = 0 */
+
+    bn_set_from_l(65637, &bn);
+
+    bn_pow_ul(&bn, 0, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 1L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 19544 and exp = 1 */
+
+    bn_set_from_l(19544, &bn);
+
+    bn_pow_ul(&bn, 1, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 19544L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 0 and exp = 5788 */
+
+    bn_set_from_l(0, &bn);
+
+    bn_pow_ul(&bn, 5788, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 0L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 1 and exp = 9823 */
+
+    bn_set_from_l(1, &bn);
+
+    bn_pow_ul(&bn, 9823, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 1L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 19544 and exp = 9 */
+
+    bn_set_from_l(19544, &bn);
+
+    bn_pow_ul(&bn, 9, &bn);
+    assert(check_infinity_res(&bn, 19544, 9));
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* }}} */
+    /* {{{ pos BN ^ ul => BN2
+     * Multiply a positive big number by a positive unsigned long */
+    /* {{{ bn = 0 and exp = 0 */
+
+    bn_set_from_l(0, &bn);
+
+    bn_pow_ul(&bn, 0, &res);
+
+    assert(check_bn_value_str(&bn, "0"));
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 19544 and exp = 0 */
+
+    bn_set_from_l(19544, &bn);
+
+    bn_pow_ul(&bn, 0, &res);
+
+    assert(check_bn_value_str(&bn, "19544"));
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 19544 and exp = 1 */
+
+    bn_set_from_l(19544, &bn);
+
+    bn_pow_ul(&bn, 1, &res);
+
+    assert(check_bn_value_str(&bn, "19544"));
+    assert(check_bn_value_str(&res, "19544"));
+
+    /* }}} */
+    /* {{{ bn = 0 and exp = 5788 */
+
+    bn_set_from_l(0, &bn);
+
+    bn_pow_ul(&bn, 5788, &res);
+
+    assert(check_bn_value_str(&bn, "0"));
+    assert(check_bn_value_str(&res, "0"));
+
+    /* }}} */
+    /* {{{ bn = 1 and exp = 9823 */
+
+    bn_set_from_l(1, &bn);
+
+    bn_pow_ul(&bn, 9823, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 8632 and exp = 9 */
+
+    bn_set_from_l(8632, &bn);
+
+    bn_pow_ul(&bn, 9, &res);
+    assert(check_infinity_res(&res, 8632, 9));
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* }}} */
+    /* {{{ neg BN ^ ul => BN
+     * Multiply a positive big number by a positive unsigned long */
+    /* {{{ bn = -65637 and exp = 0 */
+
+    bn_set_from_l(-19544, &bn);
+    assert(check_bn_value_str(&bn, "-19544"));
+
+    bn_pow_ul(&bn, 0, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 1L);
+    ASSERT(bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = 19544 and exp = 1 */
+
+    bn_set_from_l(-19544, &bn);
+    assert(check_bn_value_str(&bn, "-19544"));
+
+    bn_pow_ul(&bn, 1, &bn);
+
+    ASSERT_EQUAL_LONG(bn.parts.len, 1L);
+    ASSERT_EQUAL_LONG(bn.parts.tab[0], 19544L);
+    ASSERT(!bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = -1 and exp = 9823 */
+
+    bn_set_from_l(-1, &bn);
+    assert(check_bn_value_str(&bn, "-1"));
+
+    bn_pow_ul(&bn, 9823, &bn);
+
+    assert(check_bn_value_str(&bn, "-1"));
+
+    /* }}} */
+    /* {{{ bn = -1 and exp = 9824 */
+
+    bn_set_from_l(-1, &bn);
+    assert(check_bn_value_str(&bn, "-1"));
+
+    bn_pow_ul(&bn, 9824, &bn);
+
+    assert(check_bn_value_str(&bn, "1"));
+
+    /* }}} */
+    /* {{{ bn = -4332 and exp = 99 */
+
+    bn_set_from_l(-4332, &bn);
+
+    bn_pow_ul(&bn, 99, &bn);
+    assert(check_infinity_res(&bn, -4332, 99));
+    ASSERT(!bn.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* }}} */
+    /* {{{ neg BN ^ ul => BN2
+     * Multiply a positive big number by a positive unsigned long */
+    /* {{{ bn = -65637 and exp = 0 */
+
+    bn_set_from_l(-65637, &bn);
+    assert(check_bn_value_str(&bn, "-65637"));
+
+    bn_pow_ul(&bn, 0, &res);
+
+    assert(check_bn_value_str(&bn, "-65637"));
+    assert(check_bn_value_str(&res, "1"));
+
+    /* }}} */
+    /* {{{ bn = -19544 and exp = 1 */
+
+    bn_set_from_l(-19544, &bn);
+    assert(check_bn_value_str(&bn, "-19544"));
+
+    bn_pow_ul(&bn, 1, &res);
+
+    assert(check_bn_value_str(&bn, "-19544"));
+    assert(check_bn_value_str(&res, "-19544"));
+
+    /* }}} */
+    /* {{{ bn = -1 and exp = 9823 */
+
+    bn_set_from_l(-1, &bn);
+    assert(check_bn_value_str(&bn, "-1"));
+
+    bn_pow_ul(&bn, 9823, &res);
+
+    assert(check_bn_value_str(&bn, "-1"));
+    assert(check_bn_value_str(&res, "-1"));
+
+    /* }}} */
+    /* {{{ bn = -1 and exp = 98 */
+
+    bn_set_from_l(-1, &bn);
+    assert(check_bn_value_str(&bn, "-1"));
+
+    bn_pow_ul(&bn, 98, &res);
+
+    assert(check_bn_value_str(&bn, "-1"));
+    assert(check_bn_value_str(&res, "1"));
+
+    /* }}} */
+    /* {{{ bn = -99999 and exp = 77 */
+
+    bn_set_from_l(-99999, &bn);
+
+    bn_pow_ul(&bn, 77, &res);
+
+    assert(check_bn_value_str(&bn, "-99999"));
+    assert(check_infinity_res(&res, -99999, 77));
+    ASSERT(!res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ bn = -99999 and exp = 78 */
+
+    bn_set_from_l(-99999, &bn);
+
+    bn_pow_ul(&bn, 78, &res);
+
+    assert(check_bn_value_str(&bn, "-99999"));
+    assert(check_infinity_res(&res, -99999, 78));
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* }}} */
+
+    bn_wipe(&bn);
+    bn_wipe(&res);
+}
+
+static void test_bn_ul_pow_ul(void)
+{
+    big_number_t res;
+
+    bn_init_with_args(&res, 0, 100);
+
+    /* {{{ pos ul ^ ul => BN
+     * Multiply a positive big number by a positive unsigned long */
+    /* {{{ n = 0 and exp = 0 */
+
+    bn_ul_pow_ul(0, 0, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ n = 637 and exp = 0 */
+
+    bn_ul_pow_ul(637, 0, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ n = 9544 and exp = 1 */
+
+    bn_ul_pow_ul(9544, 1, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 2L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 44L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 95L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ n = 0 and exp = 57788 */
+
+    bn_ul_pow_ul(0, 57788, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 0L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ n = 1 and exp = 7658 */
+
+    bn_ul_pow_ul(1, 7658, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ n = 637 and exp = 5 */
+
+    bn_ul_pow_ul(637, 5, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 8L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 57L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 69L);
+    ASSERT_EQUAL_LONG(res.parts.tab[2], 62L);
+    ASSERT_EQUAL_LONG(res.parts.tab[3], 82L);
+    ASSERT_EQUAL_LONG(res.parts.tab[4], 10L);
+    ASSERT_EQUAL_LONG(res.parts.tab[5], 88L);
+    ASSERT_EQUAL_LONG(res.parts.tab[6], 4L);
+    ASSERT_EQUAL_LONG(res.parts.tab[7], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ n = 6637 and n = 17 */
+
+    bn_ul_pow_ul(6637, 17, &res);
+    assert(check_bn_value_str(&res, "940851106307814976946784947592094489558"
+                              "49731301966729691184867117"));
+
+    /* }}} */
+    /* {{{ n = 6637 and n = 1789 */
+
+    bn_set_limit(&res, 1000000000);
+
+    /* this result has been checked with the library gmpz */
+    bn_ul_pow_ul(6637, 1789, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 760L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 562990877L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 330069634L);
+    ASSERT_EQUAL_LONG(res.parts.tab[758], 300279261L);
+    ASSERT_EQUAL_LONG(res.parts.tab[759], 3217968L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* }}} */
+
+    bn_wipe(&res);
+}
+
+static void test_bn_l_pow_ul(void)
+{
+    big_number_t res;
+
+    bn_init_with_args(&res, 0, 100);
+
+    /* {{{ l ^ ul => BN
+     * Multiply a positive big number by a positive unsigned long */
+    /* {{{ n = -637 and exp = 0 */
+
+    bn_l_pow_ul(-637, 0, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ n = 9544 and exp = 1 */
+
+    bn_l_pow_ul(-9544, 1, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 2L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 44L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 95L);
+    ASSERT(!res.positive_number, "bn should be negative");
+
+    /* }}} */
+    /* {{{ n = -1 and exp = 7658 */
+
+    bn_l_pow_ul(-1, 7658, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ n = -1 and exp = 7657 */
+
+    bn_l_pow_ul(-1, 7657, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(!res.positive_number, "bn should be negative");
+
+    /* }}} */
+    /* {{{ n = -637 and exp = 5 */
+
+    bn_l_pow_ul(-637, 5, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 8L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 57L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 69L);
+    ASSERT_EQUAL_LONG(res.parts.tab[2], 62L);
+    ASSERT_EQUAL_LONG(res.parts.tab[3], 82L);
+    ASSERT_EQUAL_LONG(res.parts.tab[4], 10L);
+    ASSERT_EQUAL_LONG(res.parts.tab[5], 88L);
+    ASSERT_EQUAL_LONG(res.parts.tab[6], 4L);
+    ASSERT_EQUAL_LONG(res.parts.tab[7], 1L);
+    ASSERT(!res.positive_number, "bn should be negative");
+
+    /* }}} */
+    /* {{{ n = -6637 and n = 17 */
+
+    bn_l_pow_ul(-6637, 17, &res);
+    assert(check_bn_value_str(&res, "-94085110630781497694678494759209448955"
+                              "849731301966729691184867117"));
+
+    /* }}} */
+    /* {{{ n = 6637 and n = 1789 */
+
+    bn_set_limit(&res, 1000000000);
+
+    /* this result has been checked with the library gmpz */
+    bn_l_pow_ul(-6637, 1789, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 760L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 562990877L);
+    ASSERT_EQUAL_LONG(res.parts.tab[1], 330069634L);
+    ASSERT_EQUAL_LONG(res.parts.tab[758], 300279261L);
+    ASSERT_EQUAL_LONG(res.parts.tab[759], 3217968L);
+    ASSERT(!res.positive_number, "bn should be negative");
+
+    /* }}} */
+    /* }}} */
+
+    bn_wipe(&res);
+}
+
+/* }}} */
 
 module_tests_t *get_all_tests_big_numbers(void)
 {
@@ -6640,6 +7128,10 @@ module_tests_t *get_all_tests_big_numbers(void)
     ADD_TEST_TO_MODULE(module_tests, test_bn_mul_bn_different_sign);
     ADD_TEST_TO_MODULE(module_tests, test_bn_mul_ul);
     ADD_TEST_TO_MODULE(module_tests, test_bn_mul_l);
+
+    ADD_TEST_TO_MODULE(module_tests, test_bn_pow_ul);
+    ADD_TEST_TO_MODULE(module_tests, test_bn_ul_pow_ul);
+    ADD_TEST_TO_MODULE(module_tests, test_bn_l_pow_ul);
 
     return module_tests;
 }
