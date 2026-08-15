@@ -9,7 +9,7 @@
 
 CC=gcc
 CFLAGS=-std=gnu2x -Wextra -Wall -g# -ansi -pedantic
-LDFLAGS=-lm
+LDFLAGS=-lm -lgmp
 EXEC=test
 LIB_C=../src
 SRC= $(wildcard *.c $(LIB_C)/liste/*.c $(LIB_C)/mem/mem.c\
