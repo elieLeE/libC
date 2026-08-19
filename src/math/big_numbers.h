@@ -11,6 +11,7 @@ typedef struct big_number_t {
 
 void bn_init(big_number_t *bn);
 void bn_init_with_args(big_number_t *bn, int64_t size, uint64_t limit);
+void bn_init_multiplying(big_number_t *bn);
 
 void bn_set_limit(big_number_t *bn, uint64_t limit);
 

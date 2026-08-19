@@ -6,7 +6,9 @@
 #include "nber_helper.h"
 #include "../utils.h"
 
-#define LIMIT_MAX 100000000000000000
+#define LIMIT_MAX            100000000000000000
+#define LIMIT_MAX_MULTIPYING 1000000000
+
 
 void bn_set_limit(big_number_t *bn, uint64_t limit)
 {
@@ -35,6 +37,11 @@ void bn_init_with_args(big_number_t *bn, int64_t size, uint64_t limit)
     bn->positive_number = true;
 
     gv_init_size(&(bn->parts), size);
+}
+
+void bn_init_multiplying(big_number_t *bn)
+{
+    bn_init_with_args(bn, 0, LIMIT_MAX_MULTIPYING);
 }
 
 void bn_init(big_number_t *bn)
