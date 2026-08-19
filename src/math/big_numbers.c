@@ -49,7 +49,28 @@ void bn_init(big_number_t *bn)
     bn_init_with_args(bn, 0, LIMIT_MAX);
 }
 
-/* {{{ Helpers methods */
+/* {{{ Digits */
+
+static void bn_get_digits_iterations(const big_number_t *in, uint32_t *out)
+{
+    gv_for_each_pos(pos, &(in->parts)) {
+        get_digits_iterations_from_number(in->parts.tab[pos], out);
+    }
+}
+
+uint64_t bn_get_digits_sum(const big_number_t *in)
+{
+    uint64_t sum = 0;
+    uint32_t digits_iteration[10] = {0};
+
+    bn_get_digits_iterations(in, digits_iteration);
+
+    for (int i = 0; i < 10; i++) {
+        sum += (digits_iteration[i] * i);
+    }
+
+    return sum;
+}
 
 unsigned int bn_get_digits_count(const big_number_t *bn)
 {
@@ -68,6 +89,9 @@ unsigned int bn_get_digits_count(const big_number_t *bn)
     return digits_count_limit * (bn->parts.len - 1) +
         get_count_digits_of_n(bn->parts.tab[bn->parts.len - 1]);
 }
+
+/* }}} */
+/* {{{ Helpers methods */
 
 /* WARNING, this method could generate an overflow if it used on a "real" big
  * number, as to say a big number greater than ULONG_MAX.
