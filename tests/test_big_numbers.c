@@ -7,6 +7,27 @@
 #include "../src/macros.h"
 #include "../src/mem/mem.h"
 
+
+static bool cmp_bn_mpz(const big_number_t *bn, const mpz_t *mpz)
+{
+    bool res = true;
+    char *gmp_str, *bn_str;
+
+    gmp_str = mpz_get_str(NULL, 10, *mpz);
+    bn_str = bn_to_str(bn);
+
+    if (strcmp(gmp_str, bn_str) != 0) {
+        res = false;
+        logger_error("\nbig numbers string expected: %s\n,"
+                     "                  obtained: %s\n", gmp_str, bn_str);
+    }
+
+    p_free((void **)&gmp_str);
+    p_free((void **)&bn_str);
+
+    return res;
+}
+
 static bool
 check_bn_value_str(const big_number_t *bn, const char *expected_str)
 {
@@ -6604,29 +6625,19 @@ static void test_bn_mul_l(void)
 /* {{{ Powering tests */
 
 static bool
-check_infinity_res(const big_number_t *bn, int64_t n, int32_t exp)
+check_infinity_res_pow(const big_number_t *bn, int64_t n, int32_t exp)
 {
     bool res = true;
     mpz_t x;
-    char *gmp_str, *bn_str;
 
     mpz_init(x);
 
     mpz_set_si(x, n);
     mpz_pow_ui(x, x, exp);
 
-    gmp_str = mpz_get_str(NULL, 10, x);
-    bn_str = bn_to_str(bn);
-
-    if (strcmp(gmp_str, bn_str) != 0) {
-        res = false;
-        logger_error("\nbig numbers string expected: %s\n,"
-                     "                  obtained: %s\n", gmp_str, bn_str);
-    }
+    res = cmp_bn_mpz(bn, &x);
 
     mpz_clear(x);
-    p_free((void **)&gmp_str);
-    p_free((void **)&bn_str);
 
     return res;
 }
@@ -6700,7 +6711,7 @@ static void test_bn_pow_ul(void)
     bn_set_from_l(19544, &bn);
 
     bn_pow_ul(&bn, 9, &bn);
-    assert(check_infinity_res(&bn, 19544, 9));
+    assert(check_infinity_res_pow(&bn, 19544, 9));
     ASSERT(bn.positive_number, "bn should be positive");
 
     /* }}} */
@@ -6767,7 +6778,7 @@ static void test_bn_pow_ul(void)
     bn_set_from_l(8632, &bn);
 
     bn_pow_ul(&bn, 9, &res);
-    assert(check_infinity_res(&res, 8632, 9));
+    assert(check_infinity_res_pow(&res, 8632, 9));
     ASSERT(res.positive_number, "bn should be positive");
 
     /* }}} */
@@ -6823,7 +6834,7 @@ static void test_bn_pow_ul(void)
     bn_set_from_l(-4332, &bn);
 
     bn_pow_ul(&bn, 99, &bn);
-    assert(check_infinity_res(&bn, -4332, 99));
+    assert(check_infinity_res_pow(&bn, -4332, 99));
     ASSERT(!bn.positive_number, "bn should be positive");
 
     /* }}} */
@@ -6881,7 +6892,7 @@ static void test_bn_pow_ul(void)
     bn_pow_ul(&bn, 77, &res);
 
     assert(check_bn_value_str(&bn, "-99999"));
-    assert(check_infinity_res(&res, -99999, 77));
+    assert(check_infinity_res_pow(&res, -99999, 77));
     ASSERT(!res.positive_number, "bn should be positive");
 
     /* }}} */
@@ -6892,7 +6903,7 @@ static void test_bn_pow_ul(void)
     bn_pow_ul(&bn, 78, &res);
 
     assert(check_bn_value_str(&bn, "-99999"));
-    assert(check_infinity_res(&res, -99999, 78));
+    assert(check_infinity_res_pow(&res, -99999, 78));
     ASSERT(res.positive_number, "bn should be positive");
 
     /* }}} */
