@@ -6622,6 +6622,81 @@ static void test_bn_mul_l(void)
 }
 
 /* }}} */
+/* {{{ Factoriel tests */
+
+static bool
+check_infinity_res_fact(const big_number_t *bn, uint32_t n)
+{
+    bool res = true;
+    mpz_t x;
+
+    mpz_init(x);
+
+    mpz_fac_ui(x, n);
+
+    res = cmp_bn_mpz(bn, &x);
+
+    mpz_clear(x);
+
+    return res;
+}
+
+static void test_bn_get_fact_n(void)
+{
+    big_number_t res;
+
+    bn_init_multiplying(&res);
+
+    /* {{{ 0! */
+
+    bn_get_fact_n(0, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ 1! */
+
+    bn_get_fact_n(0, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 1L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ 6! */
+
+    bn_get_fact_n(6, &res);
+
+    ASSERT_EQUAL_LONG(res.parts.len, 1L);
+    ASSERT_EQUAL_LONG(res.parts.tab[0], 720L);
+    ASSERT(res.positive_number, "bn should be positive");
+
+    /* }}} */
+    /* {{{ 20! */
+
+    bn_get_fact_n(20, &res);
+    assert(check_bn_value_str(&res, "2432902008176640000"));
+
+    /* }}} */
+    /* {{{ 50! */
+
+    bn_get_fact_n(50, &res);
+    assert(check_infinity_res_fact(&res, 50));
+
+    /* }}} */
+    /* {{{ 100! */
+
+    bn_get_fact_n(100, &res);
+    assert(check_infinity_res_fact(&res, 100));
+
+    /* }}} */
+
+  bn_wipe(&res);
+}
+
+/* }}} */
 /* {{{ Powering tests */
 
 static bool
@@ -7139,6 +7214,8 @@ module_tests_t *get_all_tests_big_numbers(void)
     ADD_TEST_TO_MODULE(module_tests, test_bn_mul_bn_different_sign);
     ADD_TEST_TO_MODULE(module_tests, test_bn_mul_ul);
     ADD_TEST_TO_MODULE(module_tests, test_bn_mul_l);
+
+    ADD_TEST_TO_MODULE(module_tests, test_bn_get_fact_n);
 
     ADD_TEST_TO_MODULE(module_tests, test_bn_pow_ul);
     ADD_TEST_TO_MODULE(module_tests, test_bn_ul_pow_ul);
