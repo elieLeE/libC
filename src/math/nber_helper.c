@@ -24,7 +24,7 @@ void get_digits_from_number(unsigned long n, gv_t(uint8) *out)
     }
 }
 
-int get_digits_iterations_from_number(unsigned long n, unsigned char *out)
+int get_digits_iterations_from_number(unsigned long n, uint32_t *out)
 {
     unsigned int i = 0;
 
@@ -67,8 +67,8 @@ bool are_permutation_nbers(unsigned long n, unsigned long n2)
 {
     /* do not use vector here as the size of the vector is absolute (digits
      * are < 10) and it is more efficient */
-    unsigned char digits_n[10] = {0};
-    unsigned char digits_n2[10] = {0};
+    uint32_t digits_n[10] = {0};
+    uint32_t digits_n2[10] = {0};
     unsigned int digits_count_n, digits_count_n2;
 
     digits_count_n = get_digits_iterations_from_number(n, digits_n);

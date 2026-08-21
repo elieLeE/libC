@@ -8,7 +8,7 @@
 
 __attribute__((const)) unsigned int get_count_digits_of_n(unsigned long n);
 void get_digits_from_number(unsigned long n, gv_t(uint8) *out);
-int get_digits_iterations_from_number(unsigned long n, unsigned char *out);
+int get_digits_iterations_from_number(unsigned long n, uint32_t *out);
 
 __attribute__((const))
 bool are_permutation_nbers(unsigned long n, unsigned long n2);
