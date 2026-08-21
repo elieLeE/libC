@@ -877,6 +877,50 @@ end:
 }
 
 /* }}} */
+/* {{{ Factoriel */
+
+static int bn_get_fact_n_rec(uint32_t n, big_number_t *tmp,
+                             big_number_t *out)
+{
+    if (n == 1) {
+        return 0;
+    }
+
+    _bn_mul_ul(out, n, 0, tmp);
+
+    if (tmp != out) {
+        bn_set_from_bn(tmp, out);
+    }
+
+    return bn_get_fact_n_rec(n - 1, tmp, out);
+}
+
+int bn_get_fact_n(uint32_t n, big_number_t *out)
+{
+    if (n == 0) {
+        bn_set_from_ul(1, out);
+        return 0;
+    }
+
+    if (n == 1) {
+        bn_set_from_ul(1, out);
+        return 0;
+    }
+
+    bn_set_from_ul(n, out);
+
+    if (out->limit < (ULONG_MAX / 2 ) / n) {
+        return bn_get_fact_n_rec(n - 1, out, out);
+    } else {
+        big_number_t tmp;
+
+        bn_init_with_args(&tmp, out->parts.len, out->limit);
+
+        return bn_get_fact_n_rec(n - 1, &tmp, out);
+    }
+}
+
+/* }}} */
 /* {{{ Powering methods */
 
 /* In this method, bn is different from out ! */
