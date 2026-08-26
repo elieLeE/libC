@@ -18,7 +18,6 @@ SRC= $(wildcard *.c\
 	 $(LIB_C)/logger/logger.c\
 	 $(LIB_C)/io/io.c\
 	 $(LIB_C)/test_helper/test_helper.c\
-	 $(LIB_C)/vector/vector.c\
 	 $(LIB_C)/math/*.c\
 	 $(LIB_C)/tab_helper/tab_helper.c\
 	 $(LIB_C)/utils.c)

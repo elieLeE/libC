@@ -1,7 +1,7 @@
 #ifndef __BIG_NUMBERS_H__
 #define __BIG_NUMBERS_H__
 
-#include "../vector/vector.h"
+#include "../containers/vector.h"
 
 typedef struct big_number_t {
     gv_t(uint64) parts;

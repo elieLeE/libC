@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "../vector/vector.h"
+#include "../containers/vector.h"
 
 __attribute__((const)) unsigned int get_count_digits_of_n(unsigned long n);
 void get_digits_from_number(unsigned long n, gv_t(uint8) *out);
