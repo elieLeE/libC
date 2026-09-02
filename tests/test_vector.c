@@ -461,10 +461,10 @@ static void test_vector_find_and_contains_dichotomy_algo(void)
     check_pos_found_elem(&vector, 100, GV_DICHOTOMY_SEARCH, 9);
     check_pos_found_elem(&vector, 111, GV_DICHOTOMY_SEARCH, 10);
 
-    check_pos_found_elem(&vector, -1, GV_DICHOTOMY_SEARCH, -1);
+    check_pos_found_elem(&vector, -1,  GV_DICHOTOMY_SEARCH, -1);
     check_pos_found_elem(&vector, 200, GV_DICHOTOMY_SEARCH, -1);
-    check_pos_found_elem(&vector, 10, GV_DICHOTOMY_SEARCH, -1);
-    check_pos_found_elem(&vector, 70, GV_DICHOTOMY_SEARCH, -1);
+    check_pos_found_elem(&vector, 10,  GV_DICHOTOMY_SEARCH, -1);
+    check_pos_found_elem(&vector, 70,  GV_DICHOTOMY_SEARCH, -1);
 
     gv_wipe(&vector, NULL);
 }
