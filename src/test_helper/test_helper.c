@@ -1,7 +1,41 @@
 #include <strings.h>
+#include <getopt.h>
 
 #include "test_helper.h"
 #include "../macros.h"
+
+int parse_args(int argc, char **argv, void (*usage_cb)(const char *),
+               char **module_name, char **test_name)
+{
+    int opt;
+
+    while ((opt = getopt(argc, argv, "hm:t:")) != -1) {
+        switch(opt) {
+        case 'h':
+            usage_cb(argv[0]);
+            return -1;
+
+        case 'm':
+            *module_name = optarg;
+            break;
+
+        case 't': {
+            if (*module_name == NULL) {
+                usage_cb(argv[0]);
+                return -1;
+            }
+            *test_name = optarg;
+        }
+            break;
+
+        default:
+            usage_cb(argv[0]);
+            return -1;
+        }
+    }
+
+    return 0;
+}
 
 int set_module_name(module_tests_t *module_test, const char *name)
 {

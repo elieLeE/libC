@@ -3,9 +3,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
-/* not necessary for compiling but without vim indicates an error and that's
- * annoying */
-#include <getopt.h>
 
 #include "../src/macros.h"
 #include "../src/utils.h"
@@ -52,36 +49,14 @@ static void print_usage(const char *argv0)
 
 int main(int argc, char **argv)
 {
-    int opt;
     generic_liste_t modules_tests;
-    const char *module_name = NULL;
-    const char *test_name = NULL;
+    char *module_name = NULL;
+    char *test_name = NULL;
 
     srand(time(NULL));
 
-    while ((opt = getopt(argc, argv, "hm:t:")) != -1) {
-        switch(opt) {
-        case 'h':
-            print_usage(argv[0]);
-            return 0;
-
-        case 'm':
-            module_name = optarg;
-            break;
-
-        case 't': {
-            if (module_name == NULL) {
-                print_usage(argv[0]);
-                return 0;
-            }
-            test_name = optarg;
-        }
-            break;
-
-        default:
-            print_usage(argv[0]);
-            return 0;
-        }
+    if (parse_args(argc, argv, print_usage, &module_name, &test_name) != 0) {
+        return 0;
     }
 
     gl_init(&modules_tests);

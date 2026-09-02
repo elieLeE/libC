@@ -16,6 +16,9 @@ typedef struct module_tests_t {
 
 CREATE_GENERIC_NEW_INIT(module_tests_t, module_tests)
 
+int parse_args(int argc, char **argv, void (*usage_cb)(const char *),
+               char **module_name, char **test_name);
+
 void init_module_test(module_tests_t *module_test);
 
 int set_module_name(module_tests_t *module_test, const char *name);
