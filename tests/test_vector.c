@@ -529,6 +529,68 @@ static void test_vector_find_with_pointer(void)
     p_free((void **)&elem);
 }
 
+static void test_vector_macro_gv_for_each(void)
+{
+    gv_t(int32) vector;
+    int32_t tab[5] = {6, 5, 2, 0, 811};
+    int pos = 0;
+
+    gv_init(&vector);
+
+    gv_append(&vector, 6);
+    gv_append(&vector, 5);
+    gv_append(&vector, 2);
+    gv_append(&vector, 0);
+    gv_append(&vector, 811);
+
+    gv_for_each(elem, &vector) {
+        ASSERT_EQUAL_INT(elem, tab[pos]);
+        pos++;
+    }
+
+    pos = 0;
+    gv_for_each(elem, &vector) {
+        ASSERT_EQUAL_INT(elem, tab[pos]);
+        pos++;
+    }
+
+    gv_wipe(&vector, NULL);
+}
+
+static void test_vector_macro_gv_for_each_p(void)
+{
+    int pos = 0;
+    typedef struct test_t {
+        int v;
+    } test_t;
+
+    generic_vector_t(test_gv_for_each_p, test_t);
+
+    gv_t(test_gv_for_each_p) vector;
+    int32_t tab[5] = {11, 5, 1, 243, 191};
+
+    gv_init(&vector);
+
+    gv_append(&vector, (test_t) {.v = 11});
+    gv_append(&vector, (test_t) {.v = 5});
+    gv_append(&vector, (test_t) {.v = 1});
+    gv_append(&vector, (test_t) {.v = 243});
+    gv_append(&vector, (test_t) {.v = 191});
+
+    gv_for_each_p(elem, &vector) {
+        ASSERT_EQUAL_INT(elem->v, tab[pos]);
+        pos++;
+    }
+
+    pos = 0;
+    gv_for_each_p(elem, &vector) {
+        ASSERT_EQUAL_INT(elem->v, tab[pos]);
+        pos++;
+    }
+
+    gv_wipe(&vector, NULL);
+}
+
 module_tests_t *get_all_tests_vector(void)
 {
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
@@ -552,6 +614,9 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests,
                        test_vector_find_and_contains_dichotomy_algo);
     ADD_TEST_TO_MODULE(module_tests, test_vector_find_with_pointer);
+    ADD_TEST_TO_MODULE(module_tests, test_vector_macro_gv_for_each);
+    ADD_TEST_TO_MODULE(module_tests, test_vector_macro_gv_for_each_p);
+
 
     return module_tests;
 }
