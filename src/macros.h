@@ -67,18 +67,18 @@
         }                                                                     \
     } while (0)
 
-#define ASSERT_EQUAL(_v_obtained, _v_expected, _fmt_data)                     \
+#define ASSERT_EQUAL(_v_left_, _v_right_, _fmt_data)                          \
     do {                                                                      \
-        ASSERT((_v_obtained == _v_expected),                                  \
-               "obtained: "_fmt_data ", expected: "_fmt_data,                 \
-               _v_obtained, _v_expected);                                     \
+        ASSERT((_v_left_ == _v_right_),                                       \
+               "left: "_fmt_data ", right: "_fmt_data,                        \
+               _v_left_, _v_right_);                                          \
     } while (0)
 
-#define ASSERT_EQUAL_INT(_v_obtained, _v_expected)                            \
-    ASSERT_EQUAL(_v_obtained, _v_expected, "%d")
+#define ASSERT_EQUAL_INT(_v_left_, _v_right_)                                 \
+    ASSERT_EQUAL(_v_left_, _v_right_, "%d")
 
-#define ASSERT_EQUAL_LONG(_v_obtained, _v_expected)                           \
-    ASSERT_EQUAL(_v_obtained, _v_expected, "%ld")
+#define ASSERT_EQUAL_LONG(_v_left_, _v_right_)                                \
+    ASSERT_EQUAL(_v_left_, _v_right_, "%ld")
 
 #define ASSERT_STR_EQUAL(_str1, _str2)                                        \
     do {                                                                      \
