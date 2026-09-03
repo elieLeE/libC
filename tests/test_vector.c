@@ -559,13 +559,13 @@ static void test_vector_macro_gv_for_each(void)
 
 static void test_vector_macro_gv_for_each_p(void)
 {
-    int pos = 0;
     typedef struct test_t {
         int v;
     } test_t;
 
     generic_vector_t(test_gv_for_each_p, test_t);
 
+    int pos = 0;
     gv_t(test_gv_for_each_p) vector;
     int32_t tab[5] = {11, 5, 1, 243, 191};
 
