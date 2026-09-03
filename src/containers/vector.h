@@ -48,6 +48,18 @@ typedef generic_vector_data_t(void) __vector_void_t;
 #define gv_for_each_pos(_pos, _gvec)                                          \
     for (long _pos = 0; _pos < (_gvec)->len; _pos++)
 
+#define gv_for_each(_elem, _gvec)                                             \
+    long CONCAT(_p, __LINE__) = 0;                                            \
+    for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)];       \
+         CONCAT(_p, __LINE__) < (_gvec)->len;                                 \
+         _elem = (_gvec)->tab[++(CONCAT(_p, __LINE__))])
+
+#define gv_for_each_p(_elem, _gvec)                                           \
+    long CONCAT(_p, __LINE__) = 0;                                            \
+    for (__gv_type((_gvec)) *_elem  = &((_gvec)->tab[CONCAT(_p, __LINE__)]);  \
+         CONCAT(_p, __LINE__) < (_gvec)->len;                                 \
+         _elem = &((_gvec)->tab[++(CONCAT(_p, __LINE__))]))
+
 void *__gv_extend(__vector_void_t *vec, long extra);
 #define gv_extend(_gvec, extra)                                               \
     __gv_extend(&(_gvec)->vec, extra);
