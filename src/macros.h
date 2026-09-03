@@ -8,6 +8,9 @@
 
 #include "logger/logger.h"
 
+#define CONCAT_(_x_, _y_) _x_##_y_
+#define CONCAT(_x_, _y_) CONCAT_(_x_, _y_)
+
 #define MAX(_a, _b)                                                           \
      _a > _b ? _a : _b;
 
