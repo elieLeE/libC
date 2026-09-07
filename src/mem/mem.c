@@ -107,6 +107,9 @@ void free_tab_2d(void **matrice, int lig)
 
 void _p_free(void **p)
 {
+    if (*p == NULL) {
+        return;
+    }
     free(*p);
     *p = NULL;
 }
