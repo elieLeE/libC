@@ -116,8 +116,8 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
     return 0;
 }
 
-int run_all_modules_tests(const generic_liste_t *modules_tests,
-                          const char *module_name, const char *test_name)
+int _run_all_modules_tests(const generic_liste_t *modules_tests,
+                           const char *module_name, const char *test_name)
 {
     gl_for_each(elem, modules_tests->first) {
         module_tests_t *module_tests = elem->data;
@@ -129,7 +129,8 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
 
         if (module_name != NULL) {
             if (strcasecmp(module_tests->name, module_name) == 0) {
-                return run_all_tests_of_module(module_tests, test_name);
+                return run_all_tests_of_module(module_tests,
+                                               test_name);
             }
         } else {
             RETHROW(run_all_tests_of_module(elem->data, test_name));
@@ -147,6 +148,33 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
     }
 
     return 0;
+}
+
+int run_all_modules_tests(const generic_liste_t *modules_tests,
+                          const char *module_name, const char *test_name)
+{
+    char *complete_test_name = NULL;
+    size_t n;
+    int res;
+
+    if (test_name == NULL) {
+        return _run_all_modules_tests(modules_tests, module_name, test_name);
+    }
+
+    if (strncmp(test_name, "test_", strlen("test_")) == 0) {
+        return _run_all_modules_tests(modules_tests, module_name, test_name);
+    }
+
+    n = strlen(test_name) + 1 + 5;
+    complete_test_name = p_malloc(n);
+    snprintf(complete_test_name, n, "test_%s", test_name);
+
+    res = _run_all_modules_tests(modules_tests, module_name,
+                                 complete_test_name);
+
+    p_free((void **)&complete_test_name);
+
+    return res;
 }
 
 static void free_test_data(void *_module_test)
