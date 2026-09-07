@@ -119,6 +119,8 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
 int _run_all_modules_tests(const generic_liste_t *modules_tests,
                            const char *module_name, const char *test_name)
 {
+    bool modules_found = false;
+
     gl_for_each(elem, modules_tests->first) {
         module_tests_t *module_tests = elem->data;
 
@@ -128,16 +130,18 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
         }
 
         if (module_name != NULL) {
-            if (strcasecmp(module_tests->name, module_name) == 0) {
-                return run_all_tests_of_module(module_tests,
-                                               test_name);
+            if (strncasecmp(module_tests->name, module_name,
+                            strlen(module_name)) == 0)
+            {
+                modules_found = true;
+                RETHROW(run_all_tests_of_module(module_tests, test_name));
             }
         } else {
             RETHROW(run_all_tests_of_module(elem->data, test_name));
         }
     }
 
-    if (module_name != NULL) {
+    if (module_name != NULL && !modules_found) {
         logger_error("the module '%s' has not been found", module_name);
         printf("Here are the available modules (the case has none effect):\n");
         gl_for_each(elem, modules_tests->first) {
