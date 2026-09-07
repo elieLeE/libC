@@ -104,7 +104,7 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
     if (test_name != NULL) {
         logger_error("the test '%s' has not been found", test_name);
         printf("Here are the available tests in the module '%s' "
-               "(the case has none effec):\n",
+               "(the case has none effect):\n",
                module_tests->name);
         gl_for_each(elem, module_tests->tests.first) {
             module_tests_t *test = elem->data;
