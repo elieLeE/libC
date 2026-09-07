@@ -73,6 +73,8 @@ static void run_test(test_t *test)
 static int run_all_tests_of_module(const module_tests_t *module_tests,
                                    const char *test_name)
 {
+    bool tests_found = false;
+
     logger_test_begin_module(module_tests->name);
 
     gl_for_each(elem, module_tests->tests.first) {
@@ -90,9 +92,9 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
         }
 
         if (test_name != NULL) {
-            if (strcasecmp(test->name, test_name) == 0) {
+            if (strncasecmp(test->name, test_name, strlen(test_name)) == 0) {
+                tests_found = true;
                 run_test(elem->data);
-                return 0;
             }
         } else {
             run_test(elem->data);
@@ -101,11 +103,12 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
 
     logger_test_end_module(module_tests->name);
 
-    if (test_name != NULL) {
+    if (test_name != NULL && !tests_found) {
         logger_error("the test '%s' has not been found", test_name);
         printf("Here are the available tests in the module '%s' "
                "(the case has none effect):\n",
                module_tests->name);
+
         gl_for_each(elem, module_tests->tests.first) {
             module_tests_t *test = elem->data;
 
