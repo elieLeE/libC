@@ -25,8 +25,9 @@ int parse_args(int argc, char **argv, void (*usage_cb)(const char *),
                 return -1;
             }
             *test_name = optarg;
-        }
+
             break;
+        }
 
         default:
             usage_cb(argv[0]);
