@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include "logger.h"
+#include "colors.h"
 #include "../mem/mem.h"
 
 static const char *get_fmt_text_log(logger_level_t level)
