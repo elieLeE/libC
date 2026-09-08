@@ -4,6 +4,8 @@
 #include "test_helper.h"
 #include "../macros.h"
 
+/* {{{ Build tests list */
+
 int parse_args(int argc, char **argv, void (*usage_cb)(const char *),
                char **module_name, char **test_name)
 {
@@ -62,6 +64,31 @@ int add_test(module_tests_t *module_test, const char *test_name,
 
     return 0;
 }
+
+static void free_test_data(void *_module_test)
+{
+    test_t *module_test = _module_test;
+
+    p_free((void **)&module_test->name);
+    p_free((void **)&module_test);
+}
+
+static void free_module_test(void *_module_tests)
+{
+    module_tests_t *module_tests = _module_tests;
+
+    gl_wipe(&module_tests->tests, free_test_data);
+    p_free((void **)&module_tests->name);
+    p_free((void **)&module_tests);
+}
+
+void free_all_module_test(generic_liste_t *modules_tests)
+{
+    gl_wipe(modules_tests, free_module_test);
+}
+
+/* }}} */
+/* {{{ running tests  */
 
 static void run_test(test_t *test)
 {
@@ -184,24 +211,4 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
     return res;
 }
 
-static void free_test_data(void *_module_test)
-{
-    test_t *module_test = _module_test;
-
-    p_free((void **)&module_test->name);
-    p_free((void **)&module_test);
-}
-
-static void free_module_test(void *_module_tests)
-{
-    module_tests_t *module_tests = _module_tests;
-
-    gl_wipe(&module_tests->tests, free_test_data);
-    p_free((void **)&module_tests->name);
-    p_free((void **)&module_tests);
-}
-
-void free_all_module_test(generic_liste_t *modules_tests)
-{
-    gl_wipe(modules_tests, free_module_test);
-}
+/* }}} */
