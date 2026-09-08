@@ -45,6 +45,8 @@ typedef generic_vector_data_t(void) __vector_void_t;
 #define __gv_size(_vec) sizeof(_vec->tab[0])
 #define __gv_type(_vec) typeof(_vec->tab[0])
 
+/* {{{ Macros gv_for_each* */
+
 #define gv_for_each_pos(_pos, _gvec)                                          \
     for (long _pos = 0; _pos < (_gvec)->len; _pos++)
 
@@ -54,11 +56,37 @@ typedef generic_vector_data_t(void) __vector_void_t;
          CONCAT(_p, __LINE__) < (_gvec)->len;                                 \
          _elem = (_gvec)->tab[++(CONCAT(_p, __LINE__))])
 
+#define gv_for_each_rev(_elem, _gvec)                                         \
+    long CONCAT(_p, __LINE__) = (_gvec)->len - 1;                             \
+    for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)];       \
+         CONCAT(_p, __LINE__) >= 0;                                           \
+         _elem = (_gvec)->tab[--(CONCAT(_p, __LINE__))])
+
 #define gv_for_each_p(_elem, _gvec)                                           \
     long CONCAT(_p, __LINE__) = 0;                                            \
     for (__gv_type((_gvec)) *_elem = &((_gvec)->tab[CONCAT(_p, __LINE__)]);   \
          CONCAT(_p, __LINE__) < (_gvec)->len;                                 \
          _elem = &((_gvec)->tab[++(CONCAT(_p, __LINE__))]))
+
+#define gv_for_each_const_p(_elem, _v)                                        \
+    long CONCAT(_p, __LINE__) = 0;                                            \
+    for (const __gv_type((_v)) *_elem = &((_v)->tab[CONCAT(_p, __LINE__)]);   \
+         CONCAT(_p, __LINE__) < (_v)->len;                                    \
+         _elem = &((_v)->tab[++(CONCAT(_p, __LINE__))]))
+
+#define gv_for_each_p_rev(_elem, _gvec)                                       \
+    long CONCAT(_p, __LINE__) = (_gvec)->len - 1;                             \
+    for (__gv_type((_gvec)) *_elem = &((_gvec)->tab[CONCAT(_p, __LINE__)]);   \
+         CONCAT(_p, __LINE__) >= 0;                                           \
+         _elem = &((_gvec)->tab[--(CONCAT(_p, __LINE__))]))
+
+#define gv_for_each_const_p_rev(_elem, _v)                                    \
+    long CONCAT(_p, __LINE__) = (_v)->len - 1;                                \
+    for (const __gv_type((_v)) *_elem = &((_v)->tab[CONCAT(_p, __LINE__)]);   \
+         CONCAT(_p, __LINE__) >= 0;                                           \
+         _elem = &((_v)->tab[--(CONCAT(_p, __LINE__))]))
+
+/* }}} */
 
 void *__gv_extend(__vector_void_t *vec, long extra);
 #define gv_extend(_gvec, extra)                                               \
