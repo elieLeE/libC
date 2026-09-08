@@ -5,6 +5,8 @@
 #include "../macros.h"
 #include "../logger/colors.h"
 
+#define STATS_RES_STR_SIZE 100
+
 typedef struct stats_tests_t {
     int ok_count;
     int skipped_count;
@@ -97,16 +99,38 @@ void free_all_module_test(generic_liste_t *modules_tests)
 /* }}} */
 /* {{{ logging results  */
 
+void get_stats_test_as_str(stats_tests_t *stats, char out[STATS_RES_STR_SIZE])
+{
+    snprintf(out, STATS_RES_STR_SIZE,
+             COLOR_GREEN "%d tests completed"
+             COLOR_RESET " - " COLOR_YELLOW "%d tests skipped"
+             COLOR_RESET " - " COLOR_RED "%d tests failed"
+             COLOR_RESET "\n",
+             stats->ok_count, stats->skipped_count, stats->ko_count);
+}
+
+void log_stats_tests(stats_tests_t *stats)
+{
+    char stats_str[STATS_RES_STR_SIZE];
+
+    get_stats_test_as_str(stats, stats_str);
+
+    printf("\nSummarize:\n%s\n", stats_str);
+}
+
 void log_test_begin_module(const char *module_name)
 {
     printf("Run all tests of module " COLOR_MAGENTA "%s\n" COLOR_RESET,
            module_name);
 }
 
-void log_test_end_module(const char *module_name)
+void log_test_end_module(const char *module_name, stats_tests_t *stats)
 {
-    printf("Leave module " COLOR_MAGENTA "%s\n" COLOR_RESET,
-           module_name);
+    char stats_str[STATS_RES_STR_SIZE];
+
+    get_stats_test_as_str(stats, stats_str);
+
+    printf("Leave module " COLOR_MAGENTA "%s - %s", module_name, stats_str);
 }
 
 void log_test_start(const char *test_name)
@@ -171,7 +195,7 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
         }
     }
 
-    log_test_end_module(module_tests->name);
+    log_test_end_module(module_tests->name, stats);
 
     if (test_name != NULL && stats->ok_count == 0) {
         logger_error("the test '%s' has not been found", test_name);
@@ -261,6 +285,7 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
                                        test_name, &global_stats));
     }
 
+    log_stats_tests(&global_stats);
 
     return 0;
 }
