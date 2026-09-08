@@ -3,6 +3,7 @@
 
 #include "test_helper.h"
 #include "../macros.h"
+#include "../logger/colors.h"
 
 /* {{{ Build tests list */
 
@@ -88,13 +89,48 @@ void free_all_module_test(generic_liste_t *modules_tests)
 }
 
 /* }}} */
+/* {{{ logging results  */
+
+void log_test_begin_module(const char *module_name)
+{
+    printf("Run all tests of module " COLOR_MAGENTA "%s\n" COLOR_RESET,
+           module_name);
+}
+
+void log_test_end_module(const char *module_name)
+{
+    printf("Leave module " COLOR_MAGENTA "%s\n" COLOR_RESET,
+           module_name);
+}
+
+void log_test_start(const char *test_name)
+{
+    printf("\tSTART TEST " COLOR_BLUE "%s\n" COLOR_RESET, test_name);
+}
+
+void log_test_result(const char *test_name, bool res)
+{
+    const char *txt_fmt, *txt_res;
+
+    if (res) {
+        txt_res = "OK";
+        txt_fmt = COLOR_GREEN;
+    } else {
+        txt_res = "FAILED";
+        txt_fmt = COLOR_RED;
+    }
+
+    printf("\t%s%s: %s\n" COLOR_RESET, test_name, txt_fmt, txt_res);
+}
+
+/* }}} */
 /* {{{ running tests  */
 
 static void run_test(test_t *test)
 {
-    logger_test_start(test->name);
+    log_test_start(test->name);
     test->test_cb();
-    logger_test_ok(test->name);
+    log_test_result(test->name, true);
 }
 
 static int run_all_tests_of_module(const module_tests_t *module_tests,
@@ -102,7 +138,7 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
 {
     bool tests_found = false;
 
-    logger_test_begin_module(module_tests->name);
+    log_test_begin_module(module_tests->name);
 
     gl_for_each(elem, module_tests->tests.first) {
         test_t *test = elem->data;
@@ -128,7 +164,7 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
         }
     }
 
-    logger_test_end_module(module_tests->name);
+    log_test_end_module(module_tests->name);
 
     if (test_name != NULL && !tests_found) {
         logger_error("the test '%s' has not been found", test_name);
