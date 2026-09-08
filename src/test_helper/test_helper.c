@@ -5,6 +5,12 @@
 #include "../macros.h"
 #include "../logger/colors.h"
 
+typedef struct stats_tests_t {
+    int ok_count;
+    int skipped_count;
+    int ko_count;
+} stats_tests_t;
+
 /* {{{ Build tests list */
 
 int parse_args(int argc, char **argv, void (*usage_cb)(const char *),
@@ -134,10 +140,8 @@ static void run_test(test_t *test)
 }
 
 static int run_all_tests_of_module(const module_tests_t *module_tests,
-                                   const char *test_name)
+                                   const char *test_name, stats_tests_t *stats)
 {
-    bool tests_found = false;
-
     log_test_begin_module(module_tests->name);
 
     gl_for_each(elem, module_tests->tests.first) {
@@ -156,17 +160,20 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
 
         if (test_name != NULL) {
             if (strncasecmp(test->name, test_name, strlen(test_name)) == 0) {
-                tests_found = true;
                 run_test(elem->data);
+                stats->ok_count++;
+            } else {
+                stats->skipped_count++;
             }
         } else {
             run_test(elem->data);
+            stats->ok_count++;
         }
     }
 
     log_test_end_module(module_tests->name);
 
-    if (test_name != NULL && !tests_found) {
+    if (test_name != NULL && stats->ok_count == 0) {
         logger_error("the test '%s' has not been found", test_name);
         printf("Here are the available tests in the module '%s' "
                "(the case has none effect):\n",
@@ -183,11 +190,13 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
 }
 
 int _run_all_modules_tests(const generic_liste_t *modules_tests,
-                           const char *module_name, const char *test_name)
+                           const char *module_name, const char *test_name,
+                           stats_tests_t *global_stats)
 {
     bool modules_found = false;
 
     gl_for_each(elem, modules_tests->first) {
+        stats_tests_t module_stats = {};
         module_tests_t *module_tests = elem->data;
 
         if (module_tests->name == NULL) {
@@ -200,11 +209,19 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
                             strlen(module_name)) == 0)
             {
                 modules_found = true;
-                RETHROW(run_all_tests_of_module(module_tests, test_name));
+                RETHROW(run_all_tests_of_module(module_tests, test_name,
+                                                &module_stats));
+            } else {
+                global_stats->skipped_count += modules_tests->nbre_elem;
             }
         } else {
-            RETHROW(run_all_tests_of_module(elem->data, test_name));
+            RETHROW(run_all_tests_of_module(elem->data, test_name,
+                                            &module_stats));
         }
+
+        global_stats->ok_count += module_stats.ok_count;
+        global_stats->skipped_count += module_stats.skipped_count;
+        global_stats->ko_count += module_stats.ko_count;
     }
 
     if (module_name != NULL && !modules_found) {
@@ -223,28 +240,29 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
 int run_all_modules_tests(const generic_liste_t *modules_tests,
                           const char *module_name, const char *test_name)
 {
-    char *complete_test_name = NULL;
-    size_t n;
-    int res;
+    stats_tests_t global_stats = {};
 
-    if (test_name == NULL) {
-        return _run_all_modules_tests(modules_tests, module_name, test_name);
+    if (test_name != NULL &&
+        (strncmp(test_name, "test_", strlen("test_")) != 0))
+    {
+        char *complete_test_name = NULL;
+        size_t n;
+
+        n = strlen(test_name) + 1 + 5;
+        complete_test_name = p_malloc(n);
+        snprintf(complete_test_name, n, "test_%s", test_name);
+
+        RETHROW(_run_all_modules_tests(modules_tests, module_name,
+                                       complete_test_name, &global_stats));
+
+        p_free((void **)&complete_test_name);
+    } else {
+        RETHROW(_run_all_modules_tests(modules_tests, module_name,
+                                       test_name, &global_stats));
     }
 
-    if (strncmp(test_name, "test_", strlen("test_")) == 0) {
-        return _run_all_modules_tests(modules_tests, module_name, test_name);
-    }
 
-    n = strlen(test_name) + 1 + 5;
-    complete_test_name = p_malloc(n);
-    snprintf(complete_test_name, n, "test_%s", test_name);
-
-    res = _run_all_modules_tests(modules_tests, module_name,
-                                 complete_test_name);
-
-    p_free((void **)&complete_test_name);
-
-    return res;
+    return 0;
 }
 
 /* }}} */
