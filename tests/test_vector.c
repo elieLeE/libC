@@ -554,6 +554,11 @@ static void test_vector_macro_gv_for_each(void)
         pos++;
     }
 
+    pos = 4;
+    gv_for_each_rev(elem, &vector) {
+        ASSERT_EQUAL_INT(elem, tab[pos]);
+        pos--;
+    }
     gv_wipe(&vector, NULL);
 }
 
@@ -588,7 +593,47 @@ static void test_vector_macro_gv_for_each_p(void)
         pos++;
     }
 
+    pos = 0;
+    gv_for_each_const_p(elem, &vector) {
+        ASSERT_EQUAL_INT(elem->v, tab[pos]);
+        pos++;
+    }
+
+    pos = 4;
+    gv_for_each_p_rev(elem, &vector) {
+        ASSERT_EQUAL_INT(elem->v, tab[pos]);
+        pos--;
+    }
+
+    pos = 4;
+    gv_for_each_const_p_rev(elem, &vector) {
+        ASSERT_EQUAL_INT(elem->v, tab[pos]);
+        pos--;
+    }
+
     gv_wipe(&vector, NULL);
+}
+
+static void test_vector_macro_gv_for_each_p2(void)
+{
+    int pos = 0;
+    gv_t(int_p) vector;
+    int32_t tab[5] = {3, 30, 45, 17, 8};
+
+    gv_init(&vector);
+
+    add_new_elem_and_set(&vector, 3);
+    add_new_elem_and_set(&vector, 30);
+    add_new_elem_and_set(&vector, 45);
+    add_new_elem_and_set(&vector, 17);
+    add_new_elem_and_set(&vector, 8);
+
+    for (const int *elem = vector.tab[0]; pos < vector.len; pos++, elem = vector.tab[pos]) {
+        ASSERT_EQUAL_INT(*elem, tab[pos]);
+        pos++;
+    }
+
+    gv_wipe(&vector, _p_free);
 }
 
 module_tests_t *get_all_tests_vector(void)
@@ -616,7 +661,7 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests, test_vector_find_with_pointer);
     ADD_TEST_TO_MODULE(module_tests, test_vector_macro_gv_for_each);
     ADD_TEST_TO_MODULE(module_tests, test_vector_macro_gv_for_each_p);
-
+    ADD_TEST_TO_MODULE(module_tests, test_vector_macro_gv_for_each_p2);
 
     return module_tests;
 }
