@@ -7,24 +7,33 @@
 #$? : liste des dependances plus recentes que la cible
 #$* : nom du fichier sans le suffixe
 
-CC=gcc
-CFLAGS=-std=gnu2x -Wextra -Wall -g# -ansi -pedantic
-LDFLAGS=-lm -lgmp
-EXEC=test
-LIB_C=../src
-SRC= $(wildcard *.c\
-	 $(LIB_C)/containers/*.c\
-	 $(LIB_C)/mem/mem.c\
-	 $(LIB_C)/logger/logger.c\
-	 $(LIB_C)/io/io.c\
-	 $(LIB_C)/test_helper/test_helper.c\
-	 $(LIB_C)/math/*.c\
-	 $(LIB_C)/tab_helper/tab_helper.c\
-	 $(LIB_C)/utils.c)
-OBJ= $(SRC:.c=.o)
-INCLUDE=-I. -I../../src/liste/
+CC := gcc
+CFLAGS := -std=gnu2x -Wextra -Wall -g
+LDFLAGS := -lm -lgmp
+INCLUDE := -I. -I../src
 
-all: $(EXEC) cleanSimple
+BUILD_DIR := ./build
+EXEC := test
+
+# ------------------------------------------------------------------
+# Sources :
+# - test files in this folder (test_*.c)
+# - source files in ../src/...
+# ------------------------------------------------------------------
+LIB_C := ../src
+
+SRC := $(wildcard *.c \
+	$(LIB_C)/containers/*.c \
+	$(LIB_C)/mem/mem.c \
+	$(LIB_C)/logger/logger.c \
+	$(LIB_C)/io/io.c \
+	$(LIB_C)/test_helper/test_helper.c \
+	$(LIB_C)/math/*.c \
+	$(LIB_C)/tab_helper/tab_helper.c \
+	$(LIB_C)/utils.c)
+OBJ := $(SRC:.c=.o)
+
+all: $(EXEC)
 
 debug: CFLAGS += -DDDebug -g
 debug: LDFLAGS += -DDDebug -g
