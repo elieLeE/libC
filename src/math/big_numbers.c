@@ -90,6 +90,13 @@ unsigned int bn_get_digits_count(const big_number_t *bn)
         get_count_digits_of_n(bn->parts.tab[bn->parts.len - 1]);
 }
 
+void bn_get_digits(const big_number_t *in, gv_t(uint8) *digits)
+{
+    gv_for_each(part, &(in->parts)) {
+        get_digits_from_number(part, digits);
+    }
+}
+
 /* }}} */
 /* {{{ Helpers methods */
 

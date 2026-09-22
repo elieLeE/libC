@@ -60,6 +60,7 @@ bn_get_part_safe(const big_number_t *bn, int64_t idx)
 
 unsigned int bn_get_digits_count(const big_number_t *bn);
 uint64_t bn_get_digits_sum(const big_number_t *in);
+void bn_get_digits(const big_number_t *in, gv_t(uint8) *digits);
 
 /* determine which number between the big number 'bn' and 'bn2/n' is the
  * biggest.
