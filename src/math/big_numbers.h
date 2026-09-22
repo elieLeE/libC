@@ -94,6 +94,9 @@ int bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
               big_number_t *out);
 int bn_mul_ul(const big_number_t *bn, uint64_t n, big_number_t *out);
 int bn_mul_l(const big_number_t *bn, int64_t n, big_number_t *out);
+int bn_mul_different_bn_with_tmp(const big_number_t *bn1,
+                                 const big_number_t *bn2,
+                                 big_number_t *tmp, big_number_t *out);
 
 int bn_get_fact_n(uint32_t n, big_number_t *out);
 

@@ -722,6 +722,23 @@ static void ___bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
     }
 }
 
+int bn_mul_different_bn_with_tmp(const big_number_t *bn1,
+                                 const big_number_t *bn2,
+                                 big_number_t *tmp, big_number_t *out)
+{
+    if (bn1 == out || bn2 == out || bn1 == tmp || bn2 == tmp || tmp == out) {
+        logger_fatal("arguments are wrong in 'bn_mul_different_bn_with_tmp'");
+        return -1;
+    }
+    if (tmp->parts.size < bn1->parts.len) {
+        gv_extend(&tmp->parts, bn1->parts.len - tmp->parts.len);
+    }
+
+    ___bn_mul_bn(bn1, bn2, tmp, out);
+
+    return 0;
+}
+
 static void __bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
                         big_number_t *out)
 {
