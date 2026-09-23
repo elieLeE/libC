@@ -727,9 +727,12 @@ int bn_mul_different_bn_with_tmp(const big_number_t *bn1,
                                  big_number_t *tmp, big_number_t *out)
 {
     if (bn1 == out || bn2 == out || bn1 == tmp || bn2 == tmp || tmp == out) {
-        logger_fatal("arguments are wrong in 'bn_mul_different_bn_with_tmp'");
+        logger_error("arguments are wrong in 'bn_mul_different_bn_with_tmp'");
         return -1;
     }
+
+    bn_fast_clear(out);
+
     if (tmp->parts.size < bn1->parts.len) {
         gv_extend(&tmp->parts, bn1->parts.len - tmp->parts.len);
     }
