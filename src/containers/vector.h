@@ -23,7 +23,7 @@ typedef enum gv_algo_search_t {
 #define generic_vector_data_t(_type)                                          \
     struct {                                                                  \
         _type *tab;                                                           \
-        long len, size;                                                       \
+        int64_t len, size;                                                    \
         const size_t __size_elem;                                             \
     }
 
