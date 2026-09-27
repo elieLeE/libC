@@ -195,6 +195,18 @@ int __gv_search_spot(const __vector_void_t *vec, const void *elem,
 int __gv_remove_elem_n(__vector_void_t *vec, long pos);
 #define gv_remove(_gvec, _pos) __gv_remove_elem_n(&(_gvec)->vec, _pos);
 
+#define gv_take(_gvec, _pos)                                                  \
+    ({                                                                        \
+        __auto_type __gvec = (_gvec);                                         \
+        __auto_type __elem = NULL;                                            \
+        int64_t __pos = (_pos);                                               \
+        if (__pos >= 0 && __pos < __gvec->len) {                              \
+            __elem = __gvec->tab[_pos];                                       \
+            __gv_remove_elem_n(&__gvec->vec, __pos);                          \
+        }                                                                     \
+        __elem;                                                               \
+    })
+
 static inline void
 __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
 {
