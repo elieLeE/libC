@@ -1,11 +1,11 @@
-#Makefile
-#cible: dependances
-#	commandes
-#$@ : cible
-#$< : nom de la premiere dependance
-#$^ : liste des dependances
-#$? : liste des dependances plus recentes que la cible
-#$* : nom du fichier sans le suffixe
+# Makefile
+# cible: dependances
+# 	commandes
+# $@ : cible
+# $< : nom de la premiere dependance
+# $^ : liste des dependances
+# $? : liste des dependances plus recentes que la cible
+# $* : nom du fichier sans le suffixe
 
 CC := gcc
 CFLAGS := -std=gnu2x -Wextra -Wall -g
