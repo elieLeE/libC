@@ -208,6 +208,34 @@ static void test_fill_pointer_vector(void)
     gv_wipe(&vector, _p_free);
 }
 
+static void test_add_and_remove_pointer_vector(void)
+{
+    int idx_tab = 0;
+    gv_t(int_p) vector;
+    int32_t tab[5] = {1, 3, 5};
+    int *elem;
+
+    gv_init(&vector);
+
+    add_new_elem_and_set(&vector, 1);
+    add_new_elem_and_set(&vector, 2);
+    add_new_elem_and_set(&vector, 3);
+
+    elem = gv_take(&vector, 1);
+    ASSERT_EQUAL_INT(*elem, 2);
+    p_free((void **)&elem);
+
+    add_new_elem_and_set(&vector, 5);
+
+    gv_for_each(elem, &vector) {
+        ASSERT_EQUAL_INT(*elem, tab[idx_tab]);
+        idx_tab++;
+    }
+    printf("\n");
+
+    gv_wipe(&vector, _p_free);
+}
+
 static void test_new_and_delete_vector(void)
 {
     gv_t(int32) *vector;
@@ -648,6 +676,7 @@ module_tests_t *get_all_tests_vector(void)
     ADD_TEST_TO_MODULE(module_tests, test_sort_vector_increasing);
     ADD_TEST_TO_MODULE(module_tests, test_sort_vector_decreasing);
     ADD_TEST_TO_MODULE(module_tests, test_fill_pointer_vector);
+    ADD_TEST_TO_MODULE(module_tests, test_add_and_remove_pointer_vector);
     ADD_TEST_TO_MODULE(module_tests, test_new_and_delete_vector);
     ADD_TEST_TO_MODULE(module_tests, test_vector_init_size);
     ADD_TEST_TO_MODULE(module_tests, test_reset_vector);
