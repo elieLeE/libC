@@ -48,51 +48,51 @@ typedef generic_vector_data_t(void) __vector_void_t;
 /* {{{ Macros gv_for_each* */
 
 #define gv_for_each_pos(_pos, _gvec)                                          \
-    for (long _pos = 0; _pos < (_gvec)->len; _pos++)
+    for (int64_t _pos = 0; _pos < (_gvec)->len; _pos++)
 
 #define gv_for_each(_elem, _gvec)                                             \
-    long CONCAT(_p, __LINE__) = 0;                                            \
+    int64_t CONCAT(_p, __LINE__) = 0;                                         \
     for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)];       \
          CONCAT(_p, __LINE__) < (_gvec)->len;                                 \
          _elem = (_gvec)->tab[++(CONCAT(_p, __LINE__))])
 
 #define gv_for_each_rev(_elem, _gvec)                                         \
-    long CONCAT(_p, __LINE__) = (_gvec)->len - 1;                             \
+    int64_t CONCAT(_p, __LINE__) = (_gvec)->len - 1;                          \
     for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)];       \
          CONCAT(_p, __LINE__) >= 0;                                           \
          _elem = (_gvec)->tab[--(CONCAT(_p, __LINE__))])
 
 #define gv_for_each_p(_elem, _gvec)                                           \
-    long CONCAT(_p, __LINE__) = 0;                                            \
+    int64_t CONCAT(_p, __LINE__) = 0;                                         \
     for (__gv_type((_gvec)) *_elem = &((_gvec)->tab[CONCAT(_p, __LINE__)]);   \
          CONCAT(_p, __LINE__) < (_gvec)->len;                                 \
          _elem = &((_gvec)->tab[++(CONCAT(_p, __LINE__))]))
 
 #define gv_for_each_const_p(_elem, _v)                                        \
-    long CONCAT(_p, __LINE__) = 0;                                            \
+    int64_t CONCAT(_p, __LINE__) = 0;                                         \
     for (const __gv_type((_v)) *_elem = &((_v)->tab[CONCAT(_p, __LINE__)]);   \
          CONCAT(_p, __LINE__) < (_v)->len;                                    \
          _elem = &((_v)->tab[++(CONCAT(_p, __LINE__))]))
 
 #define gv_for_each_p_rev(_elem, _gvec)                                       \
-    long CONCAT(_p, __LINE__) = (_gvec)->len - 1;                             \
+    int64_t CONCAT(_p, __LINE__) = (_gvec)->len - 1;                          \
     for (__gv_type((_gvec)) *_elem = &((_gvec)->tab[CONCAT(_p, __LINE__)]);   \
          CONCAT(_p, __LINE__) >= 0;                                           \
          _elem = &((_gvec)->tab[--(CONCAT(_p, __LINE__))]))
 
 #define gv_for_each_const_p_rev(_elem, _v)                                    \
-    long CONCAT(_p, __LINE__) = (_v)->len - 1;                                \
+    int64_t CONCAT(_p, __LINE__) = (_v)->len - 1;                             \
     for (const __gv_type((_v)) *_elem = &((_v)->tab[CONCAT(_p, __LINE__)]);   \
          CONCAT(_p, __LINE__) >= 0;                                           \
          _elem = &((_v)->tab[--(CONCAT(_p, __LINE__))]))
 
 /* }}} */
 
-void *__gv_extend(__vector_void_t *vec, long extra);
+void *__gv_extend(__vector_void_t *vec, int64_t extra);
 #define gv_extend(_gvec, extra)                                               \
     __gv_extend(&(_gvec)->vec, extra);
 
-void *__gv_grow(__vector_void_t *vec, long extra);
+void *__gv_grow(__vector_void_t *vec, int64_t extra);
 #define gv_grow(_gvec, extra)                                                 \
     ({                                                                        \
         __auto_type __gvec = _gvec;                                           \
@@ -125,7 +125,7 @@ static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
 
 #define gv_init_size(_gvec, _size)                                            \
     do {                                                                      \
-        long __size = (_size);                                                \
+        int64_t __size = (_size);                                             \
         if (__size < 0) {                                                     \
             logger_fatal("_size is below 0: %ld", __size);                    \
         }                                                                     \
@@ -144,8 +144,8 @@ void __gv_set(const __vector_void_t *src, __vector_void_t *dst);
 
 /* This method can be used to co a partial copy of the source vector in the
  * destination vector */
-int __gv_copy(const __vector_void_t *src, long idx_start_src,
-              long idx_start_dst, long len, __vector_void_t *dst);
+int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
+              int64_t idx_start_dst, int64_t len, __vector_void_t *dst);
 #define gv_copy(_src, _idx_src, _idx_dst, len, _dst)                          \
     ({  __auto_type __src = (_src);                                           \
         __auto_type __dst = (_dst);                                           \
@@ -158,7 +158,7 @@ int __gv_copy(const __vector_void_t *src, long idx_start_src,
         *__elem = _val;                                                       \
     })
 
-void *__gv_create_empty_spot(__vector_void_t *vec, long pos);
+void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos);
 
 #define __set_elem_at_new_spot(__gvec, _val, _pos)                            \
     do {                                                                      \
@@ -192,7 +192,7 @@ int __gv_search_spot(const __vector_void_t *vec, const void *elem,
 /* Warning, this method decreases the length of the vector, eventually move the
  * data in order that the elements from the first one to the 'vec->length are
  * the elements of the vector, but the new "empty" spot are not reset ! */
-int __gv_remove_elem_n(__vector_void_t *vec, long pos);
+int __gv_remove_elem_n(__vector_void_t *vec, int64_t pos);
 #define gv_remove(_gvec, _pos) __gv_remove_elem_n(&(_gvec)->vec, _pos);
 
 #define gv_take(_gvec, _pos)                                                  \
@@ -224,14 +224,14 @@ __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
         shuffle_tab(__gvec->vec.tab, __gvec->len, __gvec->__size_elem);       \
     } while (0)
 
-long __gv_find(const __vector_void_t *vec, const void *elem,
-               gv_algo_search_t algo,
-               int (*cmp_data_cb)(const void *, const void *d));
+int64_t __gv_find(const __vector_void_t *vec, const void *elem,
+                  gv_algo_search_t algo,
+                  int (*cmp_data_cb)(const void *, const void *d));
 
 #define gv_find(_gvec, _elem, algo, cmp_data_cb)                              \
     ({  __auto_type __gvec = (_gvec);                                         \
         __auto_type __elem = (_elem);                                         \
-        long __pos = __gv_find(&__gvec->vec, &__elem, algo, cmp_data_cb);     \
+        int64_t __pos = __gv_find(&__gvec->vec, &__elem, algo, cmp_data_cb);  \
         __pos;                                                                \
     })
 

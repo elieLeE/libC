@@ -14,8 +14,8 @@ void __gv_set(const __vector_void_t *src, __vector_void_t *dst)
     dst->len = src->len;
 }
 
-int __gv_copy(const __vector_void_t *src, long idx_start_src,
-              long idx_start_dst, long len, __vector_void_t *dst)
+int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
+              int64_t idx_start_dst, int64_t len, __vector_void_t *dst)
 {
     if (idx_start_src < 0) {
         logger_error("index of src vector is negative: %ld", idx_start_src);
@@ -46,12 +46,12 @@ int __gv_copy(const __vector_void_t *src, long idx_start_src,
     return 0;
 }
 
-void *__gv_extend(__vector_void_t *vec, long extra)
+void *__gv_extend(__vector_void_t *vec, int64_t extra)
 {
     void *res;
 
     if (vec->len + extra > vec->size) {
-       long new_size = get_next_closest_power_of_two(vec->len + extra);
+       int64_t new_size = get_next_closest_power_of_two(vec->len + extra);
 
         vec->tab = RETHROW_P(p_realloc(vec->tab, new_size * vec->__size_elem));
         vec->size = new_size;
@@ -67,7 +67,7 @@ void *__gv_extend(__vector_void_t *vec, long extra)
     return res;
 }
 
-void *__gv_grow(__vector_void_t *vec, long extra)
+void *__gv_grow(__vector_void_t *vec, int64_t extra)
 {
     void *res;
 
@@ -78,7 +78,7 @@ void *__gv_grow(__vector_void_t *vec, long extra)
     return res;
 }
 
-void *__gv_create_empty_spot(__vector_void_t *vec, long pos)
+void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos)
 {
     if (pos < 0) {
         logger_error("position indicated in '_gv_create_empty_spot' "
@@ -131,7 +131,7 @@ int __gv_search_spot(const __vector_void_t *vec, const void *elem,
     return -1;
 }
 
-int __gv_remove_elem_n(__vector_void_t *vec, long pos)
+int __gv_remove_elem_n(__vector_void_t *vec, int64_t pos)
 {
     if (pos < 0) {
         logger_error("pos is wrong: %ld", pos);
@@ -152,8 +152,9 @@ int __gv_remove_elem_n(__vector_void_t *vec, long pos)
     return 0;
 }
 
-static long gv_find_sequantial(const __vector_void_t *vec, const void *elem,
-                               int (*cmp_data_cb)(const void *, const void *))
+static int64_t
+gv_find_sequantial(const __vector_void_t *vec, const void *elem,
+                   int (*cmp_data_cb)(const void *, const void *))
 {
     gv_for_each_pos(pos, vec) {
         if (cmp_data_cb((vec->tab + pos * vec->__size_elem), elem) == 0) {
@@ -163,11 +164,12 @@ static long gv_find_sequantial(const __vector_void_t *vec, const void *elem,
     return -1;
 }
 
-static long
-gv_find_dichotomy_rec(const __vector_void_t *vec, const void *elem, long min,
-                      long max, int (*cmp_data_cb)(const void *, const void *))
+static int64_t
+gv_find_dichotomy_rec(const __vector_void_t *vec, const void *elem,
+                      int64_t min, int64_t max,
+                      int (*cmp_data_cb)(const void *, const void *))
 {
-    long current_pos = (max + min) / 2;
+    int64_t current_pos = (max + min) / 2;
     int res;
 
     if (min > max) {
@@ -189,7 +191,7 @@ gv_find_dichotomy_rec(const __vector_void_t *vec, const void *elem, long min,
     return -1;
 }
 
-static long
+static int64_t
 gv_find_dichotomy(const __vector_void_t *vec, const void *elem,
                   int (*cmp_data_cb)(const void *, const void *))
 {
@@ -208,9 +210,9 @@ gv_find_dichotomy(const __vector_void_t *vec, const void *elem,
     return gv_find_dichotomy_rec(vec, elem, 0, vec->len, cmp_data_cb);
 }
 
-long __gv_find(const __vector_void_t *vec, const void *elem,
-               gv_algo_search_t algo,
-               int (*cmp_data_cb)(const void *, const void *d))
+int64_t __gv_find(const __vector_void_t *vec, const void *elem,
+                  gv_algo_search_t algo,
+                  int (*cmp_data_cb)(const void *, const void *d))
 {
     if (algo < 0 || algo > GV_ALGO_MAX_SEARCH) {
         logger_fatal("cannot search in the vector - algo given is wrong: %d",
