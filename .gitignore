@@ -1,5 +1,6 @@
 *.o
 *prog
 *test
+build
 *~
 .gdb_history
