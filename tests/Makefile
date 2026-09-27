@@ -8,7 +8,7 @@
 # $* : nom du fichier sans le suffixe
 
 CC := gcc
-CFLAGS := -std=gnu2x -Wextra -Wall -g
+CFLAGS := -std=gnu2x -Wextra -Wall
 LDFLAGS := -lm -lgmp
 INCLUDE := -I. -I../src
 
