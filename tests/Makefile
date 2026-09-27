@@ -72,7 +72,7 @@ cleanSimple:
 	rm -rf $(BUILD_DIR)
 
 clean: cleanSimple
-	rm -rf $(EXEC)
+	rm -f $(EXEC)
 
 # '-' means to not fail at first make when '.d' do not exist yet.
 -include $(DEP)
