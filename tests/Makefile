@@ -40,6 +40,8 @@ OBJ := $(patsubst %.c,$(BUILD_DIR)/%.o,$(notdir $(SRC)))
 # Rules
 # ------------------------------------------------------------------
 
+.PHONY: all debug cleanSimple clean
+
 all: $(EXEC)
 
 debug: CFLAGS += -DDDebug -g
@@ -58,8 +60,6 @@ VPATH := $(sort $(dir $(SRC)))
 $(BUILD_DIR)/%.o: %.c
 	@mkdir -p $(BUILD_DIR)
 	$(CC) $(INCLUDE) -c $< -o $@ $(CFLAGS)
-
-.PHONY: cleanSimple clean
 
 cleanSimple:
 	rm -rf $(BUILD_DIR)
