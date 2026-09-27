@@ -203,8 +203,7 @@ __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
 
 #define gv_sort(_gvec, cmp_data_cb)                                           \
     do {                                                                      \
-        __auto_type __gvec = (_gvec);                                         \
-        __gv_sort(&__gvec->vec, cmp_data_cb);                                 \
+        __gv_sort(&((_gvec)->vec), cmp_data_cb);                              \
     } while (0)
 
 #define gv_shuffle(_gvec)                                                     \
