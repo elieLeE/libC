@@ -20,17 +20,17 @@ EXEC := test
 # - test files in this folder (test_*.c)
 # - source files in ../src/...
 # ------------------------------------------------------------------
-LIB_C := ../src
+LIB_C_DIR := ../src
 
 SRC := $(wildcard *.c \
-	$(LIB_C)/containers/*.c \
-	$(LIB_C)/mem/mem.c \
-	$(LIB_C)/logger/logger.c \
-	$(LIB_C)/io/io.c \
-	$(LIB_C)/test_helper/test_helper.c \
-	$(LIB_C)/math/*.c \
-	$(LIB_C)/tab_helper/tab_helper.c \
-	$(LIB_C)/utils.c)
+	$(LIB_C_DIR)/containers/*.c \
+	$(LIB_C_DIR)/mem/mem.c \
+	$(LIB_C_DIR)/logger/logger.c \
+	$(LIB_C_DIR)/io/io.c \
+	$(LIB_C_DIR)/test_helper/test_helper.c \
+	$(LIB_C_DIR)/math/*.c \
+	$(LIB_C_DIR)/tab_helper/tab_helper.c \
+	$(LIB_C_DIR)/utils.c)
 
 # We want that each file (whatever its path) becomes build/*.o
 # 'notdir' keeps just the name of the file, 'patsubst' adds 'build'.
