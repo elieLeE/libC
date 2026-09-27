@@ -656,7 +656,7 @@ static void test_vector_macro_gv_for_each_p2(void)
     add_new_elem_and_set(&vector, 17);
     add_new_elem_and_set(&vector, 8);
 
-    for (const int *elem = vector.tab[0]; pos < vector.len; pos++, elem = vector.tab[pos]) {
+    gv_for_each(elem, &vector) {
         ASSERT_EQUAL_INT(*elem, tab[pos]);
         pos++;
     }
