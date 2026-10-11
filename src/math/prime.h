@@ -5,10 +5,6 @@
 
 #include "../containers/vector.h"
 
-/*
- * p111
- */
-
 typedef struct prime_factor_t {
     unsigned long prime;
     unsigned int iteration;
