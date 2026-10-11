@@ -36,7 +36,7 @@ get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
                                          gv_t(uint64) *out);
 
 __attribute__((nonnull))
-void
+int
 get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
                                                 const gv_t(primes_factors) *in,
                                                 gv_t(uint64) *out);
