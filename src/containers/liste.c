@@ -137,9 +137,9 @@ gl_add_elem_sorted(generic_liste_t *l, void *data,
  * removing it from the list. So, the element will be still present in it.
  */
 
-generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, long n)
+generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, int64_t n)
 {
-    int count = 0;
+    int64_t count = 0;
 
     if (n < 0) {
         logger_error("index got in 'gl_get_elem_n' is below than 0: %ld", n);
@@ -281,7 +281,7 @@ int gl_remove_elem(generic_liste_t *l, gl_elem_t *elem)
     return 0;
 }
 
-gl_elem_t *gl_take_elem_n(generic_liste_t *l, int long n)
+gl_elem_t *gl_take_elem_n(generic_liste_t *l, int64_t n)
 {
     gl_elem_t *elem;
 
@@ -335,7 +335,7 @@ int gl_delete_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
     return 0;
 }
 
-int gl_delete_elem_n(generic_liste_t *l, int const n,
+int gl_delete_elem_n(generic_liste_t *l, int64_t n,
                       void (*free_data_cb)(void *data))
 {
     gl_elem_t *elem;
