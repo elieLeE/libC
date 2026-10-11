@@ -92,8 +92,8 @@ unsigned int bn_get_digits_count(const big_number_t *bn)
 
 void bn_get_digits(const big_number_t *in, gv_t(uint8) *digits)
 {
-    gv_for_each(part, &(in->parts)) {
-        get_digits_from_number(part, digits);
+    gv_for_each_p(part, &(in->parts)) {
+        get_digits_from_number(*part, digits);
     }
 }
 

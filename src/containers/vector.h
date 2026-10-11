@@ -50,41 +50,33 @@ typedef generic_vector_data_t(void) __vector_void_t;
 #define gv_for_each_pos(_pos, _gvec)                                          \
     for (int64_t _pos = 0; _pos < (_gvec)->len; _pos++)
 
-#define gv_for_each(_elem, _gvec)                                             \
-    int64_t CONCAT(_p, __LINE__) = 0;                                         \
-    for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)];       \
-         CONCAT(_p, __LINE__) < (_gvec)->len;                                 \
-         _elem = (_gvec)->tab[++(CONCAT(_p, __LINE__))])
+/* #define gv_for_each(_elem, _gvec)                                       \ */
+/*     int64_t CONCAT(_p, __LINE__) = 0;                                   \ */
+/*     for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)]; \ */
+/*          CONCAT(_p, __LINE__) < (_gvec)->len;                           \ */
+/*          _elem = (_gvec)->tab[++(CONCAT(_p, __LINE__))])                  */
 
-#define gv_for_each_rev(_elem, _gvec)                                         \
-    int64_t CONCAT(_p, __LINE__) = (_gvec)->len - 1;                          \
-    for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)];       \
-         CONCAT(_p, __LINE__) >= 0;                                           \
-         _elem = (_gvec)->tab[--(CONCAT(_p, __LINE__))])
+/* #define gv_for_each_rev(_elem, _gvec)                                   \ */
+/*     int64_t CONCAT(_p, __LINE__) = (_gvec)->len - 1;                    \ */
+/*     for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)]; \ */
+/*          CONCAT(_p, __LINE__) >= 0;                                     \ */
+/*          _elem = (_gvec)->tab[--(CONCAT(_p, __LINE__))])                  */
 
 #define gv_for_each_p(_elem, _gvec)                                           \
-    int64_t CONCAT(_p, __LINE__) = 0;                                         \
-    for (__gv_type((_gvec)) *_elem = &((_gvec)->tab[CONCAT(_p, __LINE__)]);   \
-         CONCAT(_p, __LINE__) < (_gvec)->len;                                 \
-         _elem = &((_gvec)->tab[++(CONCAT(_p, __LINE__))]))
+    for (__gv_type((_gvec)) *_elem = (_gvec)->tab;                            \
+         _elem != (_gvec)->tab + (_gvec)->len; _elem++)
 
 #define gv_for_each_const_p(_elem, _v)                                        \
-    int64_t CONCAT(_p, __LINE__) = 0;                                         \
-    for (const __gv_type((_v)) *_elem = &((_v)->tab[CONCAT(_p, __LINE__)]);   \
-         CONCAT(_p, __LINE__) < (_v)->len;                                    \
-         _elem = &((_v)->tab[++(CONCAT(_p, __LINE__))]))
+    for (const __gv_type((_v)) *_elem = (_v)->tab;                            \
+         _elem != (_v)->tab + (_v)->len; _elem++)
 
 #define gv_for_each_p_rev(_elem, _gvec)                                       \
-    int64_t CONCAT(_p, __LINE__) = (_gvec)->len - 1;                          \
-    for (__gv_type((_gvec)) *_elem = &((_gvec)->tab[CONCAT(_p, __LINE__)]);   \
-         CONCAT(_p, __LINE__) >= 0;                                           \
-         _elem = &((_gvec)->tab[--(CONCAT(_p, __LINE__))]))
+    for (__gv_type((_gvec)) *_elem = (_gvec)->tab + (_gvec)->len - 1;         \
+         _elem != (_gvec)->tab; _elem--)
 
-#define gv_for_each_const_p_rev(_elem, _v)                                    \
-    int64_t CONCAT(_p, __LINE__) = (_v)->len - 1;                             \
-    for (const __gv_type((_v)) *_elem = &((_v)->tab[CONCAT(_p, __LINE__)]);   \
-         CONCAT(_p, __LINE__) >= 0;                                           \
-         _elem = &((_v)->tab[--(CONCAT(_p, __LINE__))]))
+#define gv_for_each_const_p_rev(_elem, _gvec)                                 \
+    for (const __gv_type((_gvec)) *_elem = (_gvec)->tab + (_gvec)->len - 1;   \
+         _elem != (_gvec)->tab; _elem--)
 
 /* }}} */
 

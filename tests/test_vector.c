@@ -227,8 +227,8 @@ static void test_add_and_remove_pointer_vector(void)
 
     add_new_elem_and_set(&vector, 5);
 
-    gv_for_each(elem, &vector) {
-        ASSERT_EQUAL_INT(*elem, tab[idx_tab]);
+    gv_for_each_p(elem, &vector) {
+        ASSERT_EQUAL_INT(**elem, tab[idx_tab]);
         idx_tab++;
     }
     printf("\n");
@@ -571,22 +571,17 @@ static void test_vector_macro_gv_for_each(void)
     gv_append(&vector, 0);
     gv_append(&vector, 811);
 
-    gv_for_each(elem, &vector) {
-        ASSERT_EQUAL_INT(elem, tab[pos]);
-        pos++;
-    }
-
-    pos = 0;
-    gv_for_each(elem, &vector) {
-        ASSERT_EQUAL_INT(elem, tab[pos]);
+    gv_for_each_p(elem, &vector) {
+        ASSERT_EQUAL_INT(*elem, tab[pos]);
         pos++;
     }
 
     pos = 4;
-    gv_for_each_rev(elem, &vector) {
-        ASSERT_EQUAL_INT(elem, tab[pos]);
+    gv_for_each_p_rev(elem, &vector) {
+        ASSERT_EQUAL_INT(*elem, tab[pos]);
         pos--;
     }
+
     gv_wipe(&vector, NULL);
 }
 
@@ -656,8 +651,8 @@ static void test_vector_macro_gv_for_each_p2(void)
     add_new_elem_and_set(&vector, 17);
     add_new_elem_and_set(&vector, 8);
 
-    gv_for_each(elem, &vector) {
-        ASSERT_EQUAL_INT(*elem, tab[pos]);
+    gv_for_each_p(elem, &vector) {
+        ASSERT_EQUAL_INT(**elem, tab[pos]);
         pos++;
     }
 
