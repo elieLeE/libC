@@ -169,12 +169,12 @@ void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos);
         __set_elem_at_new_spot(__gvec, _val, _pos);                           \
     } while(0)
 
-int __gv_search_spot(const __vector_void_t *vec, const void *elem,
-                     int (*cmp_data_cb)(const void *d1, const void *d2));
+int64_t __gv_search_spot(const __vector_void_t *vec, const void *elem,
+                         int (*cmp_data_cb)(const void *d1, const void *d2));
 
 #define gv_insert_elem_sorted(_gvec, _val, cmp_data_cb)                       \
     do {                                                                      \
-        int __pos;                                                            \
+        int64_t __pos;                                                        \
         __auto_type __val = (_val);                                           \
         __auto_type __gvec = (_gvec);                                         \
         __pos = __gv_search_spot(&__gvec->vec, &__val, cmp_data_cb);          \

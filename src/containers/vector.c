@@ -3,7 +3,7 @@
 #include "../mem/mem.h"
 #include "../macros.h"
 
-long __get_next_closest_power_of_two(long n)
+int64_t __get_next_closest_power_of_two(int64_t n)
 {
     n--;
 
@@ -127,8 +127,8 @@ void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos)
  * to sort them by decreasing order, implement a method that will return > 0
  * when the first element is below than the second one.
  */
-int __gv_search_spot(const __vector_void_t *vec, const void *elem,
-                     int (*cmp_data_cb)(const void *d1, const void *d2))
+int64_t __gv_search_spot(const __vector_void_t *vec, const void *elem,
+                         int (*cmp_data_cb)(const void *d1, const void *d2))
 {
     if (vec->len == 0) {
         return 0;
