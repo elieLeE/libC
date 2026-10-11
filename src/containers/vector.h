@@ -82,7 +82,7 @@ typedef generic_vector_data_t(void) __vector_void_t;
 
 void *__gv_extend(__vector_void_t *vec, int64_t extra);
 #define gv_extend(_gvec, extra)                                               \
-    __gv_extend(&(_gvec)->vec, extra);
+    __gv_extend(&(_gvec)->vec, extra)
 
 void *__gv_grow(__vector_void_t *vec, int64_t extra);
 #define gv_grow(_gvec, extra)                                                 \
@@ -185,7 +185,7 @@ int64_t __gv_search_spot(const __vector_void_t *vec, const void *elem,
  * data in order that the elements from the first one to the 'vec->length are
  * the elements of the vector, but the new "empty" spot are not reset ! */
 int __gv_remove_elem_n(__vector_void_t *vec, int64_t pos);
-#define gv_remove(_gvec, _pos) __gv_remove_elem_n(&(_gvec)->vec, _pos);
+#define gv_remove(_gvec, _pos) __gv_remove_elem_n(&(_gvec)->vec, _pos)
 
 #define gv_take(_gvec, _pos)                                                  \
     ({                                                                        \
