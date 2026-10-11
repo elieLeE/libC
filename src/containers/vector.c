@@ -2,7 +2,22 @@
 
 #include "../mem/mem.h"
 #include "../macros.h"
-#include "../math/calculs.h"
+
+long __get_next_closest_power_of_two(long n)
+{
+    n--;
+
+    n |= n >> 1;
+    n |= n >> 2;
+    n |= n >> 4;
+    n |= n >> 8;
+    n |= n >> 16;
+    n |= n >> 32;
+
+    n++;
+
+    return n;
+}
 
 void __gv_set(const __vector_void_t *src, __vector_void_t *dst)
 {
@@ -51,7 +66,7 @@ void *__gv_extend(__vector_void_t *vec, int64_t extra)
     void *res;
 
     if (vec->len + extra > vec->size) {
-       int64_t new_size = get_next_closest_power_of_two(vec->len + extra);
+       int64_t new_size = __get_next_closest_power_of_two(vec->len + extra);
 
         vec->tab = RETHROW_P(p_realloc(vec->tab, new_size * vec->__size_elem));
         vec->size = new_size;

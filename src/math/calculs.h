@@ -10,6 +10,4 @@ __attribute__((const))
 unsigned long get_next_triangle_nber(unsigned long previous_n,
                                      unsigned long idx);
 
-__attribute__((const)) long get_next_closest_power_of_two(long n);
-
 #endif
