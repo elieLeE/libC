@@ -87,7 +87,7 @@ void *__gv_extend(__vector_void_t *vec, int64_t extra);
 void *__gv_grow(__vector_void_t *vec, int64_t extra);
 #define gv_grow(_gvec, extra)                                                 \
     ({                                                                        \
-        __auto_type __gvec = _gvec;                                           \
+        __auto_type __gvec = (_gvec);                                         \
         __gv_type(__gvec) *__elem = __gv_grow(&__gvec->vec, extra);           \
         __elem;                                                               \
     })
