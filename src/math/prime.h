@@ -41,13 +41,6 @@ get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
                                                 const gv_t(primes_factors) *in,
                                                 gv_t(uint64) *out);
 
-/* In this method, the vector given contains N and its value will be removed
- * from the sum */
-__attribute__((nonnull))
-unsigned long
-get_proper_divisors_sum_from_all_divisors(unsigned long n,
-                                          const gv_t(uint64) *divisors);
-
 /* Warning, this method will create a vector for the prime factors of N and
  * an other one for all the divisors of N. This vector will then be wiped.
  * These allocations (of the array inside the vector) and deallocations could
