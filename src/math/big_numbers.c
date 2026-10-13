@@ -119,12 +119,7 @@ int bn_cmp_ul(const big_number_t *bn, uint64_t n)
 {
     uint32_t digits_count_bn;
     uint64_t bn_ul;
-
-#if __x86_64__
-    const uint32_t digits_count_unsigned_long_max = 20;
-#else
-    const uint32_t digits_count_unsigned_long_max = 10;
-#endif
+    const uint32_t digits_count_uint64_max = 20;
 
     if (bn->parts.len == 0) {
         return -1;
@@ -135,7 +130,7 @@ int bn_cmp_ul(const big_number_t *bn, uint64_t n)
     }
 
     digits_count_bn = bn_get_digits_count(bn);
-    if (digits_count_bn > digits_count_unsigned_long_max) {
+    if (digits_count_bn > digits_count_uint64_max) {
         return 1;
     }
 
