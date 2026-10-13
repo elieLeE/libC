@@ -72,9 +72,9 @@ uint64_t bn_get_digits_sum(const big_number_t *in)
     return sum;
 }
 
-unsigned int bn_get_digits_count(const big_number_t *bn)
+uint32_t bn_get_digits_count(const big_number_t *bn)
 {
-    unsigned int digits_count_limit;
+    uint32_t digits_count_limit;
 
     if (bn->parts.len == 0) {
         return 0;
@@ -117,13 +117,13 @@ static uint64_t bn_get_ul(const big_number_t *bn)
 
 int bn_cmp_ul(const big_number_t *bn, uint64_t n)
 {
-    unsigned int digits_count_bn;
+    uint32_t digits_count_bn;
     uint64_t bn_ul;
 
 #if __x86_64__
-    const unsigned int digits_count_unsigned_long_max = 20;
+    const uint32_t digits_count_unsigned_long_max = 20;
 #else
-    const unsigned int digits_count_unsigned_long_max = 10;
+    const uint32_t digits_count_unsigned_long_max = 10;
 #endif
 
     if (bn->parts.len == 0) {
@@ -156,9 +156,9 @@ int bn_cmp(const big_number_t *bn1, const big_number_t *bn2)
         return bn1->parts.len - bn2->parts.len;
     }
 
-    for (int i = bn1->parts.len - 1; i >= 0; i--) {
-        uint64_t n1 = bn1->parts.tab[i];
-        uint64_t n2 = bn2->parts.tab[i];
+    gv_for_each_pos_rev(pos, &(bn1->parts)) {
+        uint64_t n1 = bn1->parts.tab[pos];
+        uint64_t n2 = bn2->parts.tab[pos];
 
         if (n1 != n2) {
             return n1 - n2;
@@ -780,7 +780,7 @@ static void _bn_mul_bn(const big_number_t *bn1, const big_number_t *bn2,
     }
 }
 
-int bn_mul_ul(const big_number_t *bn, unsigned long n, big_number_t *out)
+int bn_mul_ul(const big_number_t *bn, uint64_t n, big_number_t *out)
 {
     if (bn != out) {
         bn_fast_clear(out);
@@ -1102,7 +1102,7 @@ char *bn_to_str(const big_number_t *bn)
     char *str = RETHROW_P(p_calloc(str_size));
     int charac_written = 0;
     const uint64_t min = bn->limit / 10;
-    const unsigned int max_digit_by_part = get_count_digits_of_n(bn->limit) - 1;
+    const uint32_t max_digit_by_part = get_count_digits_of_n(bn->limit) - 1;
 
     if (!bn->positive_number) {
         charac_written = snprintf(str + 0, str_size - charac_written, "-");
@@ -1113,8 +1113,8 @@ char *bn_to_str(const big_number_t *bn)
         uint64_t n = bn->parts.tab[pos];
 
         if (pos < bn->parts.len - 1 && n < min) {
-            unsigned int digits_count = get_count_digits_of_n(n);
-            unsigned int tmp_max;
+            uint32_t digits_count = get_count_digits_of_n(n);
+            uint32_t tmp_max;
 
             if (digits_count == 0) {
                 tmp_max = max_digit_by_part - 1;

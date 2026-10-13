@@ -58,7 +58,7 @@ bn_get_part_safe(const big_number_t *bn, int64_t idx)
     return bn_get_part(bn, idx);
 }
 
-unsigned int bn_get_digits_count(const big_number_t *bn);
+uint32_t bn_get_digits_count(const big_number_t *bn);
 uint64_t bn_get_digits_sum(const big_number_t *in);
 void bn_get_digits(const big_number_t *in, gv_t(uint8) *digits);
 
