@@ -1,22 +1,21 @@
 #include "calculs.h"
 
-unsigned long sum_1_to_n(unsigned long n)
+uint64_t sum_1_to_n(uint64_t n)
 {
     return n * (n + 1) / 2;
 }
 
-unsigned long sum_carre_1_to_n(unsigned long n)
+uint64_t sum_carre_1_to_n(uint64_t n)
 {
     return (n * (n + 1) * (2 * n + 1)) / 6;
 }
 
-unsigned long get_triangle_nber_from_index(unsigned long idx)
+uint64_t get_triangle_nber_from_index(uint64_t idx)
 {
     return idx * (idx + 1) / 2;
 }
 
-unsigned long
-get_next_triangle_nber(unsigned long previous_n, unsigned long idx)
+uint64_t get_next_triangle_nber(uint64_t previous_n, uint64_t idx)
 {
     return previous_n + idx;
 }
