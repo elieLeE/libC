@@ -3,6 +3,7 @@
 #include "prime.h"
 #include "../mem/mem.h"
 #include "../macros.h"
+#include "../utils.h"
 
 bool is_prime(uint64_t n)
 {
@@ -183,14 +184,6 @@ void get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
     }
 }
 
-static int cmp_uint64(const void *_d1, const void *_d2)
-{
-    const uint64_t *d1 = _d1;
-    const uint64_t *d2 = _d2;
-
-    return *d1 - *d2;
-}
-
 int
 get_all_proper_divisors_of_n_from_prime_factors(uint64_t n,
                                                 const gv_t(primes_factors) *in,
@@ -200,7 +193,7 @@ get_all_proper_divisors_of_n_from_prime_factors(uint64_t n,
 
     get_all_divisors_of_n_from_prime_factors(in, out);
 
-    pos = gv_find(out, n, GV_SEQUENTIAL_SEARCH, cmp_uint64);
+    pos = gv_find(out, n, GV_SEQUENTIAL_SEARCH, g_cmp_uint64);
     if (gv_remove(out, pos) < 0) {
         return -1;
     }
