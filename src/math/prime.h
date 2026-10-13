@@ -6,25 +6,24 @@
 #include "../containers/vector.h"
 
 typedef struct prime_factor_t {
-    unsigned long prime;
-    unsigned int iteration;
+    uint64_t prime;
+    int32_t iteration;
 } prime_factor_t;
 
 generic_vector_t(primes_factors, prime_factor_t);
 
-bool is_prime(unsigned long n);
-bool is_prime_from_smallest_primes(unsigned long n,
-                                   const gv_t(uint64) *primes);
+bool is_prime(uint64_t n);
+bool is_prime_from_smallest_primes(uint64_t n, const gv_t(uint64) *primes);
 
 __attribute__((nonnull))
-long get_all_primes_below_n(unsigned long lim, gv_t(uint64) *out);
+int64_t get_all_primes_below_n(uint64_t lim, gv_t(uint64) *out);
 
 __attribute__((nonnull))
-void get_all_n_first_primes(long count_asked, gv_t(uint64) *out);
+void get_all_n_first_primes(int64_t count_asked, gv_t(uint64) *out);
 
 __attribute__((nonnull))
-unsigned long
-get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
+int64_t
+get_all_primes_factors_of_n(uint64_t n, const gv_t(uint64) *primes,
                             gv_t(primes_factors) *out);
 
 /* WARNING: N is included.
@@ -37,7 +36,7 @@ get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
 
 __attribute__((nonnull))
 int
-get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
+get_all_proper_divisors_of_n_from_prime_factors(uint64_t n,
                                                 const gv_t(primes_factors) *in,
                                                 gv_t(uint64) *out);
 
@@ -50,18 +49,18 @@ get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
  * 'get_proper_divisors_sum_from_all_divisors' reusing the vectors filled by
  * these methods */
 __attribute__((nonnull))
-unsigned long
-get_proper_divisors_sum_of_n(unsigned long n, const gv_t(uint64) *primes);
+uint64_t
+get_proper_divisors_sum_of_n(uint64_t n, const gv_t(uint64) *primes);
 
 __attribute__((nonnull))
-unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors);
+uint64_t get_divisors_count(const gv_t(primes_factors) *primes_factors);
 
 __attribute__((nonnull))
-void get_all_phi_from_1_to_n(long n, gv_t(int64) *phi);
+void get_all_phi_from_1_to_n(int64_t, gv_t(int64) *phi);
 
 __attribute__((nonnull))
-unsigned long
-get_phi_from_primes_factors(unsigned long n,
+uint64_t
+get_phi_from_primes_factors(uint64_t n,
                             const gv_t(primes_factors) *primes_factors);
 
 #endif

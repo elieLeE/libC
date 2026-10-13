@@ -4,9 +4,9 @@
 #include "../mem/mem.h"
 #include "../macros.h"
 
-bool is_prime(unsigned long n)
+bool is_prime(uint64_t n)
 {
-    unsigned long i;
+    uint64_t i;
 
     if (n <= 1) {
         logger_error("calling 'is_prime' with a no positive number: %ld", n);
@@ -31,7 +31,7 @@ bool is_prime(unsigned long n)
     return true;
 }
 
-bool is_prime_from_smallest_primes(unsigned long n, const gv_t(uint64) *primes)
+bool is_prime_from_smallest_primes(uint64_t n, const gv_t(uint64) *primes)
 {
     gv_for_each_pos(pos, primes) {
         if (n % primes->tab[pos] == 0) {
@@ -42,9 +42,9 @@ bool is_prime_from_smallest_primes(unsigned long n, const gv_t(uint64) *primes)
 }
 
 /* This methods is very efficient but needs an array with all numbers to lim */
-static void fill_tab_prime_bool(unsigned long lim, bool out[])
+static void fill_tab_prime_bool(uint64_t lim, bool out[])
 {
-    unsigned long i, j;
+    uint64_t i, j;
 
     i = 4;
     while (i < lim) {
@@ -72,7 +72,7 @@ static void fill_tab_prime_bool(unsigned long lim, bool out[])
     }
 }
 
-long get_all_primes_below_n(unsigned long lim, gv_t(uint64) *out)
+int64_t get_all_primes_below_n(uint64_t lim, gv_t(uint64) *out)
 {
     bool *tab_bool;
 
@@ -81,7 +81,7 @@ long get_all_primes_below_n(unsigned long lim, gv_t(uint64) *out)
     fill_tab_prime_bool(lim, tab_bool);
 
     gv_append(out, 2);
-    for (unsigned long i = 3; i <= lim; i = i + 2) {
+    for (uint64_t i = 3; i <= lim; i = i + 2) {
         if (!tab_bool[i]) {
             gv_append(out, i);
         }
@@ -92,9 +92,9 @@ long get_all_primes_below_n(unsigned long lim, gv_t(uint64) *out)
     return out->len;
 }
 
-void get_all_n_first_primes(long count_asked, gv_t(uint64) *out)
+void get_all_n_first_primes(int64_t count_asked, gv_t(uint64) *out)
 {
-    unsigned long current_nber;
+    uint64_t current_nber;
 
     gv_append(out, 2);
     current_nber = 3;
@@ -107,8 +107,8 @@ void get_all_n_first_primes(long count_asked, gv_t(uint64) *out)
     }
 }
 
-unsigned long
-get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
+int64_t
+get_all_primes_factors_of_n(uint64_t n, const gv_t(uint64) *primes,
                             gv_t(primes_factors) *out)
 {
     if (n == 0) {
@@ -120,7 +120,7 @@ get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
     }
 
     gv_for_each_pos(pos, primes) {
-        unsigned long current_prime = primes->tab[pos];
+        uint64_t current_prime = primes->tab[pos];
         /* first search if n is in the tab ?? => if yes => just him and 1 */
 
         if (n % current_prime == 0) {
@@ -147,14 +147,15 @@ get_all_primes_factors_of_n(unsigned long n, const gv_t(uint64) *primes,
 
 static void
 get_all_divisors_of_n_from_prime_factors_rec(const gv_t(primes_factors) *in,
-                                             unsigned long basis,
-                                             long first_pos, gv_t(uint64) *out)
+                                             uint64_t basis,
+                                             int64_t first_pos,
+                                             gv_t(uint64) *out)
 {
-    for (long pos = first_pos; pos < in->len; pos++) {
+    for (int64_t pos = first_pos; pos < in->len; pos++) {
         prime_factor_t *current_prime_factor = &(in->tab[pos]);
-        unsigned long current_div = current_prime_factor->prime * basis;
+        uint64_t current_div = current_prime_factor->prime * basis;
 
-        for (unsigned int i = 0; i < current_prime_factor->iteration; i++) {
+        for (int32_t i = 0; i < current_prime_factor->iteration; i++) {
             gv_append(out, current_div);
             get_all_divisors_of_n_from_prime_factors_rec(in, current_div,
                                                          pos + 1, out);
@@ -171,9 +172,9 @@ void get_all_divisors_of_n_from_prime_factors(const gv_t(primes_factors) *in,
 
     gv_for_each_pos(pos, in) {
         prime_factor_t *current_prime_factor = &(in->tab[pos]);
-        unsigned long current_div = current_prime_factor->prime;
+        uint64_t current_div = current_prime_factor->prime;
 
-        for (unsigned int i = 0; i < current_prime_factor->iteration; i++) {
+        for (int32_t i = 0; i < current_prime_factor->iteration; i++) {
             gv_append(out, current_div);
             get_all_divisors_of_n_from_prime_factors_rec(in, current_div,
                                                          pos + 1, out);
@@ -191,11 +192,11 @@ static int cmp_uint64(const void *_d1, const void *_d2)
 }
 
 int
-get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
+get_all_proper_divisors_of_n_from_prime_factors(uint64_t n,
                                                 const gv_t(primes_factors) *in,
                                                 gv_t(uint64) *out)
 {
-    long pos;
+    int64_t pos;
 
     get_all_divisors_of_n_from_prime_factors(in, out);
 
@@ -207,10 +208,10 @@ get_all_proper_divisors_of_n_from_prime_factors(unsigned long n,
     return 0;
 }
 
-unsigned long
-get_proper_divisors_sum_of_n(unsigned long n, const gv_t(uint64) *primes)
+uint64_t
+get_proper_divisors_sum_of_n(uint64_t n, const gv_t(uint64) *primes)
 {
-    unsigned long sum;
+    uint64_t sum;
     gv_t(primes_factors) primes_factors;
     gv_t(uint64) divisors;
 
@@ -227,24 +228,25 @@ get_proper_divisors_sum_of_n(unsigned long n, const gv_t(uint64) *primes)
     return sum;
 }
 
-unsigned long get_divisors_count(const gv_t(primes_factors) *primes_factors)
+uint64_t get_divisors_count(const gv_t(primes_factors) *primes_factors)
 {
-    unsigned long count = 1;
+    uint64_t count = 1;
 
     gv_for_each_pos(pos, primes_factors) {
         count *= (primes_factors->tab[pos].iteration + 1);
     }
+
     return count;
 }
 
-unsigned long
-get_phi_from_primes_factors(unsigned long n,
+uint64_t
+get_phi_from_primes_factors(uint64_t n,
                             const gv_t(primes_factors) *primes_factors)
 {
-    unsigned long res = n;
+    uint64_t res = n;
 
     gv_for_each_pos(pos, primes_factors) {
-        unsigned long current_prime = primes_factors->tab[pos].prime;
+        uint64_t current_prime = primes_factors->tab[pos].prime;
 
         res = res * (current_prime - 1) / current_prime;
     }
@@ -252,17 +254,19 @@ get_phi_from_primes_factors(unsigned long n,
     return res;
 }
 
-void get_all_phi_from_1_to_n(long n, gv_t(int64) *phi)
+void get_all_phi_from_1_to_n(int64_t n, gv_t(int64) *phi)
 {
     if (phi->len <= n) {
         gv_extend(phi, n + 1 - phi->len);
     }
-    for (long i = 0; i <= n; i++) {
+
+    for (int64_t i = 0; i <= n; i++) {
         gv_append(phi, i);
     }
-    for (long i = 2; i <= n; i++) {
+
+    for (int64_t i = 2; i <= n; i++) {
         if (phi->tab[i] == i) {
-            for (long j = i; j <= n; j += i) {
+            for (int64_t j = i; j <= n; j += i) {
                 phi->tab[j] = phi->tab[j] * (i - 1) / i;
             }
         }
