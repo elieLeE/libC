@@ -50,6 +50,9 @@ typedef generic_vector_data_t(void) __vector_void_t;
 #define gv_for_each_pos(_pos, _gvec)                                          \
     for (int64_t _pos = 0; _pos < (_gvec)->len; _pos++)
 
+#define gv_for_each_pos_rev(_pos, _gvec)                                      \
+    for (int64_t _pos = (_gvec)->len - 1; _pos >= 0; _pos--)
+
 /* #define gv_for_each(_elem, _gvec)                                       \ */
 /*     int64_t CONCAT(_p, __LINE__) = 0;                                   \ */
 /*     for (__gv_type((_gvec)) _elem = (_gvec)->tab[CONCAT(_p, __LINE__)]; \ */
