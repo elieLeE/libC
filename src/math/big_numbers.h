@@ -98,7 +98,7 @@ int bn_mul_different_bn_with_tmp(const big_number_t *bn1,
                                  const big_number_t *bn2,
                                  big_number_t *tmp, big_number_t *out);
 
-int bn_get_fact_n(uint32_t n, big_number_t *out);
+void bn_get_fact_n(uint32_t n, big_number_t *out);
 
 /* Careful with these methods. They could explode the memory and so create a
  * crash if the result is too big */
