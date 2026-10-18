@@ -131,7 +131,7 @@ static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
         __auto_type __gvec = (_gvec);                                         \
         p_clear(__gvec, 1);                                                   \
         __gv_set_size_elem(&__gvec->vec, __gv_size(__gvec));                  \
-        __gv_extend(&__gvec->vec, _size);                                     \
+        __gv_extend(&__gvec->vec, __size);                                    \
     } while (0)
 
 void __gv_set(const __vector_void_t *src, __vector_void_t *dst);
