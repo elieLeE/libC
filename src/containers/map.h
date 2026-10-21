@@ -33,6 +33,9 @@ typedef generic_map_data_t(void **, void **) __map_void_t;
 
 typedef int32_t (*gm_hash_cb_t)(const void *);
 
+#define gm_hash_cb_name(_name) __hash_cb_map_##_name
+#define gm_cmp_cb_name(_name) __cmp_cb_map_##_name
+
 #define __gm_key_type(_map) typeof(*_map->keys[0])
 #define __gm_value_type(_map) typeof(*_map->values[0])
 
