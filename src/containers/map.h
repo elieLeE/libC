@@ -26,12 +26,23 @@ typedef generic_map_data_t(void **, void **) __map_void_t;
 #define gm_t(_name_) generic_map_##_name_##_t
 
 #define generic_map_t(_name, _keys_type, _values_type, hash_cb, cmp_cb)       \
+    static inline uint32_t __hash_cb_map_##_name(const void *_v)              \
+    {                                                                         \
+        const _values_type *v = (const _values_type *)_v;                     \
+        return hash_cb(v);                                                    \
+    }                                                                         \
+    static inline int __cmp_cb_map_##_name(const void *_v1, const void *_v2)  \
+    {                                                                         \
+        const _values_type *v1 = (const _values_type *)_v1;                   \
+        const _values_type *v2 = (const _values_type *)_v2;                   \
+        return cmp_cb(v1, v2);                                                \
+    }                                                                         \
     typedef union gm_t(_name) {                                               \
         generic_map_data_t(_keys_type **, _values_type **);                   \
         __map_void_t __map;                                                   \
     } gm_t(_name);
 
-typedef int32_t (*gm_hash_cb_t)(const void *);
+typedef uint32_t (*gm_hash_cb_t)(const void *);
 
 #define gm_hash_cb_name(_name) __hash_cb_map_##_name
 #define gm_cmp_cb_name(_name) __cmp_cb_map_##_name
