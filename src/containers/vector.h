@@ -143,9 +143,14 @@ int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
     __gv_copy(&(_src)->vec, (_idx_src), (_idx_dst), (len), &(_dst)->vec);
 
 #define gv_append(_gvec, _val)                                                \
-    ({  __auto_type __gvec = (_gvec);                                         \
+    ({  int64_t __res = -1;                                                   \
+        __auto_type __gvec = (_gvec);                                         \
         __gv_type(__gvec) *__elem = __gv_grow(&__gvec->vec, 1);               \
-        *__elem = _val;                                                       \
+        if (__elem != NULL) {                                                 \
+            *__elem = (_val);                                                   \
+            __res = __gvec->len;                                              \
+        }                                                                     \
+        __res;                                                                \
     })
 
 void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos);
