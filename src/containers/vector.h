@@ -112,7 +112,12 @@ static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
     })
 
 #define gv_new(_name)                                                         \
-    gv_init((gv_t(_name) *)p_malloc(sizeof(gv_t(_name))))                     \
+    ({  gv_t(_name) *__gvec = p_calloc(sizeof(gv_t(_name)));                  \
+        if (__gvec != NULL) {                                                 \
+            gv_init(__gvec);                                                  \
+        }                                                                     \
+        __gvec;                                                               \
+    })
 
 #define gv_init_size(_gvec, _size)                                            \
     do {                                                                      \
