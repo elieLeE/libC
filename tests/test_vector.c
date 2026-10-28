@@ -36,8 +36,9 @@ static void test_fill_vector(void)
     gv_insert_elem_at_pos(&vector, 11, 0);
     gv_insert_elem_at_pos(&vector, 12, 7);
 
-    ASSERT_EQUAL_LONG(vector.len, 8L);
-    ASSERT_EQUAL_LONG(vector.size, 8L);
+
+    ASSERT_EQUAL_INT(vector.len, 8);
+    ASSERT_EQUAL_INT(vector.size, 8);
     check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
@@ -63,8 +64,8 @@ static void test_vector_add_and_remove_elem(void)
     gv_insert_elem_at_pos(&vector, 12, 4);
     gv_remove(&vector, 3);
 
-    ASSERT_EQUAL_LONG(vector.len, 4L);
-    ASSERT_EQUAL_LONG(vector.size, 8L);
+    ASSERT_EQUAL_INT(vector.len, 4);
+    ASSERT_EQUAL_INT(vector.size, 8);
     check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
@@ -83,8 +84,8 @@ static void test_fill_vector_sorting(void)
     gv_insert_elem_sorted(&vector, 4, g_cmp_int32);
     gv_insert_elem_sorted(&vector, 2, g_cmp_int32);
 
-    ASSERT_EQUAL_LONG(vector.len, 5L);
-    ASSERT_EQUAL_LONG(vector.size, 8L);
+    ASSERT_EQUAL_INT(vector.len, 5);
+    ASSERT_EQUAL_INT(vector.size, 8);
     check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
@@ -105,8 +106,8 @@ static void test_sort_vector_simple(void)
 
     gv_sort(&vector, g_cmp_int32);
 
-    ASSERT_EQUAL_LONG(vector.len, 5L);
-    ASSERT_EQUAL_LONG(vector.size, 8L);
+    ASSERT_EQUAL_INT(vector.len, 5);
+    ASSERT_EQUAL_INT(vector.size, 8);
     check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
@@ -197,8 +198,8 @@ static void test_fill_pointer_vector(void)
     add_new_elem_and_set(&vector, 4);
     add_new_elem_and_set(&vector, 5);
 
-    ASSERT_EQUAL_LONG(vector.len, 5L);
-    ASSERT_EQUAL_LONG(vector.size, 8L);
+    ASSERT_EQUAL_INT(vector.len, 5);
+    ASSERT_EQUAL_INT(vector.size, 8);
 
     gv_for_each_pos(pos, &vector) {
         ASSERT_EQUAL_INT(*(vector.tab[pos]), tab[idx_tab]);
@@ -249,8 +250,8 @@ static void test_new_and_delete_vector(void)
     gv_append(vector, 4);
     gv_append(vector, 5);
 
-    ASSERT_EQUAL_LONG(vector->len, 5L);
-    ASSERT_EQUAL_LONG(vector->size, 8L);
+    ASSERT_EQUAL_INT(vector->len, 5);
+    ASSERT_EQUAL_INT(vector->size, 8);
     check_vector_values(vector, tab);
 
     gv_delete(vector, NULL);
@@ -272,8 +273,8 @@ static void test_vector_init_size(void)
     gv_insert_elem_at_pos(&vector, 11, 0);
     gv_insert_elem_at_pos(&vector, 12, 7);
 
-    ASSERT_EQUAL_LONG(vector.len, 8L);
-    ASSERT_EQUAL_LONG(vector.size, 16L);
+    ASSERT_EQUAL_INT(vector.len, 8);
+    ASSERT_EQUAL_INT(vector.size, 16);
     check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
@@ -324,8 +325,8 @@ static void test_reset_vector(void)
     gv_append(&vector, 7);
     gv_append(&vector, 8);
 
-    ASSERT_EQUAL_LONG(vector.len, 3L);
-    ASSERT_EQUAL_LONG(vector.size, 8L);
+    ASSERT_EQUAL_INT(vector.len, 3);
+    ASSERT_EQUAL_INT(vector.size, 8);
     check_vector_values(&vector, tab);
 
     gv_wipe(&vector, NULL);
@@ -347,22 +348,22 @@ static void test_set_vector(void)
     gv_append(&vector, 4);
     gv_append(&vector, 5);
 
-    ASSERT_EQUAL_LONG(vector.len, 5L);
-    ASSERT_EQUAL_LONG(vector.size, 8L);
+    ASSERT_EQUAL_INT(vector.len, 5);
+    ASSERT_EQUAL_INT(vector.size, 8);
     check_vector_values(&vector, tab);
 
     gv_append(&vector2, 6);
     gv_append(&vector2, 7);
     gv_append(&vector2, 8);
 
-    ASSERT_EQUAL_LONG(vector2.len, 3L);
-    ASSERT_EQUAL_LONG(vector2.size, 4L);
+    ASSERT_EQUAL_INT(vector2.len, 3);
+    ASSERT_EQUAL_INT(vector2.size, 4);
     check_vector_values(&vector2, tab2);
 
     gv_set(&vector, &vector2);
 
-    ASSERT_EQUAL_LONG(vector2.len, 5L);
-    ASSERT_EQUAL_LONG(vector2.size, 8L);
+    ASSERT_EQUAL_INT(vector2.len, 5);
+    ASSERT_EQUAL_INT(vector2.size, 8);
     check_vector_values(&vector2, tab);
 
     gv_wipe(&vector, NULL);
@@ -386,16 +387,16 @@ static void test_copy_vector(void)
     gv_append(&vector, 4);
     gv_append(&vector, 5);
 
-    ASSERT_EQUAL_LONG(vector.len, 5L);
-    ASSERT_EQUAL_LONG(vector.size, 8L);
+    ASSERT_EQUAL_INT(vector.len, 5);
+    ASSERT_EQUAL_INT(vector.size, 8);
     check_vector_values(&vector, tab);
 
     gv_append(&vector2, 6);
     gv_append(&vector2, 7);
     gv_append(&vector2, 8);
 
-    ASSERT_EQUAL_LONG(vector2.len, 3L);
-    ASSERT_EQUAL_LONG(vector2.size, 4L);
+    ASSERT_EQUAL_INT(vector2.len, 3);
+    ASSERT_EQUAL_INT(vector2.size, 4);
     check_vector_values(&vector2, tab2);
 
     /* copy can be partial. Here, we want to copy 3 elements of 'vector' into
@@ -403,8 +404,8 @@ static void test_copy_vector(void)
      * 1, 2 and 3 */
     gv_copy(&vector, 1, 2, 3, &vector2);
 
-    ASSERT_EQUAL_LONG(vector2.len, 5L);
-    ASSERT_EQUAL_LONG(vector2.size, 8L);
+    ASSERT_EQUAL_INT(vector2.len, 5);
+    ASSERT_EQUAL_INT(vector2.size, 8);
     check_vector_values(&vector2, tab3);
 
     gv_wipe(&vector, NULL);
@@ -415,7 +416,7 @@ static void check_pos_found_elem(gv_t(int32) *vector, long elem,
                                  gv_algo_search_t algo, long pos_expected)
 {
     long pos_obtained = gv_find(vector, elem, algo, g_cmp_int32);
-    ASSERT_EQUAL_LONG(pos_expected, pos_obtained);
+    ASSERT_EQUAL_INT(pos_expected, pos_obtained);
 }
 
 static void test_vector_find_and_contains_sequential_algo(void)
