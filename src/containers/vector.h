@@ -89,11 +89,7 @@ void *__gv_extend(__vector_void_t *vec, int64_t extra);
 
 void *__gv_grow(__vector_void_t *vec, int64_t extra);
 #define gv_grow(_gvec, extra)                                                 \
-    ({                                                                        \
-        __auto_type __gvec = (_gvec);                                         \
-        __gv_type(__gvec) *__elem = __gv_grow(&__gvec->vec, extra);           \
-        __elem;                                                               \
-    })
+    (__gv_type((_gvec)) *)__gv_grow(&(_gvec)->vec, extra);
 
 #define gv_grow1(_vec) gv_grow((_vec), 1)
 
@@ -132,20 +128,14 @@ static inline void __gv_set_size_elem(__vector_void_t *vec, size_t size_elem)
 
 void __gv_set(const __vector_void_t *src, __vector_void_t *dst);
 #define gv_set(_src, _dst)                                                    \
-    ({  __auto_type __src = (_src);                                           \
-        __auto_type __dst = (_dst);                                           \
-        __gv_set(&__src->vec, &__dst->vec);                                   \
-    })
+    __gv_set(&(_src)->vec, &(_dst)->vec);
 
 /* This method can be used to co a partial copy of the source vector in the
  * destination vector */
 int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
               int64_t idx_start_dst, int64_t len, __vector_void_t *dst);
 #define gv_copy(_src, _idx_src, _idx_dst, len, _dst)                          \
-    ({  __auto_type __src = (_src);                                           \
-        __auto_type __dst = (_dst);                                           \
-        __gv_copy(&__src->vec, (_idx_src), (_idx_dst), (len), &__dst->vec);   \
-    })
+    __gv_copy(&(_src)->vec, (_idx_src), (_idx_dst), (len), &(_dst)->vec);
 
 #define gv_append(_gvec, _val)                                                \
     ({  __auto_type __gvec = (_gvec);                                         \
@@ -224,10 +214,8 @@ int64_t __gv_find(const __vector_void_t *vec, const void *elem,
                   int (*cmp_data_cb)(const void *, const void *d));
 
 #define gv_find(_gvec, _elem, algo, cmp_data_cb)                              \
-    ({  __auto_type __gvec = (_gvec);                                         \
-        __auto_type __elem = (_elem);                                         \
-        int64_t __pos = __gv_find(&__gvec->vec, &__elem, algo, cmp_data_cb);  \
-        __pos;                                                                \
+    ({  __auto_type __elem = (_elem);                                         \
+        __gv_find(&(_gvec)->vec, &__elem, algo, cmp_data_cb);                 \
     })
 
 #define gv_contains(_gvec, _elem, algo, cmp_data_cb)                          \
