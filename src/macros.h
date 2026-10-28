@@ -8,8 +8,8 @@
 
 #include "logger/logger.h"
 
-#define CONCAT_(_x_, _y_) _x_##_y_
-#define CONCAT(_x_, _y_) CONCAT_(_x_, _y_)
+#define CONCAT_(_x, _y) _x##_y
+#define CONCAT(_x, _y) CONCAT_(_x, _y)
 
 #define MAX(_a, _b)                                                           \
      _a > _b ? _a : _b;
@@ -24,39 +24,39 @@
 
 #define RETHROW(_exp)                                                         \
     ({                                                                        \
-        __auto_type _res = _exp;                                              \
-        if (_res < 0) {                                                       \
-            return _res;                                                      \
+        __auto_type __res = (_exp);                                           \
+        if (__res < 0) {                                                      \
+            return __res;                                                     \
         }                                                                     \
-        _res;                                                                 \
+        __res;                                                                \
     })
 
 
 #define RETHROW_P(_exp)                                                       \
     ({                                                                        \
-        __auto_type _res = _exp;                                              \
-        if (_res == NULL) {                                                   \
+        __auto_type __res = (_exp);                                           \
+        if (__res == NULL) {                                                  \
             return NULL;                                                      \
         }                                                                     \
-        _res;                                                                 \
+        __res;                                                                \
     })
 
 #define RETHROW_PN(_exp)                                                      \
     ({                                                                        \
-        __auto_type _res = _exp;                                              \
-        if (_res == NULL) {                                                   \
+        __auto_type __res = (_exp);                                           \
+        if (__res == NULL) {                                                  \
             return -1;                                                        \
         }                                                                     \
-        _res;                                                                 \
+        __res;                                                                \
     })
 
 #define RETHROW_NP(_exp)                                                      \
     ({                                                                        \
-        __auto_type _res = _exp;                                              \
-        if (_res < 0) {                                                       \
+        __auto_type __res = (_exp);                                           \
+        if (__res < 0) {                                                      \
             return NULL;                                                      \
         }                                                                     \
-        _res;                                                                 \
+        __res;                                                                \
     })
 
 /* }}} */
@@ -70,18 +70,18 @@
         }                                                                     \
     } while (0)
 
-#define ASSERT_EQUAL(_v_left_, _v_right_, _fmt_data)                          \
+#define ASSERT_EQUAL(_v_left, _v_right, _fmt_data)                            \
     do {                                                                      \
-        ASSERT((_v_left_ == _v_right_),                                       \
+        ASSERT((_v_left == _v_right),                                         \
                "left: "_fmt_data ", right: "_fmt_data,                        \
-               _v_left_, _v_right_);                                          \
+               _v_left, _v_right);                                            \
     } while (0)
 
-#define ASSERT_EQUAL_INT(_v_left_, _v_right_)                                 \
-    ASSERT_EQUAL(_v_left_, _v_right_, "%d")
+#define ASSERT_EQUAL_INT(_v_left, _v_right)                                   \
+    ASSERT_EQUAL(_v_left, _v_right, "%d")
 
-#define ASSERT_EQUAL_LONG(_v_left_, _v_right_)                                \
-    ASSERT_EQUAL(_v_left_, _v_right_, "%ld")
+#define ASSERT_EQUAL_LONG(_v_left, _v_right)                                  \
+    ASSERT_EQUAL(_v_left, _v_right, "%ld")
 
 #define ASSERT_STR_EQUAL(_str1, _str2)                                        \
     do {                                                                      \
@@ -91,6 +91,7 @@
 
 /* }}} */
 
-#define unconst_cast(type_t, p)  ({ const type_t *__p = (p); (type_t *)__p; })
+#define unconst_cast(_type_t, _p)                                             \
+    ({ const _type_t *__p = (_p); (_type_t *)__p; })
 
 #endif
