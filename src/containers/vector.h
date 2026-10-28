@@ -157,7 +157,7 @@ void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos);
 
 #define __set_elem_at_new_spot(__gvec, _val, _pos)                            \
     do {                                                                      \
-        __elem =__gv_create_empty_spot(&__gvec->vec, _pos);                   \
+        __gv_type(__gvec) *__elem =__gv_create_empty_spot(&__gvec->vec, _pos);\
         if (__elem != NULL) {                                                 \
             *__elem = _val;                                                   \
             __gvec->len++;                                                    \
@@ -167,7 +167,6 @@ void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos);
 #define gv_insert_elem_at_pos(_gvec, _val, _pos)                              \
     do {                                                                      \
         __auto_type __gvec = (_gvec);                                         \
-        __gv_type(__gvec) *__elem;                                            \
         __gv_extend(&__gvec->vec, 1);                                         \
         __set_elem_at_new_spot(__gvec, _val, _pos);                           \
     } while(0)
