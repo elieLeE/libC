@@ -140,7 +140,7 @@ void __gv_set(const __vector_void_t *src, __vector_void_t *dst);
 int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
               int64_t idx_start_dst, int64_t len, __vector_void_t *dst);
 #define gv_copy(_src, _idx_src, _idx_dst, len, _dst)                          \
-    __gv_copy(&(_src)->vec, (_idx_src), (_idx_dst), (len), &(_dst)->vec);
+    __gv_copy(&(_src)->vec, (_idx_src), (_idx_dst), (len), &(_dst)->vec)
 
 #define gv_append(_gvec, _val)                                                \
     ({  int64_t __res = -1;                                                   \
