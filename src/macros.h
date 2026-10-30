@@ -91,8 +91,7 @@
 
 #define ASSERT_STR_EQUAL(_str1, _str2)                                        \
     do {                                                                      \
-        ASSERT((strcmp(_str1, _str2) == 0), "expected: %s, obtained: %s",     \
-               _str1, _str2);                                                 \
+        ASSERT_TEST_BOOL((strcmp(_str1, _str2) == 0), _str1, _str2, "%s");    \
     } while(0);
 
 /* }}} */
