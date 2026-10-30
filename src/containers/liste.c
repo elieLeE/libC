@@ -49,23 +49,23 @@ void gl_insert_elem_next(generic_liste_t *l, gl_elem_t *prev, gl_elem_t *elem)
 }
 
 void gl_insert_elem_sorted(generic_liste_t *l, gl_elem_t *elem,
-                           int (*cmp_data_cb)(void const *d1, void const *d2))
+                           g_cmp_cb_t cmp_cb)
 {
-    if (cmp_data_cb == NULL) {
-        logger_fatal("cmp_data_cb is NULL");
+    if (cmp_cb == NULL) {
+        logger_fatal("cmp_cb is NULL");
     }
 
     if (gl_is_empty(l)) {
         gl_insert_elem_first(l, elem);
-    } else if (cmp_data_cb(l->first->data, elem->data) >= 0) {
+    } else if (cmp_cb(l->first->data, elem->data) >= 0) {
         gl_insert_elem_first(l, elem);
-    } else if (cmp_data_cb(l->end->data, elem->data) <= 0) {
+    } else if (cmp_cb(l->end->data, elem->data) <= 0) {
         gl_insert_elem_next(l, l->end, elem);
     } else {
         generic_elem_liste_t *next_elem;
 
         gl_for_each(p, l->first) {
-            if (cmp_data_cb(p->data, elem->data) >= 0) {
+            if (cmp_cb(p->data, elem->data) >= 0) {
                 next_elem = p;
                 break;
             }
@@ -119,13 +119,12 @@ gl_elem_t *gl_add_elem_last(generic_liste_t *l, void *data)
 }
 
 gl_elem_t *
-gl_add_elem_sorted(generic_liste_t *l, void *data,
-                   int (*cmp_data_cb)(void const *d1, void const *d2))
+gl_add_elem_sorted(generic_liste_t *l, void *data, g_cmp_cb_t cmp_cb)
 {
     gl_elem_t *new;
 
     new = RETHROW_P(create_new_elem(data));
-    gl_insert_elem_sorted(l, new, cmp_data_cb);
+    gl_insert_elem_sorted(l, new, cmp_cb);
 
     return new;
 }
@@ -166,7 +165,7 @@ generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, int64_t n)
 
 generic_elem_liste_t *
 gl_get_elem_data(generic_liste_t *l, const void *searching_data,
-                 int (*cmp_cb)(const void *, const void *))
+                 g_cmp_cb_t cmp_cb)
 {
     gl_for_each(elem, l->first) {
         if (cmp_cb(elem->data, searching_data) == 0) {
@@ -349,9 +348,8 @@ int gl_delete_elem_n(generic_liste_t *l, int64_t n,
 /* }}} */
 /* {{{ Sorting methods. */
 
-static int
-gl_insertion_sort(generic_liste_t *l,
-                  int (*cmp_data_cb)(void const *d1, void const *d2))
+static int gl_insertion_sort(generic_liste_t *l, g_cmp_cb_t cmp_cb)
+
 {
     generic_liste_t l_sorted;
 
@@ -368,7 +366,7 @@ gl_insertion_sort(generic_liste_t *l,
             logger_error("got NULL element when sorting the list");
             return -1;
         }
-        gl_insert_elem_sorted(&l_sorted, p, cmp_data_cb);
+        gl_insert_elem_sorted(&l_sorted, p, cmp_cb);
     }
 
     l->first = l_sorted.first;
@@ -378,8 +376,7 @@ gl_insertion_sort(generic_liste_t *l,
     return 0;
 }
 
-int gl_sort(generic_liste_t *l, gl_sort_algo_t algo,
-            int (*cmp_data_cb)(void const *d1, void const *d2))
+int gl_sort(generic_liste_t *l, gl_sort_algo_t algo, g_cmp_cb_t cmp_cb)
 {
     if (algo < 0 || algo > ALGO_MAX) {
         logger_fatal("cannot sort the list - algo given is wrong: %d",
@@ -387,7 +384,7 @@ int gl_sort(generic_liste_t *l, gl_sort_algo_t algo,
     }
     switch (algo) {
     case INSERTION_SORT:
-        return gl_insertion_sort(l, cmp_data_cb);
+        return gl_insertion_sort(l, cmp_cb);
         break;
 
     default:
@@ -411,7 +408,7 @@ bool gl_is_elem_empty(const generic_elem_liste_t *e)
 }
 
 bool gl_contains_data(const generic_liste_t *l, const void *searching_data,
-                      int (*cmp_cb)(const void *, const void *))
+                      g_cmp_cb_t cmp_cb)
 {
     gl_for_each(elem, l->first) {
         if (cmp_cb(elem->data, searching_data) == 0) {

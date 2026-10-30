@@ -10,6 +10,7 @@
 
 #include <stdbool.h>
 
+#include "utils.h"
 #include "../mem/mem.h"
 
 typedef enum gl_sort_algo_t {
@@ -47,17 +48,17 @@ bool gl_is_empty(const generic_liste_t *l);
 bool gl_is_elem_empty(const generic_elem_liste_t *e);
 
 bool gl_contains_data(const generic_liste_t *l, const void *searching_data,
-                      int (*cmp_cb)(const void *, const void *));
+                      g_cmp_cb_t cmp_cb);
 generic_elem_liste_t *
 gl_get_elem_data(generic_liste_t *l, const void *searching_data,
-                 int (*cmp_cb)(const void *, const void *));
+                 g_cmp_cb_t cmp_cb);
 generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, int64_t n);
 
 void gl_insert_elem_first(generic_liste_t *l, gl_elem_t *elem);
 void
 gl_insert_elem_next(generic_liste_t *l, gl_elem_t *prev, gl_elem_t *elem);
 void gl_insert_elem_sorted(generic_liste_t *l, gl_elem_t *elem,
-                           int (*cmp_data_cb)(void const *d1, void const *d2));
+                           g_cmp_cb_t cmp_cb);
 
 gl_elem_t *gl_add_elem_first(generic_liste_t* l, void *e);
 gl_elem_t *gl_add_elem_last(generic_liste_t *l, void *e);
@@ -77,9 +78,7 @@ gl_add_elem_next(generic_liste_t *l, generic_elem_liste_t *e, void *data);
  * sorted increasing.
  * If you want to sort it decreasing, just return opposite value in 'cmp_cb'
  */
-gl_elem_t *
-gl_add_elem_sorted(generic_liste_t *l, void *e,
-                   int (*cmp_data_cb)(void const *d1, void const *d2));
+gl_elem_t *gl_add_elem_sorted(generic_liste_t *l, void *e, g_cmp_cb_t cmp_cb);
 
 /* Warning: these methods remove elements from the list and returns it (except
  * 'gl_remove_elem' that just removes the elements). So, these elements are
@@ -101,8 +100,7 @@ int gl_delete_elem_n(generic_liste_t *l, int64_t n,
 
 //void gl_remove_elem_doublons(generic_liste_t *l);
 
-int gl_sort(generic_liste_t *l, gl_sort_algo_t algo,
-            int (*cmp_data_cb)(void const *d1, void const *d2));
+int gl_sort(generic_liste_t *l, gl_sort_algo_t algo, g_cmp_cb_t cmp_cb);
 
 void gl_visu(const generic_liste_t *l, void (*visuelem)(void const *data),
              char const *sep);
