@@ -167,18 +167,22 @@ void *__gv_create_empty_spot_at_pos(__vector_void_t *vec, int64_t pos);
         __res;                                                                \
     })
 
-int64_t __gv_search_spot(const __vector_void_t *vec, const void *elem,
-                         g_cmp_cb_t cmp_cb);
-
+void *__gv_create_empty_spot_in_sorted_vec_from_val(__vector_void_t *vec,
+                                                    void *elem, int64_t *pos,
+                                                    g_cmp_cb_t cmp_cb);
 #define gv_insert_elem_sorted(_gvec, _val, cmp_cb)                            \
-    do {                                                                      \
-        int64_t __pos;                                                        \
-        __auto_type __val = (_val);                                           \
+    ({  __auto_type __val = (_val);                                           \
         __auto_type __gvec = (_gvec);                                         \
-        __pos = __gv_search_spot(&__gvec->vec, &__val, cmp_cb);               \
-        /* __pos value is checked in '__gv_create_empty_spot' method */       \
-        gv_insert_elem_at_pos(_gvec, __val, __pos);                           \
-    } while(0)
+        int64_t __pos = -1;                                                   \
+        __gv_type(__gvec) *__elem;                                            \
+        __elem = __gv_create_empty_spot_in_sorted_vec_from_val(&__gvec->vec,  \
+                                                               &__val, &__pos,\
+                                                               cmp_cb);       \
+        if (__elem != NULL) {                                                 \
+            *__elem = __val;                                                  \
+        }                                                                     \
+        __pos;                                                                \
+    })
 
 /* Warning, this method decreases the length of the vector, eventually move the
  * data in order that the elements from the first one to the 'vec->length are

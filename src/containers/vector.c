@@ -152,6 +152,14 @@ int64_t __gv_search_spot(const __vector_void_t *vec, const void *elem,
     return -1;
 }
 
+void *__gv_create_empty_spot_in_sorted_vec_from_val(__vector_void_t *vec,
+                                                    void *elem, int64_t *pos,
+                                                    g_cmp_cb_t cmp_cb)
+{
+    *pos = RETHROW_NP(__gv_search_spot(vec, elem, cmp_cb));
+    return __gv_create_empty_spot_at_pos(vec, *pos);
+}
+
 int __gv_remove_elem_n(__vector_void_t *vec, int64_t pos)
 {
     if (pos < 0) {
