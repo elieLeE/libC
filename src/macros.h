@@ -84,11 +84,19 @@
 #define ASSERT_EQUAL(_v_left, _v_right, _fmt_data)                            \
     ASSERT_TEST(_v_left, _v_right, ==, _fmt_data)
 
+#define ASSERT_DIFFERENT(_v_left, _v_right, _fmt_data)                        \
+    ASSERT_TEST(_v_left, _v_right, !=, _fmt_data)
+
 #define ASSERT_EQUAL_INT(_v_left, _v_right)                                   \
     ASSERT_EQUAL((uint64_t)_v_left, (uint64_t)_v_right, "%ld")
 
 #define ASSERT_EQUAL_LONG(_v_left, _v_right)                                  \
     ASSERT_EQUAL(_v_left, _v_right, "%ld")
+#define ASSERT_P_NULL(_p)                                                     \
+    ASSERT_EQUAL((_p), NULL, "%p")
+
+#define ASSERT_P_NOT_NULL(_p)                                                 \
+    ASSERT_DIFFERENT((_p), NULL, "%p")
 
 #define ASSERT_STR_EQUAL(_str1, _str2)                                        \
     do {                                                                      \
