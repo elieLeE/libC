@@ -114,9 +114,13 @@ void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos)
         return vec->tab + vec->__size_elem * vec->len;
     }
 
-    memmove(vec->tab + vec->__size_elem * (pos + 1),
-            vec->tab + vec->__size_elem * pos,
-            (vec->len - pos) * vec->__size_elem);
+    if (vec->len > 1) {
+        /* Check not obligatory as the octet to copy would be O. But, for
+         * latter, by security, I think it is good to do it. */
+        memmove(vec->tab + vec->__size_elem * (pos + 1),
+                vec->tab + vec->__size_elem * pos,
+                ((vec->len - 1) - pos) * vec->__size_elem);
+    }
 
     return vec->tab + vec->__size_elem * pos;
 }
