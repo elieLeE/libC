@@ -154,24 +154,15 @@ int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
         __res;                                                                \
     })
 
-void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos);
-
-#define __set_elem_at_new_spot(__gvec, _val, _pos)                            \
-    do {                                                                      \
-        __gv_type(__gvec) *__elem =__gv_create_empty_spot(&__gvec->vec, _pos);\
-        if (__elem != NULL) {                                                 \
-            *__elem = _val;                                                   \
-            __gvec->len++;                                                    \
-        }                                                                     \
-    } while(0)
-
+void *__gv_create_empty_spot_at_pos(__vector_void_t *vec, int64_t pos);
 #define gv_insert_elem_at_pos(_gvec, _val, _pos)                              \
-    ({  int __res = -1;                                                       \
+    ({  int __res = -1, __pos = (_pos);                                       \
         __auto_type __gvec = (_gvec);                                         \
-        void *__p = __gv_extend(&__gvec->vec, 1);                             \
-        if (__p != NULL) {                                                    \
-            __set_elem_at_new_spot(__gvec, _val, _pos);                       \
-            __res = 0;                                                        \
+        __gv_type(__gvec) *__elem;                                            \
+        __elem =__gv_create_empty_spot_at_pos(&__gvec->vec, __pos);           \
+        if (__elem != NULL) {                                                 \
+            *__elem = (_val);                                                 \
+            __res = __pos;                                                    \
         }                                                                     \
         __res;                                                                \
     })

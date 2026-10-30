@@ -93,8 +93,10 @@ void *__gv_grow(__vector_void_t *vec, int64_t extra)
     return res;
 }
 
-void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos)
+void *__gv_create_empty_spot_at_pos(__vector_void_t *vec, int64_t pos)
 {
+    RETHROW_P(__gv_grow(vec, 1));
+
     if (pos < 0) {
         logger_error("position indicated in '_gv_create_empty_spot' "
                      "is wrong: %ld", pos);
