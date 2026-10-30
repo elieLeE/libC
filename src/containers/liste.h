@@ -94,7 +94,7 @@ int gl_delete_first_elem(generic_liste_t *l,
                          void (*remove_data)(void *data));
 int gl_delete_last_elem(generic_liste_t *l,
                         void (*remove_data)(void *data));
-int gl_delete_elem(generic_liste_t *l,  generic_elem_liste_t *elem_to_remove,
+int gl_delete_elem(generic_liste_t *l, generic_elem_liste_t *elem_to_remove,
                    void (*remove_data_cb)(void *data));
 int gl_delete_elem_n(generic_liste_t *l, int64_t n,
                      void (*remove_data)(void *data));
