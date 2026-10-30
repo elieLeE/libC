@@ -70,12 +70,18 @@
         }                                                                     \
     } while (0)
 
-#define ASSERT_EQUAL(_v_left, _v_right, _fmt_data)                            \
+#define ASSERT_TEST_BOOL(_test_bool, _v_left, _v_right, _fmt_data)            \
     do {                                                                      \
-        ASSERT((_v_left == _v_right),                                         \
-               "left: "_fmt_data ", right: "_fmt_data,                        \
-               _v_left, _v_right);                                            \
+        ASSERT((_test_bool),                                                  \
+               "left: "_fmt_data ", right: "_fmt_data, _v_left, _v_right);    \
     } while (0)
+
+#define ASSERT_TEST(_v_left, _v_right, _test, _fmt_data)                      \
+    ASSERT_TEST_BOOL(((_v_left) _test (_v_right)),                            \
+                     _v_left, _v_right, _fmt_data)
+
+#define ASSERT_EQUAL(_v_left, _v_right, _fmt_data)                            \
+    ASSERT_TEST(_v_left, _v_right, ==, _fmt_data)
 
 #define ASSERT_EQUAL_INT(_v_left, _v_right)                                   \
     ASSERT_EQUAL(_v_left, _v_right, "%d")
