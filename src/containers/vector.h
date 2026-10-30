@@ -148,8 +148,8 @@ int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
         __auto_type __gvec = (_gvec);                                         \
         __gv_type(__gvec) *__elem = __gv_grow(&__gvec->vec, 1);               \
         if (__elem != NULL) {                                                 \
-            *__elem = (_val);                                                   \
-            __res = __gvec->len;                                              \
+            *__elem = (_val);                                                 \
+            __res = __gvec->len -1;                                           \
         }                                                                     \
         __res;                                                                \
     })
