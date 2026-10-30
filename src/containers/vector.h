@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "utils.h"
 #include "../mem/mem.h"
 #include "../attributes.h"
 #include "../macros.h"
@@ -176,14 +177,14 @@ void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos);
     })
 
 int64_t __gv_search_spot(const __vector_void_t *vec, const void *elem,
-                         int (*cmp_data_cb)(const void *d1, const void *d2));
+                         g_cmp_cb_t cmp_cb);
 
-#define gv_insert_elem_sorted(_gvec, _val, cmp_data_cb)                       \
+#define gv_insert_elem_sorted(_gvec, _val, cmp_cb)                            \
     do {                                                                      \
         int64_t __pos;                                                        \
         __auto_type __val = (_val);                                           \
         __auto_type __gvec = (_gvec);                                         \
-        __pos = __gv_search_spot(&__gvec->vec, &__val, cmp_data_cb);          \
+        __pos = __gv_search_spot(&__gvec->vec, &__val, cmp_cb);               \
         /* __pos value is checked in '__gv_create_empty_spot' method */       \
         gv_insert_elem_at_pos(_gvec, __val, __pos);                           \
     } while(0)
@@ -207,14 +208,14 @@ int __gv_remove_elem_n(__vector_void_t *vec, int64_t pos);
     })
 
 static inline void
-__gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
+__gv_sort(__vector_void_t *vec, g_cmp_cb_t cmp_cb)
 {
-    qsort(vec->tab, vec->len, vec->__size_elem, cmp_data_cb);
+    qsort(vec->tab, vec->len, vec->__size_elem, cmp_cb);
 }
 
-#define gv_sort(_gvec, cmp_data_cb)                                           \
+#define gv_sort(_gvec, cmp_cb)                                                \
     do {                                                                      \
-        __gv_sort(&((_gvec)->vec), cmp_data_cb);                              \
+        __gv_sort(&((_gvec)->vec), cmp_cb);                                   \
     } while (0)
 
 #define gv_shuffle(_gvec)                                                     \
@@ -224,16 +225,15 @@ __gv_sort(__vector_void_t *vec, int (*cmp_data_cb)(const void *, const void *))
     } while (0)
 
 int64_t __gv_find(const __vector_void_t *vec, const void *elem,
-                  gv_algo_search_t algo,
-                  int (*cmp_data_cb)(const void *, const void *d));
+                  gv_algo_search_t algo, g_cmp_cb_t cmp_cb);
 
-#define gv_find(_gvec, _elem, algo, cmp_data_cb)                              \
+#define gv_find(_gvec, _elem, algo, cmp_cb)                                   \
     ({  __auto_type __elem = (_elem);                                         \
-        __gv_find(&(_gvec)->vec, &__elem, algo, cmp_data_cb);                 \
+        __gv_find(&(_gvec)->vec, &__elem, algo, cmp_cb);                      \
     })
 
-#define gv_contains(_gvec, _elem, algo, cmp_data_cb)                          \
-    gv_find(_gvec, _elem, algo, cmp_data_cb) >= 0
+#define gv_contains(_gvec, _elem, algo, cmp_cb)                               \
+    gv_find(_gvec, _elem, algo, cmp_cb) >= 0
 
 /* This method only reset the len of the vector to 0. So, new elements will
  * replace the old ones gradually but that needs test */

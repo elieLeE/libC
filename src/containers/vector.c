@@ -128,16 +128,16 @@ void *__gv_create_empty_spot(__vector_void_t *vec, int64_t pos)
  * when the first element is below than the second one.
  */
 int64_t __gv_search_spot(const __vector_void_t *vec, const void *elem,
-                         int (*cmp_data_cb)(const void *d1, const void *d2))
+                         g_cmp_cb_t cmp_cb)
 {
     if (vec->len == 0) {
         return 0;
     }
-    if (cmp_data_cb(vec->tab + (vec->len - 1) * vec->__size_elem, elem) < 0) {
+    if (cmp_cb(vec->tab + (vec->len - 1) * vec->__size_elem, elem) < 0) {
         return vec->len;
     }
     gv_for_each_pos(pos, vec) {
-        if (cmp_data_cb(vec->tab + (pos * vec->__size_elem), elem) > 0) {
+        if (cmp_cb(vec->tab + (pos * vec->__size_elem), elem) > 0) {
             return pos;
         }
     }
@@ -169,10 +169,10 @@ int __gv_remove_elem_n(__vector_void_t *vec, int64_t pos)
 
 static int64_t
 gv_find_sequantial(const __vector_void_t *vec, const void *elem,
-                   int (*cmp_data_cb)(const void *, const void *))
+                   g_cmp_cb_t cmp_cb)
 {
     gv_for_each_pos(pos, vec) {
-        if (cmp_data_cb((vec->tab + pos * vec->__size_elem), elem) == 0) {
+        if (cmp_cb((vec->tab + pos * vec->__size_elem), elem) == 0) {
             return pos;
         }
     }
@@ -181,8 +181,7 @@ gv_find_sequantial(const __vector_void_t *vec, const void *elem,
 
 static int64_t
 gv_find_dichotomy_rec(const __vector_void_t *vec, const void *elem,
-                      int64_t min, int64_t max,
-                      int (*cmp_data_cb)(const void *, const void *))
+                      int64_t min, int64_t max, g_cmp_cb_t cmp_cb)
 {
     int64_t current_pos = (max + min) / 2;
     int res;
@@ -191,16 +190,14 @@ gv_find_dichotomy_rec(const __vector_void_t *vec, const void *elem,
         return -1;
     }
 
-    res = cmp_data_cb(vec->tab + current_pos * vec->__size_elem, elem);
+    res = cmp_cb(vec->tab + current_pos * vec->__size_elem, elem);
 
     if (res == 0) {
         return current_pos;
     } else if (res < 0) {
-        return gv_find_dichotomy_rec(vec, elem, current_pos + 1,
-                                     max, cmp_data_cb);
+        return gv_find_dichotomy_rec(vec, elem, current_pos + 1, max, cmp_cb);
     } else {
-        return gv_find_dichotomy_rec(vec, elem, min, current_pos - 1,
-                                     cmp_data_cb);
+        return gv_find_dichotomy_rec(vec, elem, min, current_pos - 1, cmp_cb);
     }
 
     return -1;
@@ -208,26 +205,25 @@ gv_find_dichotomy_rec(const __vector_void_t *vec, const void *elem,
 
 static int64_t
 gv_find_dichotomy(const __vector_void_t *vec, const void *elem,
-                  int (*cmp_data_cb)(const void *, const void *))
+                  g_cmp_cb_t cmp_cb)
 {
     if (vec->len == 0) {
         return -1;
     }
 
-    if (cmp_data_cb(vec->tab, elem) > 0) {
+    if (cmp_cb(vec->tab, elem) > 0) {
         return -1;
     }
 
-    if (cmp_data_cb(vec->tab + (vec->len - 1) * vec->__size_elem, elem) < 0) {
+    if (cmp_cb(vec->tab + (vec->len - 1) * vec->__size_elem, elem) < 0) {
         return -1;
     }
 
-    return gv_find_dichotomy_rec(vec, elem, 0, vec->len, cmp_data_cb);
+    return gv_find_dichotomy_rec(vec, elem, 0, vec->len, cmp_cb);
 }
 
 int64_t __gv_find(const __vector_void_t *vec, const void *elem,
-                  gv_algo_search_t algo,
-                  int (*cmp_data_cb)(const void *, const void *d))
+                  gv_algo_search_t algo, g_cmp_cb_t cmp_cb)
 {
     if (algo < 0 || algo > GV_ALGO_MAX_SEARCH) {
         logger_fatal("cannot search in the vector - algo given is wrong: %d",
@@ -236,11 +232,11 @@ int64_t __gv_find(const __vector_void_t *vec, const void *elem,
 
     switch (algo) {
     case GV_SEQUENTIAL_SEARCH:
-        return gv_find_sequantial(vec, elem, cmp_data_cb);
+        return gv_find_sequantial(vec, elem, cmp_cb);
         break;
 
     case GV_DICHOTOMY_SEARCH:
-        return gv_find_dichotomy(vec, elem, cmp_data_cb);
+        return gv_find_dichotomy(vec, elem, cmp_cb);
         break;
 
     default:
