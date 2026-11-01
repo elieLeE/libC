@@ -144,7 +144,8 @@ int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
     __gv_copy(&(_src)->vec, (_idx_src), (_idx_dst), (len), &(_dst)->vec)
 
 #define gv_append(_gvec, _val)                                                \
-    ({  int64_t __res = -1;                                                   \
+    ({                                                                        \
+        int64_t __res = -1;                                                   \
         __auto_type __gvec = (_gvec);                                         \
         __gv_type(__gvec) *__elem = __gv_grow(&__gvec->vec, 1);               \
         if (__elem != NULL) {                                                 \
@@ -156,7 +157,8 @@ int __gv_copy(const __vector_void_t *src, int64_t idx_start_src,
 
 void *__gv_create_empty_spot_at_pos(__vector_void_t *vec, int64_t pos);
 #define gv_insert_elem_at_pos(_gvec, _val, _pos)                              \
-    ({  int __res = -1, __pos = (_pos);                                       \
+    ({                                                                        \
+        int __res = -1, __pos = (_pos);                                       \
         __auto_type __gvec = (_gvec);                                         \
         __gv_type(__gvec) *__elem;                                            \
         __elem =__gv_create_empty_spot_at_pos(&__gvec->vec, __pos);           \
@@ -171,7 +173,8 @@ void *__gv_create_empty_spot_in_sorted_vec_from_val(__vector_void_t *vec,
                                                     void *elem, int64_t *pos,
                                                     g_cmp_cb_t cmp_cb);
 #define gv_insert_elem_sorted(_gvec, _val, cmp_cb)                            \
-    ({  __auto_type __val = (_val);                                           \
+    ({                                                                        \
+        __auto_type __val = (_val);                                           \
         __auto_type __gvec = (_gvec);                                         \
         int64_t __pos = -1;                                                   \
         __gv_type(__gvec) *__elem;                                            \
@@ -223,7 +226,8 @@ int64_t __gv_find(const __vector_void_t *vec, const void *elem,
                   gv_algo_search_t algo, g_cmp_cb_t cmp_cb);
 
 #define gv_find(_gvec, _elem, algo, cmp_cb)                                   \
-    ({  __auto_type __elem = (_elem);                                         \
+    ({                                                                        \
+        __auto_type __elem = (_elem);                                         \
         __gv_find(&(_gvec)->vec, &__elem, algo, cmp_cb);                      \
     })
 
@@ -255,7 +259,8 @@ void __gv_wipe(__vector_void_t *vec, void (*free_data_cb)(void **));
 /* I am not sure about that. To see. To be used only with vector type on which
  * mathematical operations can do. */
 #define get_all_elem_sum(_gvec)                                               \
-    ({  __auto_type __gvec = (_gvec);                                         \
+    ({                                                                        \
+        __auto_type __gvec = (_gvec);                                         \
         __gv_type(__gvec) __sum = 0;                                          \
         gv_for_each_pos(pos, __gvec) {                                        \
             __sum += __gvec->tab[pos];                                        \
