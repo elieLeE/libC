@@ -256,7 +256,9 @@ end:
 }
 
 int _run_all_modules_tests(const generic_liste_t *modules_tests,
-                           const char *module_name, const char *test_name,
+                           const char *module_name,
+                           const char *complete_test_name,
+                           const char *indicated_test_name,
                            stats_tests_t *global_stats)
 {
     bool modules_found = false;
@@ -275,13 +277,14 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
                             strlen(module_name)) == 0)
             {
                 modules_found = true;
-                RETHROW(run_all_tests_of_module(module_tests, test_name,
+                RETHROW(run_all_tests_of_module(module_tests,
+                                                complete_test_name,
                                                 &module_stats));
             } else {
                 global_stats->skipped_count += modules_tests->len;
             }
         } else {
-            RETHROW(run_all_tests_of_module(elem->data, test_name,
+            RETHROW(run_all_tests_of_module(elem->data, complete_test_name,
                                             &module_stats));
         }
 
@@ -290,12 +293,27 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
         global_stats->ko_count += module_stats.ko_count;
     }
 
-    if (module_name != NULL && !modules_found) {
-        logger_error("the module '%s' has not been found", module_name);
-        printf("Here are the available modules (the case has none effect):\n");
-        gl_for_each(elem, modules_tests->first) {
-            printf("'%s'\n", ((module_tests_t *)elem)->name);
+    if (module_name != NULL) {
+        if (!modules_found) {
+            logger_error("the module '%s' has not been found", module_name);
+            printf("Here are the available modules (the case has none "
+                   "effect):\n");
+            gl_for_each(elem, modules_tests->first) {
+                printf("'%s'\n", ((module_tests_t *)elem)->name);
+            }
+        } else if (indicated_test_name != NULL &&
+                   global_stats->ok_count == 0 && global_stats->ko_count == 0)
+        {
+            logger_error("the test '%s' (completed with this form '%s') "
+                         "has not been found in module '%s'",
+                         indicated_test_name, complete_test_name, module_name);
         }
+    } else if (indicated_test_name != NULL &&
+               global_stats->ok_count == 0 && global_stats->ko_count == 0)
+    {
+        logger_error("the test '%s' (completed with this form '%s') has not "
+                     "been found in any module",
+                     indicated_test_name, complete_test_name);
     }
 
     return 0;
@@ -318,7 +336,8 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
         snprintf(complete_test_name, n, "test_%s", test_name);
 
         res = _run_all_modules_tests(modules_tests, module_name,
-                                     complete_test_name, &global_stats);
+                                     complete_test_name, test_name,
+                                     &global_stats);
 
         p_free((void **)&complete_test_name);
 
@@ -327,7 +346,7 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
         }
     } else {
         RETHROW(_run_all_modules_tests(modules_tests, module_name,
-                                       test_name, &global_stats));
+                                       test_name, test_name, &global_stats));
     }
 
     log_stats_tests(&global_stats);
