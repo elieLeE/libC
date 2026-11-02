@@ -219,7 +219,7 @@ __gv_sort(__vector_void_t *vec, g_cmp_cb_t cmp_cb)
 #define gv_shuffle(_gvec)                                                     \
     do {                                                                      \
         __auto_type __gvec = (_gvec);                                         \
-        shuffle_tab(__gvec->vec.tab, __gvec->len, __gvec->__size_elem);       \
+        ga_shuffle(__gvec->vec.tab, __gvec->len, __gvec->__size_elem);        \
     } while (0)
 
 int64_t __gv_find(const __vector_void_t *vec, const void *elem,

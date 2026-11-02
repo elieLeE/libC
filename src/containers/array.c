@@ -5,7 +5,7 @@
 #include "../utils.h"
 #include "../mem/mem.h"
 
-void shuffle_tab(void *tab, int32_t size_tab, size_t size_elem)
+void ga_shuffle(void *tab, int32_t size_tab, size_t size_elem)
 {
     void *tmp = p_malloc(size_elem);
 

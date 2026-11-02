@@ -13,7 +13,7 @@ static void test_tab_helper_shuffle(void)
      * method and so be able to check the shuffle algorithm */
     srand(0);
 
-    shuffle_tab((void **)&tab, 10, sizeof(int));
+    ga_shuffle((void **)&tab, 10, sizeof(int));
 
     /* As the seed of the rand is always set to 0 in this test, the shuffle of
      * the tab will be always the same */
