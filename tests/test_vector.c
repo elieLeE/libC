@@ -239,8 +239,6 @@ static void test_add_and_remove_pointer_vector(void)
         ASSERT_EQUAL_INT(**elem, tab[idx_tab]);
         idx_tab++;
     }
-    printf("\n");
-
     gv_wipe(&vector, _p_free);
 }
 
