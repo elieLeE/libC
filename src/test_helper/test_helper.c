@@ -269,6 +269,7 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
     if (test_name != NULL &&
         (strncmp(test_name, "test_", strlen("test_")) != 0))
     {
+        int res;
         char *complete_test_name = NULL;
         size_t n;
 
@@ -276,10 +277,14 @@ int run_all_modules_tests(const generic_liste_t *modules_tests,
         complete_test_name = p_malloc(n);
         snprintf(complete_test_name, n, "test_%s", test_name);
 
-        RETHROW(_run_all_modules_tests(modules_tests, module_name,
-                                       complete_test_name, &global_stats));
+        res = _run_all_modules_tests(modules_tests, module_name,
+                                     complete_test_name, &global_stats);
 
         p_free((void **)&complete_test_name);
+
+        if (res < 0) {
+            return res;
+        }
     } else {
         RETHROW(_run_all_modules_tests(modules_tests, module_name,
                                        test_name, &global_stats));
