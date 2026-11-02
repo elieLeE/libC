@@ -31,10 +31,6 @@ int parse_args(int argc, char **argv, void (*usage_cb)(const char *),
             break;
 
         case 't': {
-            if (*module_name == NULL) {
-                usage_cb(argv[0]);
-                return -1;
-            }
             *test_name = optarg;
 
             break;
@@ -163,15 +159,17 @@ static void run_test(test_t *test)
     log_test_result(test->name, true);
 }
 
-static int run_all_tests_of_module(const module_tests_t *module_tests,
-                                   const char *test_name, stats_tests_t *stats)
+static int
+fill_filtered_tests_to_run(const module_tests_t *module_tests,
+                           const char *test_name,
+                           generic_liste_t *tests_to_run)
 {
-    log_test_begin_module(module_tests->name);
-
-    gl_for_each(elem, module_tests->tests.first) {
-        test_t *test = elem->data;
+    gl_for_each(test_elem, module_tests->tests.first) {
+        test_t *test = test_elem->data;
 
         if (test->name == NULL) {
+            /* gl_delete(tests_to_run, NULL); */
+
             logger_error("a test name is NULL in module %s",
                          module_tests->name);
             return -1;
@@ -180,6 +178,58 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
         if (test->test_cb == NULL) {
             logger_error("the test %s has its callback NULL", test->name);
             return -1;
+        }
+
+        if (strncasecmp(test->name, test_name, strlen(test_name)) == 0) {
+            gl_append(tests_to_run, test);
+        }
+    }
+
+    return 0;
+}
+
+static int run_all_tests_of_module(const module_tests_t *module_tests,
+                                   const char *test_name, stats_tests_t *stats)
+{
+    int res = 0;
+    generic_liste_t tests_to_run;
+
+    if (test_name == NULL) {
+        tests_to_run = module_tests->tests;
+    } else {
+        gl_init(&tests_to_run);
+
+        res = fill_filtered_tests_to_run(module_tests, test_name,
+                                         &tests_to_run);
+        if (res < 0) {
+            goto end;
+        }
+    }
+
+    if (tests_to_run.len == 0) {
+        stats->skipped_count = module_tests->tests.len;
+
+        goto end;
+    }
+
+    log_test_begin_module(module_tests->name);
+
+    gl_for_each(elem, module_tests->tests.first) {
+        test_t *test = elem->data;
+
+        if (test->name == NULL) {
+            res = -1;
+            logger_error("a test name is NULL in module %s",
+                         module_tests->name);
+
+            goto end;
+        }
+
+        if (test->test_cb == NULL) {
+            res = -1;
+            logger_error("the test %s has its callback NULL", test->name);
+
+            goto end;
         }
 
         if (test_name != NULL) {
@@ -197,17 +247,9 @@ static int run_all_tests_of_module(const module_tests_t *module_tests,
 
     log_test_end_module(module_tests->name, stats);
 
-    if (test_name != NULL && stats->ok_count == 0) {
-        logger_error("the test '%s' has not been found", test_name);
-        printf("Here are the available tests in the module '%s' "
-               "(the case has none effect):\n",
-               module_tests->name);
-
-        gl_for_each(elem, module_tests->tests.first) {
-            module_tests_t *test = elem->data;
-
-            printf("'%s'\n", test->name);
-        }
+end:
+    if (test_name != NULL) {
+        gl_wipe(&tests_to_run, NULL);
     }
 
     return 0;
