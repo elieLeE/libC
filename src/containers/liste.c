@@ -23,7 +23,7 @@ void gl_insert_elem_first(generic_liste_t *l, gl_elem_t *elem)
     }
 
     l->first = elem;
-    (l->nbre_elem)++;
+    (l->len)++;
 }
 
 void gl_insert_elem_next(generic_liste_t *l, gl_elem_t *prev, gl_elem_t *elem)
@@ -45,7 +45,7 @@ void gl_insert_elem_next(generic_liste_t *l, gl_elem_t *prev, gl_elem_t *elem)
         l->end = elem;
     }
 
-    (l->nbre_elem)++;
+    (l->len)++;
 }
 
 void gl_insert_elem_sorted(generic_liste_t *l, gl_elem_t *elem,
@@ -145,9 +145,9 @@ generic_elem_liste_t *gl_get_elem_n(generic_liste_t *l, int64_t n)
         return NULL;
     }
 
-    if (l->nbre_elem < n) {
+    if (l->len < n) {
         logger_error("index got (%ld) in 'gl_get_elem_n' is greater then the "
-                     "length of the list (%ld)", n, l->nbre_elem);
+                     "length of the list (%ld)", n, l->len);
         return NULL;
     }
 
@@ -197,11 +197,11 @@ gl_elem_t *gl_take_first_elem(generic_liste_t *l)
 
     l->first = l->first->suiv;
 
-    if (l->nbre_elem == 0) {
-        logger_fatal("'nbre_elem' is equal to 0 and so cannot be decreased, "
+    if (l->len == 0) {
+        logger_fatal("'len' is equal to 0 and so cannot be decreased, "
                      "but an element has just been removed");
     }
-    (l->nbre_elem)--;
+    (l->len)--;
 
     if (gl_is_empty(l)) {
         l->end = NULL;
@@ -226,11 +226,11 @@ gl_elem_t *gl_take_last_elem(generic_liste_t *l)
 
     l->end = l->end->prec;
 
-    if (l->nbre_elem == 0) {
-        logger_fatal("'nbre_elem' is equal to 0 and so cannot be decreased, "
+    if (l->len == 0) {
+        logger_fatal("'len' is equal to 0 and so cannot be decreased, "
                      "but an element has just been removed");
     }
-    (l->nbre_elem)--;
+    (l->len)--;
 
     if (gl_is_empty(l)) {
         l->end = NULL;
@@ -271,11 +271,11 @@ int gl_remove_elem(generic_liste_t *l, gl_elem_t *elem)
     elem->prec->suiv = elem->suiv;
     elem->suiv->prec = elem->prec;
 
-    if (l->nbre_elem == 0) {
-        logger_fatal("'nbre_elem' is equal to 0 and so cannot be decreased, "
+    if (l->len == 0) {
+        logger_fatal("'len' is equal to 0 and so cannot be decreased, "
                      "but an element has just been removed");
     }
-    (l->nbre_elem)--;
+    (l->len)--;
 
     return 0;
 }
@@ -353,7 +353,7 @@ static int gl_insertion_sort(generic_liste_t *l, g_cmp_cb_t cmp_cb)
 {
     generic_liste_t l_sorted;
 
-    if (gl_is_empty(l) || l->nbre_elem == 1) {
+    if (gl_is_empty(l) || l->len == 1) {
         return 0;
     }
 
@@ -371,7 +371,7 @@ static int gl_insertion_sort(generic_liste_t *l, g_cmp_cb_t cmp_cb)
 
     l->first = l_sorted.first;
     l->end = l_sorted.end;
-    l->nbre_elem = l_sorted.nbre_elem;
+    l->len = l_sorted.len;
 
     return 0;
 }

@@ -236,7 +236,7 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
                 RETHROW(run_all_tests_of_module(module_tests, test_name,
                                                 &module_stats));
             } else {
-                global_stats->skipped_count += modules_tests->nbre_elem;
+                global_stats->skipped_count += modules_tests->len;
             }
         } else {
             RETHROW(run_all_tests_of_module(elem->data, test_name,

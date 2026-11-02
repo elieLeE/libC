@@ -28,7 +28,7 @@ typedef generic_elem_liste_t gl_elem_t;
 
 typedef struct generic_liste_t {
     generic_elem_liste_t *first, *end;
-    int64_t nbre_elem;
+    int64_t len;
 } generic_liste_t;
 
 /* Here, head has to be a generic_elem_liste_t */
