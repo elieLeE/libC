@@ -252,9 +252,7 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
         logger_error("the module '%s' has not been found", module_name);
         printf("Here are the available modules (the case has none effect):\n");
         gl_for_each(elem, modules_tests->first) {
-            module_tests_t *m = elem->data;
-
-            printf("'%s'\n", m->name);
+            printf("'%s'\n", ((module_tests_t *)elem)->name);
         }
     }
 
