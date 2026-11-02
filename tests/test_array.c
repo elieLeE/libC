@@ -1,6 +1,6 @@
 #include <time.h>
 
-#include "test_tab_helper.h"
+#include "test_array.h"
 #include "../src/containers/array.h"
 #include "../src/macros.h"
 

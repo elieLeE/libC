@@ -1,5 +1,5 @@
-#ifndef __TEST_TAB_HELPER_H_
-#define __TEST_TAB_HELPER_H_
+#ifndef __TEST_ARRAY_H_
+#define __TEST_ARRAY_H_
 
 #include "../src/test_helper/test_helper.h"
 

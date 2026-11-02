@@ -12,7 +12,7 @@
 #include "test_io.h"
 #include "test_prime.h"
 #include "test_vector.h"
-#include "test_tab_helper.h"
+#include "test_array.h"
 #include "test_calculs.h"
 #include "test_big_numbers.h"
 #include "test_utils.h"
