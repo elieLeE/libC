@@ -9,6 +9,7 @@
  */
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "utils.h"
 #include "../mem/mem.h"
