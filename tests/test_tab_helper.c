@@ -1,7 +1,7 @@
 #include <time.h>
 
 #include "test_tab_helper.h"
-#include "../src/tab_helper/tab_helper.h"
+#include "../src/containers/array.h"
 #include "../src/macros.h"
 
 static void test_tab_helper_shuffle(void)

@@ -1,7 +1,7 @@
 #include <time.h>
 #include <stdio.h>
 
-#include "tab_helper.h"
+#include "array.h"
 #include "../utils.h"
 #include "../mem/mem.h"
 

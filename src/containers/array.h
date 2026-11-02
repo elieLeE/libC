@@ -1,5 +1,5 @@
-#ifndef __TAB_HELPER_H__
-#define __TAB_HELPER_H__
+#ifndef __ARRAY_H__
+#define __ARRAY_H__
 
 #include <stdlib.h>
 

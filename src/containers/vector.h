@@ -5,11 +5,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "array.h"
 #include "utils.h"
 #include "../mem/mem.h"
 #include "../attributes.h"
 #include "../macros.h"
-#include "../tab_helper/tab_helper.h"
 #include "../logger/logger.h"
 
 typedef enum gv_algo_search_t {
