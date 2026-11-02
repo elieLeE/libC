@@ -220,7 +220,7 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
     bool modules_found = false;
 
     gl_for_each(elem, modules_tests->first) {
-        stats_tests_t module_stats = {};
+        stats_tests_t module_stats = {0};
         module_tests_t *module_tests = elem->data;
 
         if (module_tests->name == NULL) {
@@ -264,7 +264,7 @@ int _run_all_modules_tests(const generic_liste_t *modules_tests,
 int run_all_modules_tests(const generic_liste_t *modules_tests,
                           const char *module_name, const char *test_name)
 {
-    stats_tests_t global_stats = {};
+    stats_tests_t global_stats = {0};
 
     if (test_name != NULL &&
         (strncmp(test_name, "test_", strlen("test_")) != 0))
