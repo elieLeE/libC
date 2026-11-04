@@ -18,7 +18,7 @@ static void test_array_shuffle(void)
     /* As the seed of the rand is always set to 0 in this test, the shuffle of
      * the tab will be always the same */
     for (int i = 0; i < 10; i++) {
-        ASSERT_EQUAL_INT(tab[i], expected_tab[i]);
+        ASSERT_INT_EQUAL(tab[i], expected_tab[i]);
     }
 
     /* reset the seed */

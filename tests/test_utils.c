@@ -14,8 +14,8 @@ static void test_swap(void)
 
     SWAP(int, &a, &b);
 
-    ASSERT_EQUAL_INT(a, 13);
-    ASSERT_EQUAL_INT(b, 5);
+    ASSERT_INT_EQUAL(a, 13);
+    ASSERT_INT_EQUAL(b, 5);
 }
 
 static void test_g_cmp_int32(void)

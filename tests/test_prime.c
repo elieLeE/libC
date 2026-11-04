@@ -107,15 +107,15 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(6, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT(res, 2);
-    ASSERT_EQUAL_INT((int)primes_factors.len, 2);
+    ASSERT_INT_EQUAL(res, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 2);
 
     ASSERT(primes_factors.tab[0].prime == 2,
            "expected: 2, obtained: %ld", primes_factors.tab[0].prime);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 1);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 3);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 3);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 1);
 
     /* }}} */
     /* {{{ Test with 4 */
@@ -124,11 +124,11 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(4, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT(res, 1);
-    ASSERT_EQUAL_INT((int)primes_factors.len, 1);
+    ASSERT_INT_EQUAL(res, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 2);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 2);
 
     /* }}} */
     /* {{{ Test with 53 */
@@ -137,11 +137,11 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(53, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT(res, 1);
-    ASSERT_EQUAL_INT((int)primes_factors.len, 1);
+    ASSERT_INT_EQUAL(res, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 53);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 53);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 1);
 
     /* }}} */
     /* {{{ Test with 63 */
@@ -150,14 +150,14 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(63, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT(res, 2);
-    ASSERT_EQUAL_INT((int)primes_factors.len, 2);
+    ASSERT_INT_EQUAL(res, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 3);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 3);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 7);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 7);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 1);
 
     /* }}} */
     /* {{{ Test with 735 */
@@ -166,17 +166,17 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(735, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT(res, 3);
-    ASSERT_EQUAL_INT((int)primes_factors.len, 3);
+    ASSERT_INT_EQUAL(res, 3);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 3);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 3);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 3);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 5);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 5);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 7);
-    ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[2].prime, 7);
+    ASSERT_INT_EQUAL(primes_factors.tab[2].iteration, 2);
 
     /* }}} */
     /* {{{ Test with 845 */
@@ -185,14 +185,14 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(845, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT(res, 2);
-    ASSERT_EQUAL_INT((int)primes_factors.len, 2);
+    ASSERT_INT_EQUAL(res, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 5);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 5);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 13);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 13);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 2);
 
     /* }}} */
     /* {{{ Test with 988 */
@@ -201,17 +201,17 @@ static void test_get_all_primes_factors_of_n(void)
 
     res = get_all_primes_factors_of_n(988, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT(res, 3);
-    ASSERT_EQUAL_INT((int)primes_factors.len, 3);
+    ASSERT_INT_EQUAL(res, 3);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 3);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 2);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 13);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 13);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 19);
-    ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[2].prime, 19);
+    ASSERT_INT_EQUAL(primes_factors.tab[2].iteration, 1);
 
     /* }}} */
     /* {{{ Test with 17640 */
@@ -220,19 +220,19 @@ static void test_get_all_primes_factors_of_n(void)
 
     get_all_primes_factors_of_n(17640, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT((int)primes_factors.len, 4);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 4);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 3);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 2);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 3);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 3);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 3);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 5);
-    ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[2].prime, 5);
+    ASSERT_INT_EQUAL(primes_factors.tab[2].iteration, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[3].prime, 7);
-    ASSERT_EQUAL_INT(primes_factors.tab[3].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[3].prime, 7);
+    ASSERT_INT_EQUAL(primes_factors.tab[3].iteration, 2);
 
     /* }}} */
 
@@ -286,16 +286,16 @@ static void test_get_all_divisors_of_n(void)
 
     get_all_primes_factors_of_n(220, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT((int)primes_factors.len, 3);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 3);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 2);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 5);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 5);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 11);
-    ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[2].prime, 11);
+    ASSERT_INT_EQUAL(primes_factors.tab[2].iteration, 1);
 
     get_all_divisors_of_n_from_prime_factors(&primes_factors,
                                              &obtained_divisors);
@@ -321,13 +321,13 @@ static void test_get_all_divisors_of_n(void)
 
     get_all_primes_factors_of_n(284, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT((int)primes_factors.len, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 2);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 71);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 71);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 1);
 
     get_all_divisors_of_n_from_prime_factors(&primes_factors,
                                              &obtained_divisors);
@@ -419,19 +419,19 @@ static void test_get_all_divisors_of_n(void)
 
     get_all_primes_factors_of_n(17640, &primes, &primes_factors);
 
-    ASSERT_EQUAL_INT((int)primes_factors.len, 4);
+    ASSERT_INT_EQUAL((int)primes_factors.len, 4);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[0].prime, 2);
-    ASSERT_EQUAL_INT(primes_factors.tab[0].iteration, 3);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[0].prime, 2);
+    ASSERT_INT_EQUAL(primes_factors.tab[0].iteration, 3);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[1].prime, 3);
-    ASSERT_EQUAL_INT(primes_factors.tab[1].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[1].prime, 3);
+    ASSERT_INT_EQUAL(primes_factors.tab[1].iteration, 2);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[2].prime, 5);
-    ASSERT_EQUAL_INT(primes_factors.tab[2].iteration, 1);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[2].prime, 5);
+    ASSERT_INT_EQUAL(primes_factors.tab[2].iteration, 1);
 
-    ASSERT_EQUAL_INT((int)primes_factors.tab[3].prime, 7);
-    ASSERT_EQUAL_INT(primes_factors.tab[3].iteration, 2);
+    ASSERT_INT_EQUAL((int)primes_factors.tab[3].prime, 7);
+    ASSERT_INT_EQUAL(primes_factors.tab[3].iteration, 2);
 
     get_all_divisors_of_n_from_prime_factors(&primes_factors,
                                              &obtained_divisors);
@@ -495,7 +495,7 @@ static void check_phi_value_from_primes_facrors(unsigned long n,
     get_all_primes_factors_of_n(n, primes, &primes_factors);
     phi = get_phi_from_primes_factors(n, &primes_factors);
 
-    ASSERT_EQUAL_INT(phi, expected_res);
+    ASSERT_INT_EQUAL(phi, expected_res);
 
     gv_wipe(&primes_factors, NULL);
 }
@@ -525,10 +525,10 @@ static void test_get_all_phi_from_1_to_n(void)
 
     /* 0 is also added to the tab in order not to have always sub 1 in
      * 'get_all_phi_from_1_to_n' method */
-    ASSERT_EQUAL_INT((int)phi.len, 201);
-    ASSERT_EQUAL_INT((int)phi.tab[10], 4);
-    ASSERT_EQUAL_INT((int)phi.tab[11], 10);
-    ASSERT_EQUAL_INT((int)phi.tab[32], 16);
+    ASSERT_INT_EQUAL((int)phi.len, 201);
+    ASSERT_INT_EQUAL((int)phi.tab[10], 4);
+    ASSERT_INT_EQUAL((int)phi.tab[11], 10);
+    ASSERT_INT_EQUAL((int)phi.tab[32], 16);
 
     gv_wipe(&phi, NULL);
 }
