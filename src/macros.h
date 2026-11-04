@@ -86,7 +86,7 @@
     ASSERT_TEST(_v_left, _v_right, !=, _fmt_data)
 
 #define ASSERT_INT_EQUAL(_v_left, _v_right)                                   \
-    ASSERT_EQUAL((uint64_t)_v_left, (uint64_t)_v_right, "%ld")
+    ASSERT_EQUAL((int64_t)_v_left, (int64_t)_v_right, "%ld")
 
 #define ASSERT_P_NULL(_p)                                                     \
     ASSERT_EQUAL((_p), NULL, "%p")
