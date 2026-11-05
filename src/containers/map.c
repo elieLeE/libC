@@ -1,7 +1,6 @@
 #include "map.h"
 
 #include "../mem/mem.h"
-#include "../attributes.h"
 
 /* {{{ Helpers methods */
 
@@ -104,8 +103,9 @@ int32_t __get_pos2_from_key(const __map_void_t *map, const void *k,
 }
 
 /* }}} */
+/* {{{ Extending methods */
 
-static int32_t get_new_array_size(int32_t current_size)
+static inline int32_t get_new_array_size(int32_t current_size)
 {
     /* greater nb on '31 bits signed' (so 30 bits).
      * One bit is lost for the sign, the other one for collision. */
@@ -122,9 +122,8 @@ static int32_t get_new_array_size(int32_t current_size)
     return new_size;
 }
 
-__attr_unused__
-static int __gm_extend(__map_void_t *map, int32_t pos1, long extra,
-                       void **key_spot, void **val_spot)
+static inline int __gm_extend(__map_void_t *map, int32_t pos1, long extra,
+                              void **key_spot, void **val_spot)
 {
     int32_t len = map->tabs_len[pos1];
     int32_t size = map->tabs_size[pos1];
@@ -166,6 +165,19 @@ static int __gm_extend(__map_void_t *map, int32_t pos1, long extra,
 
     return 0;
 }
+
+int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
+              void **key_spot, void **val_spot)
+{
+    RETHROW(__gm_extend(map, pos1, extra, key_spot, val_spot));
+
+    map->tabs_len[pos1]++;
+    map->count++;
+
+    return 0;
+}
+
+/* }}} */
 
 void __gm_wipe(__map_void_t *map,
                void (*free_keys_cb)(void **),
