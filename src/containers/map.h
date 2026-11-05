@@ -10,6 +10,10 @@
 
 #define DEFAULT_SIZE 1031
 
+/* 0100..00 on 64 bits. First bit is dedicated to sign. */
+#define QHASH_COLLISION 0x4000000000000000
+#define QHASH_OVERWRITE 0x1
+
 #define generic_map_data_t(_keys_type, _values_type)                          \
     struct {                                                                  \
         _keys_type keys;                                                      \
