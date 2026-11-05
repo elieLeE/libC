@@ -161,6 +161,16 @@ int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
 
 /* }}} */
 
+int __gm_find(const __map_void_t *map, const void *k,
+              gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb);
+#define gm_find(_name, _gmap, _key)                                           \
+    ({                                                                        \
+        __auto_type __gmap = (_gmap);                                         \
+        __gm_key_type(__gmap) __key = _key;                                   \
+        __gm_find(&(_gmap)->__map, &__key, gm_hash_cb_name(_name),            \
+                  gm_cmp_cb_name(_name));                                     \
+    })
+
 void __gm_wipe(__map_void_t *map,
                void (*free_keys_cb)(void **),
                void (*free_values_cb)(void **));

@@ -179,6 +179,16 @@ int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
 
 /* }}} */
 
+int __gm_find(const __map_void_t *map, const void *k,
+              gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb)
+{
+    int32_t pos1, pos2;
+
+    __get_2pos_from_key(map, k, hash_cb, cmp_cb, &pos1, &pos2);
+
+    return pos2 >= 0 ? __gm_get_fpos_from_2pos(pos1, pos2, 0) : -1;
+}
+
 void __gm_wipe(__map_void_t *map,
                void (*free_keys_cb)(void **),
                void (*free_values_cb)(void **))
