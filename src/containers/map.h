@@ -95,6 +95,28 @@ __get_pos1_from_key(const __map_void_t *map, const void *k,
 int32_t __get_pos2_from_key(const __map_void_t *map, const void *k,
                             g_cmp_cb_t cmp_cb, int32_t first_pos);
 
+static inline int64_t
+__gm_get_fpos_from_2pos(int32_t pos1, int32_t pos2, int64_t collision)
+{
+    int64_t full_pos;
+
+    full_pos = ((int64_t)pos1) << 32;
+    full_pos += pos2;
+    full_pos |= collision;
+
+    return full_pos;
+}
+
+static inline void
+__gm_get_2pos_from_fpos(int64_t full_pos, int32_t *pos1, int32_t *pos2)
+{
+    if (full_pos & QHASH_COLLISION) {
+        full_pos &= ~QHASH_COLLISION;
+    }
+    *pos1 = (int32_t)(full_pos >> 32);
+    *pos2 = (int32_t)full_pos;
+}
+
 /* }}} */
 
 void __gm_wipe(__map_void_t *map,
