@@ -3,16 +3,16 @@
 #include "mem.h"
 #include "../logger/logger.h"
 
-void* p_malloc(size_t taille)
+void* p_malloc(size_t size)
 {
     void *p;
 
-    if (taille <= 0) {
-        logger_error("cannot allocate a negative size: %ld", taille);
+    if (size <= 0) {
+        logger_error("cannot allocate a negative size: %ld", size);
         return NULL;
     }
 
-    p = malloc(taille);
+    p = malloc(size);
     if (p == NULL) {
         logger_error("allocation has failed");
         return NULL;
@@ -20,16 +20,16 @@ void* p_malloc(size_t taille)
     return p;
 }
 
-void* p_calloc(size_t taille)
+void* p_calloc(size_t size)
 {
     void *p;
 
-    if (taille <= 0) {
-        logger_error("cannot allocate a negative size: %ld", taille);
+    if (size <= 0) {
+        logger_error("cannot allocate a negative size: %ld", size);
         return NULL;
     }
 
-    p = calloc(1, taille);
+    p = calloc(1, size);
     if (p == NULL) {
         logger_error("allocation has failed");
         return NULL;
@@ -37,14 +37,14 @@ void* p_calloc(size_t taille)
     return p;
 }
 
-void* p_realloc(void *p, size_t taille)
+void* p_realloc(void *p, size_t size)
 {
-    if (taille <= 0) {
-        logger_error("cannot allocate a negative size: %ld", taille);
+    if (size <= 0) {
+        logger_error("cannot allocate a negative size: %ld", size);
         return NULL;
     }
 
-    p = realloc(p, taille);
+    p = realloc(p, size);
     if (p == NULL) {
         logger_error("allocation has failed");
         return NULL;
