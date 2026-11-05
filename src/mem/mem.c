@@ -14,7 +14,7 @@ void* p_malloc(size_t size)
 
     p = malloc(size);
     if (p == NULL) {
-        logger_error("allocation has failed");
+        logger_error("allocation has failed for size %ld", size);
         return NULL;
     }
     return p;
@@ -31,7 +31,7 @@ void* p_calloc(size_t size)
 
     p = calloc(1, size);
     if (p == NULL) {
-        logger_error("allocation has failed");
+        logger_error("allocation has failed for size %ld", size);
         return NULL;
     }
     return p;
@@ -46,7 +46,7 @@ void* p_realloc(void *p, size_t size)
 
     p = realloc(p, size);
     if (p == NULL) {
-        logger_error("allocation has failed");
+        logger_error("allocation has failed for size %ld", size);
         return NULL;
     }
     return p;
