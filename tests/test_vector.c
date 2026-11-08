@@ -7,8 +7,12 @@
 #include "../src/utils.h"
 
 static void
-check_vector_values(const gv_t(int32) *vec, const int32_t *values)
+check_vector_values(const gv_t(int32) *vec, const int32_t values[])
 {
+    /* I could just do memcmp here but in case of error, it would make less
+     * easier the investigation. This method lets explicit which number is an
+     * error, that can be very useful. */
+
     /* I do not check in this method that the size of the array 'values' has
      * a length equal (or greater but should be equal) than 'vec'. This is a
      * test method and this factor should checked in the calling method.
