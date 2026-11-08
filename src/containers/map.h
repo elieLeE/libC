@@ -95,6 +95,14 @@ __get_pos1_from_key(const __map_void_t *map, const void *k,
 int32_t __get_pos2_from_key(const __map_void_t *map, const void *k,
                             g_cmp_cb_t cmp_cb, int32_t first_pos);
 
+static inline void __get_2pos_from_key(const __map_void_t *map, const void *k,
+                                       gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb,
+                                       int32_t *pos1, int32_t *pos2)
+{
+    *pos1 = __get_pos1_from_key(map, k, hash_cb);
+    *pos2 = __get_pos2_from_key(map, k, cmp_cb, *pos1);
+}
+
 static inline int64_t
 __gm_get_fpos_from_2pos(int32_t pos1, int32_t pos2, int64_t collision)
 {
