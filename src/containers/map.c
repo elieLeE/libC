@@ -1,7 +1,7 @@
 #include "map.h"
 
 #include "../mem/mem.h"
-
+#include "../attributes.h"
 
 /* {{{ Helpers methods */
 
@@ -105,6 +105,67 @@ int32_t __get_pos2_from_key(const __map_void_t *map, const void *k,
 
 /* }}} */
 
+static int32_t get_new_array_size(int32_t current_size)
+{
+    /* greater nb on '31 bits signed' (so 30 bits).
+     * One bit is lost for the sign, the other one for collision. */
+    const int max_array_size = 1073741823;
+
+    int64_t new_size = get_next_closest_power_of_two(current_size);
+
+    if (new_size > max_array_size) {
+        logger_warning("new size (%ld) overtakes max authorized size (%d) - "
+                       "force to use max size", new_size, max_array_size);
+        return max_array_size;
+    }
+
+    return new_size;
+}
+
+__attr_unused__
+static int __gm_extend(__map_void_t *map, int32_t pos1, long extra,
+                       void **key_spot, void **val_spot)
+{
+    int32_t len = map->tabs_len[pos1];
+    int32_t size = map->tabs_size[pos1];
+    void *new_p;
+    int32_t new_size;
+
+    if (len + extra <= size) {
+        *key_spot = map->keys[pos1] + len * map->__size_elem_key;
+        *val_spot = map->values[pos1] + len * map->__size_elem_val;
+
+        return 0;
+    }
+
+    new_size = get_new_array_size(len + extra);
+
+    /* realloc keys tab */
+    new_p = p_realloc(map->keys[pos1], new_size * map->__size_elem_key);
+    if (new_p == NULL) {
+        logger_error("failed allocating memory\n");
+        return -1;
+    }
+    map->keys[pos1] = new_p;
+
+    *key_spot = map->keys[pos1] + len * map->__size_elem_key;
+    p_clear(*key_spot, extra * map->__size_elem_key);
+
+    /* realloc values tab */
+    new_p = p_realloc(map->values[pos1], new_size * map->__size_elem_val);
+    if (new_p == NULL) {
+        logger_error("failed allocating memory\n");
+        return -1;
+    }
+    map->values[pos1] = new_p;
+
+    *val_spot = map->values[pos1] + len * map->__size_elem_val;
+    p_clear(*val_spot, extra * map->__size_elem_val);
+
+    map->tabs_size[pos1] = new_size;
+
+    return 0;
+}
 
 void __gm_wipe(__map_void_t *map,
                void (*free_keys_cb)(void **),
