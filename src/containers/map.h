@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "../mem/mem.h"
 #include "../macros.h"
 
 #include "utils.h"
@@ -165,6 +166,39 @@ int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
 #define gm_set(_name, _gmap, _key, _val)                                      \
     gm_put(_name, _gmap, _key, _val, QHASH_OVERWRITE)
 
+static inline void
+__gm_clear_val_spot(const __map_void_t *map, int32_t pos1, int32_t pos2)
+{
+    void *spot = map->values[pos1] + (pos2 * map->__size_elem_val);
+    p_clear(spot, map->__size_elem_val);
+}
+
+#define gm_reserve(_name, _gmap, _key, _force)                                \
+    ({                                                                        \
+        __auto_type __gmap = (_gmap);                                         \
+        __gm_key_type(__gmap) __key = _key;                                   \
+        int64_t __res = -1;                                                   \
+        int32_t __pos1, __pos2;                                               \
+        __get_2pos_from_key(&__gmap->__map, &__key, gm_hash_cb_name(_name),   \
+                            gm_cmp_cb_name(_name), &__pos1, &__pos2);         \
+        if (__pos2 == -1) {                                                   \
+            __gm_key_type(__gmap) *__key_spot;                                \
+            __gm_value_type(__gmap) *__val_spot;                              \
+            __res = __gm_grow(&__gmap->__map, __pos1, 1,                      \
+                              (void **)&__key_spot, (void **)&__val_spot);    \
+            if (__res == 0) {                                                 \
+                *__key_spot = __key;                                          \
+                __pos2 = __gmap->__map.tabs_len[__pos1] - 1;                  \
+                __res = __gm_get_fpos_from_2pos(__pos1, __pos2, 0);           \
+            }                                                                 \
+        } else if ((_force) == QHASH_OVERWRITE) {                             \
+            __gm_clear_val_spot(&__gmap->__map, __pos1, __pos2);              \
+            __res = __gm_get_fpos_from_2pos(__pos1, __pos2, 0);               \
+        } else {                                                              \
+            __res = __gm_get_fpos_from_2pos(__pos1, __pos2, QHASH_COLLISION); \
+        }                                                                     \
+        __res;                                                                \
+    })
 
 /* }}} */
 /* {{{ Getting method */
