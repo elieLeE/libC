@@ -67,6 +67,71 @@ void test_map_put_and_get()
     gm_wipe(&map, NULL, NULL);
 }
 
+void test_map_add(void)
+{
+    gm_t(test) map;
+    int keys[] = {9, 86, 67, 78698, 6809, 8, 890, 98, 220, 10};
+    int values[] = {7, 769878, 545678, 9, 56, 876, -789, 98, 0, 8};
+    int val;
+
+    gm_init_size(&map, 7);
+
+    for (int i = 0; i < 10; i++) {
+        int64_t full_pos = gm_add(test, &map, keys[i], values[i]);
+
+        ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
+        assert(!(full_pos & QHASH_COLLISION));
+
+        ASSERT_INT_EQUAL(gm_get_from_key(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(values[i], val);
+    }
+
+    for (int i = 0; i < 10; i++) {
+        int64_t full_pos = gm_add(test, &map, keys[i], values[i] + 1);
+
+        ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
+        assert(full_pos & QHASH_COLLISION);
+
+        ASSERT_INT_EQUAL(gm_get_from_key(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(values[i], val);
+    }
+
+    gm_wipe(&map, NULL, NULL);
+}
+
+void test_map_set(void)
+{
+    gm_t(test) map;
+    int keys[] = {9, 86, 67, 78698, 6809, 8, 890, 98, 220, 10};
+    int values[] = {7, 769878, 545678, 9, 56, 876, -789, 98, 0, 8};
+    int val;
+
+    gm_init_size(&map, 7);
+
+    for (int i = 0; i < 10; i++) {
+        int64_t full_pos = gm_set(test, &map, keys[i], values[i]);
+
+        ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
+        assert(!(full_pos & QHASH_COLLISION));
+
+        ASSERT_INT_EQUAL(gm_get_from_key(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(values[i], val);
+    }
+
+    for (int i = 0; i < 10; i++) {
+        int64_t full_pos = gm_set(test, &map, keys[i], values[i] + 1);
+
+        ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
+        /* value are reset by force */
+        assert(!(full_pos & QHASH_COLLISION));
+
+        ASSERT_INT_EQUAL(gm_get_from_key(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(values[i] + 1, val);
+    }
+
+    gm_wipe(&map, NULL, NULL);
+}
+
 void test_map_pos(void)
 {
     srand(time(NULL));
@@ -101,6 +166,8 @@ module_tests_t *get_all_tests_map(void)
     ADD_TEST_TO_MODULE(module_tests, test_map_init_and_wipe);
     ADD_TEST_TO_MODULE(module_tests, test_map_pos);
     ADD_TEST_TO_MODULE(module_tests, test_map_put_and_get);
+    ADD_TEST_TO_MODULE(module_tests, test_map_add);
+    ADD_TEST_TO_MODULE(module_tests, test_map_set);
 
     return module_tests;
 }
