@@ -132,6 +132,33 @@ void test_map_set(void)
     gm_wipe(&map, NULL, NULL);
 }
 
+void test_map_reserve()
+{
+    gm_t(test) map;
+    int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
+    int values[] = {8765, 9, 51, 976654, 4, 876, 9, 8, 0, 8};
+
+    gm_init_size(&map, 7);
+
+    for (int i = 0; i < 10; i++) {
+        int *val_p;
+        int64_t fpos = gm_reserve(test, &map, keys[i], 0);
+
+        ASSERT_INT_GT_OR_EQUAL(fpos, 0);
+        gm_get_p_from_fpos(test, &map, fpos, &val_p);
+        *val_p = values[i];
+    }
+
+    for (int i = 0; i < 10; i++) {
+        int val;
+
+        ASSERT_INT_GT_OR_EQUAL(gm_get_from_key(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(values[i], val);
+    }
+
+    gm_wipe(&map, NULL, NULL);
+}
+
 void test_map_pos(void)
 {
     srand(time(NULL));
@@ -168,6 +195,7 @@ module_tests_t *get_all_tests_map(void)
     ADD_TEST_TO_MODULE(module_tests, test_map_put_and_get);
     ADD_TEST_TO_MODULE(module_tests, test_map_add);
     ADD_TEST_TO_MODULE(module_tests, test_map_set);
+    ADD_TEST_TO_MODULE(module_tests, test_map_reserve);
 
     return module_tests;
 }
