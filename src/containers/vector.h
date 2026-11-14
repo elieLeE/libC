@@ -242,8 +242,8 @@ void __gv_fast_clear(__vector_void_t *vec);
 #define gv_fast_clear(_gvec)                                                  \
     __gv_fast_clear(&(_gvec)->vec)
 
-void __gv_clear(__vector_void_t *vec, void (*free_data_cb)(void **));
-void __gv_wipe(__vector_void_t *vec, void (*free_data_cb)(void **));
+void __gv_clear(__vector_void_t *vec, g_free_cb_t free_data_cb);
+void __gv_wipe(__vector_void_t *vec, g_free_cb_t free_data_cb);
 
 #define gv_clear(_gvec, free_data_cb)                                         \
     __gv_clear(&(_gvec)->vec, free_data_cb)

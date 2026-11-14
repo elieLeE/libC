@@ -258,7 +258,7 @@ static void __gv_free_tab(__vector_void_t *vec, void (*free_data_cb)(void **))
     }
 }
 
-void __gv_clear(__vector_void_t *vec, void (*free_data_cb)(void **))
+void __gv_clear(__vector_void_t *vec, g_free_cb_t free_data_cb)
 {
     if (free_data_cb != NULL) {
         __gv_free_tab(vec, free_data_cb);
@@ -268,7 +268,7 @@ void __gv_clear(__vector_void_t *vec, void (*free_data_cb)(void **))
     vec->len = 0;
 }
 
-void __gv_wipe(__vector_void_t *vec, void (*free_data_cb)(void **))
+void __gv_wipe(__vector_void_t *vec, g_free_cb_t free_data_cb)
 {
     if (free_data_cb != NULL) {
         __gv_free_tab(vec, free_data_cb);
