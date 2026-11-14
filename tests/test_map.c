@@ -16,11 +16,13 @@ int cmp_method(const int *key1, const int *key2)
 
 generic_map_t(test, int, int, hash_method, cmp_method);
 
-void test_map_add()
+void test_map_put_and_get()
 {
     gm_t(test) map;
     int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
     int values[] = {8765, 9, 51, 976654, 4, 876, 9, 8, 0, 8};
+    int val, val2;
+    int *val_p, *val_p2;
 
     gm_init_size(&map, 7);
 
@@ -32,30 +34,26 @@ void test_map_add()
     }
 
     for (int i = 0; i < 10; i++) {
-        int32_t pos1, pos2;
-
         int64_t full_pos = gm_put(test, &map, keys[i], values[i], 0);
 
         ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
         assert(!(full_pos & QHASH_COLLISION));
 
-        __gm_get_2pos_from_fpos(full_pos, &pos1, &pos2);
-        ASSERT_INT_EQUAL(map.keys[pos1][pos2], keys[i]);
-        ASSERT_INT_EQUAL(map.values[pos1][pos2], values[i]);
+        ASSERT_INT_EQUAL(gm_get_from_key(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(values[i], val);
+
+        ASSERT_INT_EQUAL(gm_get_p_from_key(test, &map, keys[i], &val_p), 0);
+        ASSERT_INT_EQUAL(values[i], *val_p);
+
+        gm_get_from_fpos(test, &map, full_pos, &val2);
+        ASSERT_INT_EQUAL(values[i], val2);
+
+        gm_get_p_from_fpos(test, &map, full_pos, &val_p2);
+        ASSERT_INT_EQUAL(values[i], *val_p2);
     }
 
-    for (int i = 0; i < 10; i++) {
-        int32_t pos1, pos2;
-
-        int64_t full_pos = gm_put(test, &map, keys[i], values[i], 0);
-
-        ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
-        assert(full_pos & QHASH_COLLISION);
-
-        __gm_get_2pos_from_fpos(full_pos, &pos1, &pos2);
-        ASSERT_INT_EQUAL(map.keys[pos1][pos2], keys[i]);
-        ASSERT_INT_EQUAL(map.values[pos1][pos2], values[i]);
-    }
+    ASSERT_INT_EQUAL(gm_get_from_key(test, &map, 7, &val), -1);
+    ASSERT_INT_EQUAL(gm_get_p_from_key(test, &map, 8756, &val_p), -1);
 
     gm_wipe(&map, NULL, NULL);
 }
@@ -91,8 +89,8 @@ module_tests_t *get_all_tests_map(void)
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "MAP");
-    ADD_TEST_TO_MODULE(module_tests, test_map_add);
     ADD_TEST_TO_MODULE(module_tests, test_map_pos);
+    ADD_TEST_TO_MODULE(module_tests, test_map_put);
 
     return module_tests;
 }
