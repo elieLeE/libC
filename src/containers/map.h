@@ -159,6 +159,12 @@ int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
         __res;                                                                \
     })
 
+#define gm_add(_name, _gmap, _key, _val)                                      \
+    gm_put(_name, _gmap, _key, _val, 0)
+
+#define gm_set(_name, _gmap, _key, _val)                                      \
+    gm_put(_name, _gmap, _key, _val, QHASH_OVERWRITE)
+
 
 /* }}} */
 /* {{{ Getting method */
