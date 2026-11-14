@@ -7,12 +7,12 @@
 
 void test_lecture_simple()
 {
-    FILE* f = ouv_fichier("fichierTest", "r");
+    FILE* f = open_file("fichierTest", "r");
     char *s = p_calloc(50*sizeof(*s));
     char temoin[] = "test de lecture\n";
 
     fgets(s, 50, f);
-    fermer_fichier(&f);
+    close_file(&f);
 
     ASSERT_STR_EQUAL(s, temoin);
 
@@ -44,9 +44,9 @@ void test_lecture_matrice()
         {48, 65, 0, 11, 10, 8, 41},
         {31, 8, 21, 39, 27, 5, 12}};
     int **tab = (int **)alloc_tab_2d(lig, col, sizeof(int));
-    FILE* f = ouv_fichier("fichierTestLectureMatrice", "r");
+    FILE* f = open_file("fichierTestLectureMatrice", "r");
 
-    lire_matrice(f, tab, lig, col);
+    read_matrix(f, tab, lig, col);
 
     for (int i = 0; i < lig; i++) {
         for (int j = 0; j < col; j++) {
@@ -55,7 +55,7 @@ void test_lecture_matrice()
     }
 
     free_tab_2d((void **)tab, lig);
-    fermer_fichier(&f);
+    close_file(&f);
 }
 
 module_tests_t *get_all_tests_io(void)

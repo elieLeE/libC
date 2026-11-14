@@ -42,7 +42,7 @@ read_n_carac_and_flush(unsigned long max_length, FILE *stream, char *data_read)
     return 0;
 }
 
-FILE *ouv_fichier(char const *name, char const *mode)
+FILE *open_file(char const *name, char const *mode)
 {
     FILE* f = fopen(name, mode);
 
@@ -66,12 +66,12 @@ FILE *redirect_stream(FILE *stream, const char *file_name, const char *mode)
     return f;
 }
 
-void fermer_fichier(FILE **f)
+void close_file(FILE **f)
 {
     fclose(*f);
 }
 
-void lire_matrice(FILE *fichier, int *matrice[], int tailleLig, int tailleCol)
+void read_matrix(FILE *fichier, int *matrice[], int tailleLig, int tailleCol)
 {
     int i, j;
 

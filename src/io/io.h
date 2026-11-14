@@ -9,8 +9,8 @@ int read_n_carac_and_flush(unsigned long max_length, FILE *stream,
                            char *data_read);
 
 FILE *redirect_stream(FILE *stream, const char *file_name, const char *mode);
-FILE *ouv_fichier(char const *name, char const *mode);
-void fermer_fichier(FILE **f);
-void lire_matrice(FILE *fichier, int *matrice[], int tailleLig, int tailleCol);
+FILE *open_file(char const *name, char const *mode);
+void close_file(FILE **f);
+void read_matrix(FILE *fichier, int *matrice[], int tailleLig, int tailleCol);
 
 #endif
