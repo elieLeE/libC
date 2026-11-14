@@ -178,6 +178,63 @@ int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
 }
 
 /* }}} */
+/* {{{ Getting methods */
+
+static void
+__gm_get_p_from_2pos(const __map_void_t *map, int32_t pos1, int32_t pos2,
+                     void **out)
+{
+    *out = map->values[pos1] + (map->__size_elem_val * pos2);
+}
+
+static int
+__gm_get_p_from_2pos_safe(const __map_void_t *map, int32_t pos1, int32_t pos2,
+                          void **out)
+{
+    if (pos1 < 0 || pos1 >= map->size ||
+        pos2 < 0 || pos2 >= map->tabs_len[pos1])
+    {
+        return -1;
+    }
+
+    __gm_get_p_from_2pos(map, pos1, pos2, out);
+
+    return 0;
+}
+
+void __gm_get_p_from_fpos(const __map_void_t *map, int64_t fpos, void **out)
+{
+    int32_t pos1, pos2;
+
+    __gm_get_2pos_from_fpos(fpos, &pos1, &pos2);
+    __gm_get_p_from_2pos(map, pos1, pos2, out);
+}
+
+int
+__gm_get_p_from_fpos_safe(const __map_void_t *map, int64_t fpos, void **out)
+{
+    int32_t pos1, pos2;
+
+    __gm_get_2pos_from_fpos(fpos, &pos1, &pos2);
+    return __gm_get_p_from_2pos_safe(map, pos1, pos2, out);
+}
+
+int
+__gm_get_p_from_key(const __map_void_t *map, const void *k,
+                    gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb, void **out)
+{
+    int32_t pos1, pos2;
+
+    __get_2pos_from_key(map, k, hash_cb, cmp_cb, &pos1, &pos2);
+
+    if (pos2 >= 0) {
+        __gm_get_p_from_2pos(map, pos1, pos2, out);
+        return 0;
+    }
+    return -1;
+}
+
+/* }}} */
 
 int __gm_find(const __map_void_t *map, const void *k,
               gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb)

@@ -159,6 +159,17 @@ int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
         __res;                                                                \
     })
 
+
+/* }}} */
+/* {{{ Getting method */
+
+int
+__gm_get_p_from_key(const __map_void_t *map, const void *k,
+                    gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb, void **out);
+void __gm_get_p_from_fpos(const __map_void_t *map, int64_t fpos, void **out);
+int
+__gm_get_p_from_fpos_safe(const __map_void_t *map, int64_t fpos, void **out);
+
 /* }}} */
 
 int __gm_find(const __map_void_t *map, const void *k,
