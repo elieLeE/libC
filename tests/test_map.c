@@ -16,13 +16,9 @@ int cmp_method(const int *key1, const int *key2)
 
 generic_map_t(test, int, int, hash_method, cmp_method);
 
-void test_map_put_and_get()
+void test_map_init_and_wipe(void)
 {
     gm_t(test) map;
-    int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
-    int values[] = {8765, 9, 51, 976654, 4, 876, 9, 8, 0, 8};
-    int val, val2;
-    int *val_p, *val_p2;
 
     gm_init_size(&map, 7);
 
@@ -32,6 +28,19 @@ void test_map_put_and_get()
         ASSERT_INT_EQUAL(map.tabs_len[i], 0);
         ASSERT_INT_EQUAL(map.tabs_size[i], 0);
     }
+
+    gm_wipe(&map, NULL, NULL);
+}
+
+void test_map_put_and_get()
+{
+    gm_t(test) map;
+    int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
+    int values[] = {8765, 9, 51, 976654, 4, 876, 9, 8, 0, 8};
+    int val, val2;
+    int *val_p, *val_p2;
+
+    gm_init_size(&map, 7);
 
     for (int i = 0; i < 10; i++) {
         int64_t full_pos = gm_put(test, &map, keys[i], values[i], 0);
@@ -89,8 +98,9 @@ module_tests_t *get_all_tests_map(void)
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "MAP");
+    ADD_TEST_TO_MODULE(module_tests, test_map_init_and_wipe);
     ADD_TEST_TO_MODULE(module_tests, test_map_pos);
-    ADD_TEST_TO_MODULE(module_tests, test_map_put);
+    ADD_TEST_TO_MODULE(module_tests, test_map_put_and_get);
 
     return module_tests;
 }
