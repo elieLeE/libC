@@ -4,6 +4,36 @@
 #include "../src/containers/map.h"
 #include "../src/macros.h"
 
+/* {{{ positions methods tests */
+
+void test_map_pos(void)
+{
+    srand(time(NULL));
+
+    for (int i = 0; i < 10; i++) {
+        int32_t pos1 = rand() % 1031;
+        int32_t pos2 = rand() % 1000;
+        int32_t pos1_b, pos2_b;
+        int64_t full_pos;
+
+        full_pos = __gm_get_fpos_from_2pos(pos1, pos2, 0);
+        __gm_get_2pos_from_fpos(full_pos, &pos1_b, &pos2_b);
+
+        ASSERT_INT_EQUAL(pos1, pos1_b);
+        ASSERT_INT_EQUAL(pos2, pos2_b);
+        assert(!(full_pos & QHASH_COLLISION));
+
+        full_pos = __gm_get_fpos_from_2pos(pos1, pos2, QHASH_COLLISION);
+        __gm_get_2pos_from_fpos(full_pos, &pos1_b, &pos2_b);
+
+        ASSERT_INT_EQUAL(pos1, pos1_b);
+        ASSERT_INT_EQUAL(pos2, pos2_b);
+        assert(full_pos & QHASH_COLLISION);
+    }
+}
+
+/* }}} */
+
 uint32_t hash_method(const int *key)
 {
     return *key;
@@ -159,31 +189,6 @@ void test_map_reserve()
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_pos(void)
-{
-    srand(time(NULL));
-
-    for (int i = 0; i < 10; i++) {
-        int32_t pos1 = rand() % 1031;
-        int32_t pos2 = rand() % 1000;
-        int32_t pos1_b, pos2_b;
-        int64_t full_pos;
-
-        full_pos = __gm_get_fpos_from_2pos(pos1, pos2, 0);
-        __gm_get_2pos_from_fpos(full_pos, &pos1_b, &pos2_b);
-
-        ASSERT_INT_EQUAL(pos1, pos1_b);
-        ASSERT_INT_EQUAL(pos2, pos2_b);
-        assert(!(full_pos & QHASH_COLLISION));
-
-        full_pos = __gm_get_fpos_from_2pos(pos1, pos2, QHASH_COLLISION);
-        __gm_get_2pos_from_fpos(full_pos, &pos1_b, &pos2_b);
-
-        ASSERT_INT_EQUAL(pos1, pos1_b);
-        ASSERT_INT_EQUAL(pos2, pos2_b);
-        assert(full_pos & QHASH_COLLISION);
-    }
-}
 
 module_tests_t *get_all_tests_map(void)
 {
