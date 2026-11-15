@@ -33,6 +33,7 @@ void test_map_pos(void)
 }
 
 /* }}} */
+/* {{{ Basic tests map int -> int */
 
 uint32_t hash_method(const int *key)
 {
@@ -62,7 +63,7 @@ void test_map_init_and_wipe(void)
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_put_and_get()
+void test_map_int_int_put_and_get()
 {
     gm_t(test) map;
     int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
@@ -97,7 +98,7 @@ void test_map_put_and_get()
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_add(void)
+void test_map_int_int_add(void)
 {
     gm_t(test) map;
     int keys[] = {9, 86, 67, 78698, 6809, 8, 890, 98, 220, 10};
@@ -129,7 +130,7 @@ void test_map_add(void)
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_set(void)
+void test_map_int_int_set(void)
 {
     gm_t(test) map;
     int keys[] = {9, 86, 67, 78698, 6809, 8, 890, 98, 220, 10};
@@ -162,7 +163,7 @@ void test_map_set(void)
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_reserve()
+void test_map_int_int_reserve()
 {
     gm_t(test) map;
     int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
@@ -189,18 +190,21 @@ void test_map_reserve()
     gm_wipe(&map, NULL, NULL);
 }
 
+/* }}} */
 
 module_tests_t *get_all_tests_map(void)
 {
     module_tests_t *module_tests = RETHROW_P(module_tests_new());
 
     set_module_name(module_tests, "MAP");
-    ADD_TEST_TO_MODULE(module_tests, test_map_init_and_wipe);
+
     ADD_TEST_TO_MODULE(module_tests, test_map_pos);
-    ADD_TEST_TO_MODULE(module_tests, test_map_put_and_get);
-    ADD_TEST_TO_MODULE(module_tests, test_map_add);
-    ADD_TEST_TO_MODULE(module_tests, test_map_set);
-    ADD_TEST_TO_MODULE(module_tests, test_map_reserve);
+
+    ADD_TEST_TO_MODULE(module_tests, test_map_init_and_wipe);
+    ADD_TEST_TO_MODULE(module_tests, test_map_int_int_put_and_get);
+    ADD_TEST_TO_MODULE(module_tests, test_map_int_int_add);
+    ADD_TEST_TO_MODULE(module_tests, test_map_int_int_set);
+    ADD_TEST_TO_MODULE(module_tests, test_map_int_int_reserve);
 
     return module_tests;
 }
