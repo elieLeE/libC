@@ -205,39 +205,6 @@ __gm_clear_val_spot(const __map_void_t *map, int32_t pos1, int32_t pos2)
 /* }}} */
 /* {{{ Getting elements */
 
-int
-__gm_get_p_from_key(const __map_void_t *map, const void *k,
-                    gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb, void **out);
-#define gm_get_p_from_key(_name, _gmap, _key, _out)                           \
-    ({                                                                        \
-        __auto_type __gmap = (_gmap);                                         \
-        __gm_key_type(__gmap) __key = _key;                                   \
-        __gm_value_type(__gmap) *__val_got, **__out = (_out);                 \
-        int __res = __gm_get_p_from_key(&(_gmap)->__map, &__key,              \
-                                        gm_hash_cb_name(_name),               \
-                                        gm_cmp_cb_name(_name),                \
-                                        (void **)&__val_got);                 \
-        if (__res == 0) {                                                     \
-            *__out = __val_got;                                               \
-        }                                                                     \
-        __res;                                                                \
-    })
-
-#define gm_get_from_key(_name, _gmap, _key, _out)                             \
-    ({                                                                        \
-        __auto_type __gmap = (_gmap);                                         \
-        __gm_key_type(__gmap) __key = _key;                                   \
-        __gm_value_type(__gmap) *__val_got, *__out = (_out);                  \
-        int __res = __gm_get_p_from_key(&(_gmap)->__map, &__key,              \
-                                        gm_hash_cb_name(_name),               \
-                                        gm_cmp_cb_name(_name),                \
-                                        (void **)&__val_got);                 \
-        if (__res == 0) {                                                     \
-            *__out = *__val_got;                                              \
-        }                                                                     \
-        __res;                                                                \
-    })
-
 void __gm_get_p_from_fpos(const __map_void_t *map, int64_t fpos, void **out);
 #define gm_get_p_from_fpos(_name, _gmap, _fpos, _out)                         \
     do {                                                                      \
@@ -275,6 +242,39 @@ __gm_get_p_from_fpos_safe(const __map_void_t *map, int64_t fpos, void **out);
         __gm_value_type(__gmap) *__val_got, *__out = (__out);                 \
         int __res = __gm_get_p_from_fpos_safe(&__gmap->__map, (_fpos),        \
                                               (void **)&__val_got);           \
+        if (__res == 0) {                                                     \
+            *__out = *__val_got;                                              \
+        }                                                                     \
+        __res;                                                                \
+    })
+
+int
+__gm_get_p_from_key(const __map_void_t *map, const void *k,
+                    gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb, void **out);
+#define gm_get_p(_name, _gmap, _key, _out)                                    \
+    ({                                                                        \
+        __auto_type __gmap = (_gmap);                                         \
+        __gm_key_type(__gmap) __key = _key;                                   \
+        __gm_value_type(__gmap) *__val_got, **__out = (_out);                 \
+        int __res = __gm_get_p_from_key(&__gmap->__map, &__key,               \
+                                        gm_hash_cb_name(_name),               \
+                                        gm_cmp_cb_name(_name),                \
+                                        (void **)&__val_got);                 \
+        if (__res == 0) {                                                     \
+            *__out = __val_got;                                               \
+        }                                                                     \
+        __res;                                                                \
+    })
+
+#define gm_get(_name, _gmap, _key, _out)                                      \
+    ({                                                                        \
+        __auto_type __gmap = (_gmap);                                         \
+        __gm_key_type(__gmap) __key = _key;                                   \
+        __gm_value_type(__gmap) *__val_got, *__out = (_out);                  \
+        int __res = __gm_get_p_from_key(&__gmap->__map, &__key,               \
+                                        gm_hash_cb_name(_name),               \
+                                        gm_cmp_cb_name(_name),                \
+                                        (void **)&__val_got);                 \
         if (__res == 0) {                                                     \
             *__out = *__val_got;                                              \
         }                                                                     \
