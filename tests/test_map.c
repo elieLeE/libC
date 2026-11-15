@@ -45,11 +45,11 @@ static int cmp_method(const int *key1, const int *key2)
     return (*key1) - (*key2);
 }
 
-generic_map_t(test, int, int, hash_method, cmp_method);
+generic_map_t(map_int_int, int, int, hash_method, cmp_method);
 
 static void test_map_init_and_wipe(void)
 {
-    gm_t(test) map;
+    gm_t(map_int_int) map;
 
     gm_init_size(&map, 7);
 
@@ -65,7 +65,7 @@ static void test_map_init_and_wipe(void)
 
 static void test_map_int_int_put_and_get()
 {
-    gm_t(test) map;
+    gm_t(map_int_int) map;
     int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
     int values[] = {8765, 9, 51, 976654, 4, 876, 9, 8, 0, 8};
     int val, val2;
@@ -74,33 +74,33 @@ static void test_map_int_int_put_and_get()
     gm_init_size(&map, 7);
 
     for (int i = 0; i < 10; i++) {
-        int64_t full_pos = gm_put(test, &map, keys[i], values[i], 0);
+        int64_t full_pos = gm_put(map_int_int, &map, keys[i], values[i], 0);
 
         ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
         assert(!(full_pos & QHASH_COLLISION));
 
-        ASSERT_INT_EQUAL(gm_get(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(gm_get(map_int_int, &map, keys[i], &val), 0);
         ASSERT_INT_EQUAL(values[i], val);
 
-        ASSERT_INT_EQUAL(gm_get_p(test, &map, keys[i], &val_p), 0);
+        ASSERT_INT_EQUAL(gm_get_p(map_int_int, &map, keys[i], &val_p), 0);
         ASSERT_INT_EQUAL(values[i], *val_p);
 
-        gm_get_from_fpos(test, &map, full_pos, &val2);
+        gm_get_from_fpos(map_int_int, &map, full_pos, &val2);
         ASSERT_INT_EQUAL(values[i], val2);
 
-        gm_get_p_from_fpos(test, &map, full_pos, &val_p2);
+        gm_get_p_from_fpos(map_int_int, &map, full_pos, &val_p2);
         ASSERT_INT_EQUAL(values[i], *val_p2);
     }
 
-    ASSERT_INT_EQUAL(gm_get(test, &map, 7, &val), -1);
-    ASSERT_INT_EQUAL(gm_get_p(test, &map, 8756, &val_p), -1);
+    ASSERT_INT_EQUAL(gm_get(map_int_int, &map, 7, &val), -1);
+    ASSERT_INT_EQUAL(gm_get_p(map_int_int, &map, 8756, &val_p), -1);
 
     gm_wipe(&map, NULL, NULL);
 }
 
 static void test_map_int_int_add(void)
 {
-    gm_t(test) map;
+    gm_t(map_int_int) map;
     int keys[] = {9, 86, 67, 78698, 6809, 8, 890, 98, 220, 10};
     int values[] = {7, 769878, 545678, 9, 56, 876, -789, 98, 0, 8};
     int val;
@@ -108,22 +108,22 @@ static void test_map_int_int_add(void)
     gm_init_size(&map, 7);
 
     for (int i = 0; i < 10; i++) {
-        int64_t full_pos = gm_add(test, &map, keys[i], values[i]);
+        int64_t full_pos = gm_add(map_int_int, &map, keys[i], values[i]);
 
         ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
         assert(!(full_pos & QHASH_COLLISION));
 
-        ASSERT_INT_EQUAL(gm_get(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(gm_get(map_int_int, &map, keys[i], &val), 0);
         ASSERT_INT_EQUAL(values[i], val);
     }
 
     for (int i = 0; i < 10; i++) {
-        int64_t full_pos = gm_add(test, &map, keys[i], values[i] + 1);
+        int64_t full_pos = gm_add(map_int_int, &map, keys[i], values[i] + 1);
 
         ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
         assert(full_pos & QHASH_COLLISION);
 
-        ASSERT_INT_EQUAL(gm_get(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(gm_get(map_int_int, &map, keys[i], &val), 0);
         ASSERT_INT_EQUAL(values[i], val);
     }
 
@@ -132,7 +132,7 @@ static void test_map_int_int_add(void)
 
 static void test_map_int_int_set(void)
 {
-    gm_t(test) map;
+    gm_t(map_int_int) map;
     int keys[] = {9, 86, 67, 78698, 6809, 8, 890, 98, 220, 10};
     int values[] = {7, 769878, 545678, 9, 56, 876, -789, 98, 0, 8};
     int val;
@@ -140,23 +140,23 @@ static void test_map_int_int_set(void)
     gm_init_size(&map, 7);
 
     for (int i = 0; i < 10; i++) {
-        int64_t full_pos = gm_set(test, &map, keys[i], values[i]);
+        int64_t full_pos = gm_set(map_int_int, &map, keys[i], values[i]);
 
         ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
         assert(!(full_pos & QHASH_COLLISION));
 
-        ASSERT_INT_EQUAL(gm_get(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(gm_get(map_int_int, &map, keys[i], &val), 0);
         ASSERT_INT_EQUAL(values[i], val);
     }
 
     for (int i = 0; i < 10; i++) {
-        int64_t full_pos = gm_set(test, &map, keys[i], values[i] + 1);
+        int64_t full_pos = gm_set(map_int_int, &map, keys[i], values[i] + 1);
 
         ASSERT_INT_GT_OR_EQUAL(full_pos, 0);
         /* value are reset by force */
         assert(!(full_pos & QHASH_COLLISION));
 
-        ASSERT_INT_EQUAL(gm_get(test, &map, keys[i], &val), 0);
+        ASSERT_INT_EQUAL(gm_get(map_int_int, &map, keys[i], &val), 0);
         ASSERT_INT_EQUAL(values[i] + 1, val);
     }
 
@@ -165,7 +165,7 @@ static void test_map_int_int_set(void)
 
 static void test_map_int_int_reserve()
 {
-    gm_t(test) map;
+    gm_t(map_int_int) map;
     int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
     int values[] = {8765, 9, 51, 976654, 4, 876, 9, 8, 0, 8};
 
@@ -173,17 +173,17 @@ static void test_map_int_int_reserve()
 
     for (int i = 0; i < 10; i++) {
         int *val_p;
-        int64_t fpos = gm_reserve(test, &map, keys[i], 0);
+        int64_t fpos = gm_reserve(map_int_int, &map, keys[i], 0);
 
         ASSERT_INT_GT_OR_EQUAL(fpos, 0);
-        gm_get_p_from_fpos(test, &map, fpos, &val_p);
+        gm_get_p_from_fpos(map_int_int, &map, fpos, &val_p);
         *val_p = values[i];
     }
 
     for (int i = 0; i < 10; i++) {
         int val;
 
-        ASSERT_INT_GT_OR_EQUAL(gm_get(test, &map, keys[i], &val), 0);
+        ASSERT_INT_GT_OR_EQUAL(gm_get(map_int_int, &map, keys[i], &val), 0);
         ASSERT_INT_EQUAL(values[i], val);
     }
 
