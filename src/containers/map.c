@@ -265,10 +265,10 @@ void __gm_wipe(__map_void_t *map,
                     free_values_cb(map->values[i]);
                 }
             }
-
-            p_free((void **)&(map->keys[i]));
-            p_free((void **)&(map->values[i]));
         }
+
+        p_free((void **)&(map->keys[i]));
+        p_free((void **)&(map->values[i]));
     }
 
     map->size = 0;
