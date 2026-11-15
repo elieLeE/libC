@@ -6,7 +6,7 @@
 
 /* {{{ positions methods tests */
 
-void test_map_pos(void)
+static void test_map_pos(void)
 {
     srand(time(NULL));
 
@@ -35,19 +35,19 @@ void test_map_pos(void)
 /* }}} */
 /* {{{ Basic tests map int -> int */
 
-uint32_t hash_method(const int *key)
+static uint32_t hash_method(const int *key)
 {
     return *key;
 }
 
-int cmp_method(const int *key1, const int *key2)
+static int cmp_method(const int *key1, const int *key2)
 {
     return (*key1) - (*key2);
 }
 
 generic_map_t(test, int, int, hash_method, cmp_method);
 
-void test_map_init_and_wipe(void)
+static void test_map_init_and_wipe(void)
 {
     gm_t(test) map;
 
@@ -63,7 +63,7 @@ void test_map_init_and_wipe(void)
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_int_int_put_and_get()
+static void test_map_int_int_put_and_get()
 {
     gm_t(test) map;
     int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
@@ -98,7 +98,7 @@ void test_map_int_int_put_and_get()
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_int_int_add(void)
+static void test_map_int_int_add(void)
 {
     gm_t(test) map;
     int keys[] = {9, 86, 67, 78698, 6809, 8, 890, 98, 220, 10};
@@ -130,7 +130,7 @@ void test_map_int_int_add(void)
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_int_int_set(void)
+static void test_map_int_int_set(void)
 {
     gm_t(test) map;
     int keys[] = {9, 86, 67, 78698, 6809, 8, 890, 98, 220, 10};
@@ -163,7 +163,7 @@ void test_map_int_int_set(void)
     gm_wipe(&map, NULL, NULL);
 }
 
-void test_map_int_int_reserve()
+static void test_map_int_int_reserve()
 {
     gm_t(test) map;
     int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
