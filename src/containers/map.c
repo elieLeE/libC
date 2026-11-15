@@ -236,8 +236,8 @@ __gm_get_p_from_key(const __map_void_t *map, const void *k,
 
 /* }}} */
 
-int __gm_find(const __map_void_t *map, const void *k,
-              gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb)
+int64_t __gm_find(const __map_void_t *map, const void *k,
+                  gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb)
 {
     int32_t pos1, pos2;
 

@@ -281,8 +281,8 @@ __gm_get_p_from_fpos_safe(const __map_void_t *map, int64_t fpos, void **out);
 
 /* }}} */
 
-int __gm_find(const __map_void_t *map, const void *k,
-              gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb);
+int64_t __gm_find(const __map_void_t *map, const void *k,
+                  gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb);
 #define gm_find(_name, _gmap, _key)                                           \
     ({                                                                        \
         __auto_type __gmap = (_gmap);                                         \
