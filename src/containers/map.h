@@ -97,9 +97,10 @@ __get_pos1_from_key(const __map_void_t *map, const void *k,
 int32_t __get_pos2_from_key(const __map_void_t *map, const void *k,
                             g_cmp_cb_t cmp_cb, int32_t first_pos);
 
-static inline void __get_2pos_from_key(const __map_void_t *map, const void *k,
-                                       gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb,
-                                       int32_t *pos1, int32_t *pos2)
+static inline void
+__gm_get_2pos_from_key(const __map_void_t *map, const void *k,
+                       gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb,
+                       int32_t *pos1, int32_t *pos2)
 {
     *pos1 = __get_pos1_from_key(map, k, hash_cb);
     *pos2 = __get_pos2_from_key(map, k, cmp_cb, *pos1);
@@ -139,7 +140,7 @@ int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
         __gm_key_type(__gmap) __key = _key;                                   \
         int64_t __res = -1;                                                   \
         int32_t __pos1, __pos2;                                               \
-        __get_2pos_from_key(&__gmap->__map, &__key, gm_hash_cb_name(_name),   \
+        __gm_get_2pos_from_key(&__gmap->__map, &__key, gm_hash_cb_name(_name),\
                             gm_cmp_cb_name(_name), &__pos1, &__pos2);         \
         if (__pos2 == -1) {                                                   \
             __gm_key_type(__gmap) *__key_spot;                                \
@@ -180,7 +181,7 @@ __gm_clear_val_spot(const __map_void_t *map, int32_t pos1, int32_t pos2)
         __gm_key_type(__gmap) __key = _key;                                   \
         int64_t __res = -1;                                                   \
         int32_t __pos1, __pos2;                                               \
-        __get_2pos_from_key(&__gmap->__map, &__key, gm_hash_cb_name(_name),   \
+        __gm_get_2pos_from_key(&__gmap->__map, &__key, gm_hash_cb_name(_name),\
                             gm_cmp_cb_name(_name), &__pos1, &__pos2);         \
         if (__pos2 == -1) {                                                   \
             __gm_key_type(__gmap) *__key_spot;                                \

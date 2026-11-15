@@ -225,7 +225,7 @@ __gm_get_p_from_key(const __map_void_t *map, const void *k,
 {
     int32_t pos1, pos2;
 
-    __get_2pos_from_key(map, k, hash_cb, cmp_cb, &pos1, &pos2);
+    __gm_get_2pos_from_key(map, k, hash_cb, cmp_cb, &pos1, &pos2);
 
     if (pos2 >= 0) {
         __gm_get_p_from_2pos(map, pos1, pos2, out);
@@ -241,7 +241,7 @@ int64_t __gm_find(const __map_void_t *map, const void *k,
 {
     int32_t pos1, pos2;
 
-    __get_2pos_from_key(map, k, hash_cb, cmp_cb, &pos1, &pos2);
+    __gm_get_2pos_from_key(map, k, hash_cb, cmp_cb, &pos1, &pos2);
 
     return pos2 >= 0 ? __gm_get_fpos_from_2pos(pos1, pos2, 0) : -1;
 }
