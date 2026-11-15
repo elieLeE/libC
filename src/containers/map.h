@@ -243,7 +243,7 @@ void __gm_get_p_from_fpos(const __map_void_t *map, int64_t fpos, void **out);
     do {                                                                      \
         __auto_type __gmap = (_gmap);                                         \
         __gm_value_type(__gmap) *__val_got, **__out = (_out);                 \
-        __gm_get_p_from_fpos(&(_gmap)->__map, (_fpos), (void **)&__val_got);  \
+        __gm_get_p_from_fpos(&__gmap->__map, (_fpos), (void **)&__val_got);   \
         *__out = __val_got;                                                   \
     } while (0)
 
@@ -251,7 +251,7 @@ void __gm_get_p_from_fpos(const __map_void_t *map, int64_t fpos, void **out);
     do {                                                                      \
         __auto_type __gmap = (_gmap);                                         \
         __gm_value_type(__gmap) *__val_got, *__out = (_out);                  \
-        __gm_get_p_from_fpos(&(_gmap)->__map, (_fpos), (void **)&__val_got);  \
+        __gm_get_p_from_fpos(&__gmap->__map, (_fpos), (void **)&__val_got);   \
         *__out = *__val_got;                                                  \
     } while (0)
 
@@ -261,7 +261,7 @@ __gm_get_p_from_fpos_safe(const __map_void_t *map, int64_t fpos, void **out);
     ({                                                                        \
         __auto_type __gmap = (_gmap);                                         \
         __gm_value_type(__gmap) *__val_got, **__out = (_out);                 \
-        int __res = __gm_get_p_from_fpos_safe(&(_gmap)->__map, (_fpos),       \
+        int __res = __gm_get_p_from_fpos_safe(&__gmap->__map, (_fpos),        \
                                               (void **)&__val_got);           \
         if (__res == 0) {                                                     \
             *__out = __val_got;                                               \
@@ -273,7 +273,7 @@ __gm_get_p_from_fpos_safe(const __map_void_t *map, int64_t fpos, void **out);
     ({                                                                        \
         __auto_type __gmap = (_gmap);                                         \
         __gm_value_type(__gmap) *__val_got, *__out = (__out);                 \
-        int __res = __gm_get_p_from_fpos_safe(&(_gmap)->__map, (_fpos),       \
+        int __res = __gm_get_p_from_fpos_safe(&__gmap->__map, (_fpos),        \
                                               (void **)&__val_got);           \
         if (__res == 0) {                                                     \
             *__out = *__val_got;                                              \
