@@ -84,7 +84,8 @@ void __gm_init_size(__map_void_t *map, int32_t size, size_t size_elem_key,
     })
 
 /* }}} */
-/* {{{ Pos methods */
+/* {{{ Positions */
+
 
 static inline int32_t
 __get_pos1_from_key(const __map_void_t *map, const void *k,
@@ -127,7 +128,7 @@ __gm_get_2pos_from_fpos(int64_t full_pos, int32_t *pos1, int32_t *pos2)
 }
 
 /* }}} */
-/* {{{ Extending methods */
+/* {{{ Adding elements */
 
 int __gm_grow(__map_void_t *map, int32_t pos1, long extra,
               void **key_spot, void **val_spot);
@@ -201,7 +202,7 @@ __gm_clear_val_spot(const __map_void_t *map, int32_t pos1, int32_t pos2)
     })
 
 /* }}} */
-/* {{{ Getting method */
+/* {{{ Getting elements */
 
 int
 __gm_get_p_from_key(const __map_void_t *map, const void *k,
