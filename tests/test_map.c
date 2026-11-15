@@ -3,6 +3,9 @@
 #include "test_map.h"
 #include "../src/containers/map.h"
 #include "../src/macros.h"
+#include "../src/logger/logger.h"
+
+#include "../src/attributes.h"
 
 /* {{{ positions methods tests */
 
@@ -33,6 +36,36 @@ static void test_map_pos(void)
 }
 
 /* }}} */
+/* {{{ helpers methods */
+
+__attr_unused__
+static bool _is_map_empty(const __map_void_t *map, bool are_size_too)
+{
+    if (map->count != 0) {
+        logger_error("count is not equal to 0: %ld", map->count);
+        return false;
+    }
+
+    for (int i = 0; i < map->size; i++) {
+        if (map->tabs_len[i] != 0) {
+            logger_error("len '%d' is not equal to 0: %d",
+                         i, map->tabs_len[i]);
+            return false;
+        }
+        if (are_size_too && map->tabs_size[i] != 0) {
+            logger_error("size '%d' is not equal to 0: %d",
+                         i, map->tabs_size[i]);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+#define is_map_empty(_gmap, _are_size_too)                                    \
+    _is_map_empty(&(_gmap)->__map, _are_size_too)
+
+/* }}} */
 /* {{{ Basic tests map int -> int */
 
 static uint32_t hash_method(const int *key)
@@ -54,11 +87,7 @@ static void test_map_init_and_wipe(void)
     gm_init_size(&map, 7);
 
     ASSERT_INT_EQUAL(map.size, 7);
-    ASSERT_INT_EQUAL(map.count, 0);
-    for (int i = 0; i < map.size; i++) {
-        ASSERT_INT_EQUAL(map.tabs_len[i], 0);
-        ASSERT_INT_EQUAL(map.tabs_size[i], 0);
-    }
+    assert(is_map_empty(&map, true));
 
     gm_wipe(&map, NULL, NULL);
 }
