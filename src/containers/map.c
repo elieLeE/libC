@@ -88,6 +88,13 @@ void __gm_init_size(__map_void_t *map, int32_t size, size_t size_elem_key,
 /* }}} */
 /* {{{ Pos methods */
 
+static bool
+__gm_check_2pos_exist(const __map_void_t *map, int32_t pos1, int32_t pos2)
+{
+    return pos1 >= 0 && pos1 < map->size &&
+        pos2 >= 0 && pos2 < map->tabs_len[pos1];
+}
+
 int32_t __get_pos2_from_key(const __map_void_t *map, const void *k,
                             g_cmp_cb_t cmp_cb, int32_t pos1)
 {
@@ -191,9 +198,7 @@ static int
 __gm_get_p_from_2pos_safe(const __map_void_t *map, int32_t pos1, int32_t pos2,
                           void **out)
 {
-    if (pos1 < 0 || pos1 >= map->size ||
-        pos2 < 0 || pos2 >= map->tabs_len[pos1])
-    {
+    if (!__gm_check_2pos_exist(map, pos1, pos2)) {
         return -1;
     }
 
@@ -229,6 +234,69 @@ __gm_get_p_from_key(const __map_void_t *map, const void *k,
 
     if (pos2 >= 0) {
         __gm_get_p_from_2pos(map, pos1, pos2, out);
+        return 0;
+    }
+    return -1;
+}
+
+/* }}} */
+/* {{{ Removing methods */
+
+void __gm_remove_elem_from_2pos(__map_void_t *map, int32_t pos1, int32_t pos2)
+{
+    void *tab;
+
+    tab = map->keys[pos1];
+    memmove(tab + map->__size_elem_key * pos2,
+            tab + map->__size_elem_key * (pos2 + 1),
+            map->__size_elem_key * (map->tabs_len[pos1] - pos2 - 1));
+
+    tab = map->values[pos1];
+    memmove(tab + map->__size_elem_val * pos2,
+            tab + map->__size_elem_val * (pos2 + 1),
+            map->__size_elem_val * (map->tabs_len[pos1] - pos2 - 1));
+
+    map->tabs_len[pos1]--;
+    map->count--;
+}
+
+void __gm_remove_elem_from_fpos(__map_void_t *map, int64_t fpos)
+{
+    int32_t pos1, pos2;
+
+    __gm_get_2pos_from_fpos(fpos, &pos1, &pos2);
+    __gm_remove_elem_from_2pos(map, pos1, pos2);
+}
+
+int __gm_remove_elem_from_fpos_safe(__map_void_t *map, int64_t fpos)
+{
+    int32_t pos1, pos2;
+
+    __gm_get_2pos_from_fpos(fpos, &pos1, &pos2);
+    if (__gm_check_2pos_exist(map, pos1, pos2)) {
+        __gm_remove_elem_from_2pos(map, pos1, pos2);
+        return 0;
+    }
+    return -1;
+}
+
+void __gm_remove_elem(__map_void_t *map, const void *k,
+                      gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb)
+{
+    int32_t pos1, pos2;
+
+    __gm_get_2pos_from_key(map, k, hash_cb, cmp_cb, &pos1, &pos2);
+    __gm_remove_elem_from_2pos(map, pos1, pos2);
+}
+
+int __gm_remove_elem_safe(__map_void_t *map, const void *k,
+                          gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb)
+{
+    int32_t pos1, pos2;
+
+    __gm_get_2pos_from_key(map, k, hash_cb, cmp_cb, &pos1, &pos2);
+    if (__gm_check_2pos_exist(map, pos1, pos2)) {
+        __gm_remove_elem_from_2pos(map, pos1, pos2);
         return 0;
     }
     return -1;
