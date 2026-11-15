@@ -282,6 +282,38 @@ __gm_get_p_from_key(const __map_void_t *map, const void *k,
     })
 
 /* }}} */
+/* {{{ Removing elements */
+
+void __gm_remove_elem_from_fpos(__map_void_t *map, int64_t fpos);
+#define gm_remove_from_fpos(_gmap, _fpos)                                     \
+        __gm_remove_elem_from_fpos(&(_gmap)->__map, (_fpos))
+
+int __gm_remove_elem_from_fpos_safe(__map_void_t *map, int64_t fpos);
+#define gm_remove_from_fpos_safe(_gmap, _fpos)                                \
+    __gm_remove_elem_from_fpos_safe(&(_gmap)->__map, (_fpos))
+
+void __gm_remove_elem(__map_void_t *map, const void *k,
+                      gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb);
+#define gm_remove_elem(_name, _gmap, _key)                                    \
+    do {                                                                      \
+        __auto_type __gmap = (_gmap);                                         \
+        __gm_key_type(__gmap) __key = (_key);                                 \
+        __gm_remove_elem(&__gmap->__map, &__key, gm_hash_cb_name(_name),      \
+                         gm_cmp_cb_name(_name));                              \
+    } while (0)
+
+int __gm_remove_elem_safe(__map_void_t *map, const void *k,
+                          gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb);
+#define gm_remove_elem_safe(_name, _gmap, _key)                               \
+    ({                                                                        \
+        __auto_type __gmap = (_gmap);                                         \
+        __gm_key_type(__gmap) __key = (_key);                                 \
+        __gm_remove_elem_safe(&__gmap->__map, &__key, gm_hash_cb_name(_name), \
+                              gm_cmp_cb_name(_name));                         \
+    })
+
+
+/* }}} */
 
 int64_t __gm_find(const __map_void_t *map, const void *k,
                   gm_hash_cb_t hash_cb, g_cmp_cb_t cmp_cb);
