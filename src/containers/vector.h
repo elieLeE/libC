@@ -191,7 +191,7 @@ void *__gv_create_empty_spot_in_sorted_vec_from_val(__vector_void_t *vec,
 
 /* Warning, this method decreases the length of the vector, eventually move the
  * data in order that the elements from the first one to the 'vec->length are
- * the elements of the vector, but the new "empty" spot are not reset ! */
+ * the elements of the vector, but the new "empty" spot is not reset ! */
 int __gv_remove_elem_n(__vector_void_t *vec, int64_t pos);
 #define gv_remove(_gvec, _pos) __gv_remove_elem_n(&(_gvec)->vec, _pos)
 
