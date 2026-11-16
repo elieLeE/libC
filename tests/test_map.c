@@ -38,7 +38,6 @@ static void test_map_pos(void)
 /* }}} */
 /* {{{ helpers methods */
 
-__attr_unused__
 static bool _is_map_empty(const __map_void_t *map, bool are_size_too)
 {
     if (map->count != 0) {
@@ -82,7 +81,6 @@ generic_map_t(map_int_int, int, int, hash_method, cmp_method);
 
 /* {{{ helpers methods */
 
-__attr_unused__
 static void
 fill_map_int_int(gm_t(map_int_int) *map, int keys[], int values[], int len)
 {
@@ -233,6 +231,52 @@ static void test_map_int_int_reserve()
     gm_wipe(&map, NULL, NULL);
 }
 
+static void test_map_int_int_remove()
+{
+    gm_t(map_int_int) map;
+    int keys[] = {6, 98, 43, 678, 0, 65, 445, 8, 41654, 9};
+    int values[] = {8765, 9, 51, 976654, 4, 876, 9, 8, 0, 8};
+
+    gm_init_size(&map, 7);
+
+    fill_map_int_int(&map, keys, values, 10);
+    for (int i = 0; i < 10; i++) {
+        ASSERT_INT_GT_OR_EQUAL(gm_find(map_int_int, &map, keys[i]), 0);
+        ASSERT_INT_EQUAL(gm_remove_elem_safe(map_int_int, &map, keys[i]), 0);
+
+        ASSERT_INT_EQUAL(gm_find(map_int_int, &map, keys[i]), -1);
+        ASSERT_INT_EQUAL(gm_remove_elem_safe(map_int_int, &map, keys[i]), -1);
+    }
+    assert(is_map_empty(&map, false));
+
+    fill_map_int_int(&map, keys, values, 10);
+    for (int i = 0; i < 10; i++) {
+        ASSERT_INT_GT_OR_EQUAL(gm_find(map_int_int, &map, keys[i]), 0);
+        gm_remove_elem(map_int_int, &map, keys[i]);
+        ASSERT_INT_EQUAL(gm_find(map_int_int, &map, keys[i]), -1);
+    }
+    assert(is_map_empty(&map, false));
+
+    fill_map_int_int(&map, keys, values, 10);
+    for (int i = 0; i < 10; i++) {
+        int64_t fpos = gm_find(map_int_int, &map, keys[i]);
+        ASSERT_INT_EQUAL(gm_remove_from_fpos_safe(&map, fpos), 0);
+
+        ASSERT_INT_EQUAL(gm_find(map_int_int, &map, keys[i]), -1);
+    }
+    assert(is_map_empty(&map, false));
+
+    fill_map_int_int(&map, keys, values, 10);
+    for (int i = 0; i < 10; i++) {
+        int64_t fpos = gm_find(map_int_int, &map, keys[i]);
+        gm_remove_from_fpos(&map, fpos);
+        ASSERT_INT_EQUAL(gm_find(map_int_int, &map, keys[i]), -1);
+    }
+    assert(is_map_empty(&map, false));
+
+    gm_wipe(&map, NULL, NULL);
+}
+
 /* }}} */
 
 module_tests_t *get_all_tests_map(void)
@@ -248,6 +292,7 @@ module_tests_t *get_all_tests_map(void)
     ADD_TEST_TO_MODULE(module_tests, test_map_int_int_add);
     ADD_TEST_TO_MODULE(module_tests, test_map_int_int_set);
     ADD_TEST_TO_MODULE(module_tests, test_map_int_int_reserve);
+    ADD_TEST_TO_MODULE(module_tests, test_map_int_int_remove);
 
     return module_tests;
 }
