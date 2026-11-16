@@ -80,6 +80,20 @@ static int cmp_method(const int *key1, const int *key2)
 
 generic_map_t(map_int_int, int, int, hash_method, cmp_method);
 
+/* {{{ helpers methods */
+
+__attr_unused__
+static void
+fill_map_int_int(gm_t(map_int_int) *map, int keys[], int values[], int len)
+{
+    for (int i = 0; i < len; i++) {
+        ASSERT_INT_GT_OR_EQUAL(gm_add(map_int_int, map, keys[i], values[i]),
+                               0);
+    }
+}
+
+/* }}} */
+
 static void test_map_init_and_wipe(void)
 {
     gm_t(map_int_int) map;
